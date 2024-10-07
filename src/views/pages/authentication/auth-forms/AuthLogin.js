@@ -62,6 +62,23 @@ const JWTLogin = ({ loginProp, ...others }) => {
                 email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                 password: Yup.string().max(255).required('Password is required')
             })}
+            // onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+            //     try {
+            //         await login(values.email, values.password);
+
+            //         if (scriptedRef.current) {
+            //             setStatus({ success: true });
+            //             setSubmitting(false);
+            //         }
+            //     } catch (err) {
+            //         console.error(err);
+            //         if (scriptedRef.current) {
+            //             setStatus({ success: false });
+            //             setErrors({ submit: err.message });
+            //             setSubmitting(false);
+            //         }
+            //     }
+            // }}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
                     await login(values.email, values.password);
@@ -73,8 +90,8 @@ const JWTLogin = ({ loginProp, ...others }) => {
                 } catch (err) {
                     console.error(err);
                     if (scriptedRef.current) {
+                        setErrors({ submit: err.message }); // Show the error in Formik form
                         setStatus({ success: false });
-                        setErrors({ submit: err.message });
                         setSubmitting(false);
                     }
                 }
@@ -83,7 +100,7 @@ const JWTLogin = ({ loginProp, ...others }) => {
             {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                 <form noValidate onSubmit={handleSubmit} {...others}>
                     <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                        <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-email-login">Email Address</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-email-login"
                             type="email"

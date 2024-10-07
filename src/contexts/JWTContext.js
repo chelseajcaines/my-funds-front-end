@@ -80,24 +80,67 @@ export const JWTProvider = ({ children }) => {
         init();
     }, []);
 
+    // const login = async (email, password) => {
+    //     const response = await axios.post('/api/user/login', { email, password });
+    //     const { serviceToken, user } = response.data;
+    //     setSession(serviceToken);
+    //     dispatch({
+    //         type: LOGIN,
+    //         payload: {
+    //             isLoggedIn: true,
+    //             user
+    //         }
+    //     });
+    // };
+
     const login = async (email, password) => {
-        const response = await axios.post('/api/account/login', { email, password });
-        const { serviceToken, user } = response.data;
-        setSession(serviceToken);
-        dispatch({
-            type: LOGIN,
-            payload: {
-                isLoggedIn: true,
-                user
-            }
-        });
+        try {
+            const response = await axios.post('http://localhost:5001/api/user/login', { email, password });
+            const { serviceToken, user } = response.data;
+            setSession(serviceToken);
+            dispatch({
+                type: LOGIN,
+                payload: {
+                    isLoggedIn: true,
+                    user
+                }
+            });
+        } catch (err) {
+            throw new Error(err.response?.data?.message || 'Login failed');
+        }
+        // try {
+        //     const response = await axios.post('/api/user/login', { email, password });
+        //     const { serviceToken, user } = response.data;
+        //     setSession(serviceToken);
+        //     dispatch({
+        //         type: LOGIN,
+        //         payload: {
+        //             isLoggedIn: true,
+        //             user
+        //         }
+        //     });
+        // } catch (error) {
+        //     console.error('Login Error:', error);
+        //     throw new Error(error.response?.data?.message || 'Login failed'); // Ensure the error message is clear
+        // }
     };
 
+    // const register = async (email, password, firstName, lastName) => {
+    //     // todo: this flow need to be recode as it not verified
+    //     const id = chance.bb_pin();
+    //     const response = await axios.post('http://localhost:5001/api/user', {
+    //         // name: firstName + ' ' + lastName,
+    //         email,
+    //         password
+    //     });
+    //     let users = response.data;
+    //     console.log(users);
+    // };
+
     const register = async (email, password, firstName, lastName) => {
-        // todo: this flow need to be recode as it not verified
         const id = chance.bb_pin();
         const response = await axios.post('http://localhost:5001/api/user', {
-            // name: firstName + ' ' + lastName,
+            name: firstName + ' ' + lastName, // Combine firstName and lastName for the name field
             email,
             password
         });
