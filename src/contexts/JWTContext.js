@@ -154,7 +154,20 @@ export const JWTProvider = ({ children }) => {
     };
 
     const resetPassword = async (email) => {
-        console.log(email);
+        console.log(email); // Log the email for debugging
+
+        try {
+            // Send a POST request to the backend
+            const response = await axios.post('http://localhost:5001/api/auth/forgot-password', { email });
+
+            // Handle the response as needed
+            console.log(response.data); // You can log the response to see if it's successful
+            return response.data; // Return the data to handle it in your component
+        } catch (error) {
+            // Handle errors
+            console.error('Error sending reset password request:', error);
+            throw new Error('Failed to send reset password request.'); // Throw an error to catch it in the form
+        }
     };
 
     const updateProfile = () => {};

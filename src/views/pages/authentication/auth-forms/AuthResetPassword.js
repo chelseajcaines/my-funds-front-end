@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom'; // Import useLocation and useNavigate
+import axios from 'axios'; // Make sure to import axios
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -20,7 +22,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-// import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicatorNumFunc } from 'utils/password-strength';
@@ -29,7 +30,7 @@ import { strengthColor, strengthIndicatorNumFunc } from 'utils/password-strength
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-// ========================|| FIREBASE - RESET PASSWORD ||======================== //
+// ========================|| RESET PASSWORD ||======================== //
 
 const AuthResetPassword = ({ ...others }) => {
     const theme = useTheme();
@@ -37,8 +38,8 @@ const AuthResetPassword = ({ ...others }) => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [strength, setStrength] = React.useState(0);
     const [level, setLevel] = React.useState();
-
-    // const { firebaseEmailPasswordSignIn } = useAuth();
+    const location = useLocation(); // Get location to extract token
+    const navigate = useNavigate(); // Use navigate to redirect after successful reset
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -58,36 +59,43 @@ const AuthResetPassword = ({ ...others }) => {
         changePassword('123456');
     }, []);
 
+    // Extract token from URL query params
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token'); // Make sure to handle if token is null
+
     return (
         <Formik
             initialValues={{
-                email: 'info@codedthemes.com',
-                password: '123456',
-                confirmPassword: '123456',
+                password: '',
+                confirmPassword: '',
                 submit: null
             }}
             validationSchema={Yup.object().shape({
                 password: Yup.string().max(255).required('Password is required'),
                 confirmPassword: Yup.string()
                     .required('Confirm Password is required')
-                    .test(
-                        'confirmPassword',
-                        'Both Password must be match!',
-                        (confirmPassword, yup) => yup.parent.password === confirmPassword
-                    )
+                    .test('confirmPassword', 'Both Password must match!', (confirmPassword, yup) => yup.parent.password === confirmPassword)
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
-                    // await firebaseEmailPasswordSignIn(values.email, values.password);
-                    if (scriptedRef.current) {
+                    // Send a POST request to reset the password
+                    const response = await axios.post('http://localhost:5001/api/auth/reset-password', {
+                        token: token, // Include the reset token
+                        newPassword: values.password // Send the new password
+                    });
+
+                    // Handle successful response
+                    if (response.data) {
                         setStatus({ success: true });
                         setSubmitting(false);
+                        // Navigate to login page or show a success message
+                        navigate('/login', { replace: true });
                     }
                 } catch (err) {
                     console.error(err);
                     if (scriptedRef.current) {
                         setStatus({ success: false });
-                        setErrors({ submit: err.message });
+                        setErrors({ submit: err.response?.data?.message || 'Reset password failed' });
                         setSubmitting(false);
                     }
                 }
@@ -175,26 +183,17 @@ const AuthResetPassword = ({ ...others }) => {
                     {touched.confirmPassword && errors.confirmPassword && (
                         <FormControl fullWidth>
                             <FormHelperText error id="standard-weight-helper-text-confirm-password">
-                                {' '}
-                                {errors.confirmPassword}{' '}
+                                {errors.confirmPassword}
                             </FormHelperText>
                         </FormControl>
                     )}
 
                     {errors.submit && (
-                        <Box
-                            sx={{
-                                mt: 3
-                            }}
-                        >
+                        <Box sx={{ mt: 3 }}>
                             <FormHelperText error>{errors.submit}</FormHelperText>
                         </Box>
                     )}
-                    <Box
-                        sx={{
-                            mt: 1
-                        }}
-                    >
+                    <Box sx={{ mt: 1 }}>
                         <AnimateButton>
                             <Button
                                 disableElevation

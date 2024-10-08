@@ -1,7 +1,6 @@
-
 import dashboard from './dashboard';
-import banking from './banking'
-import personal from './personal'
+import banking from './banking';
+import personal from './personal';
 
 // ==============================|| MENU ITEMS ||============================== //
 
