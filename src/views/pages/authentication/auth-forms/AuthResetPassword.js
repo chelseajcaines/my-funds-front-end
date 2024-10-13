@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'; // Import useLocation and useNavigate
-import axios from 'axios'; // Make sure to import axios
-
-// material-ui
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
 import {
     Box,
@@ -16,21 +14,13 @@ import {
     OutlinedInput,
     Typography
 } from '@mui/material';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project imports
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicatorNumFunc } from 'utils/password-strength';
-
-// assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-// ========================|| RESET PASSWORD ||======================== //
 
 const AuthResetPassword = ({ ...others }) => {
     const theme = useTheme();
@@ -40,6 +30,14 @@ const AuthResetPassword = ({ ...others }) => {
     const [level, setLevel] = React.useState();
     const location = useLocation(); // Get location to extract token
     const navigate = useNavigate(); // Use navigate to redirect after successful reset
+
+    // Extract token from URL query params
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const token = queryParams.get('token');
+        console.log('Token:', token); // Ensure the token is captured
+        // You can use the token here for any immediate side-effects, or save it in state if needed
+    }, [location]);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -59,10 +57,6 @@ const AuthResetPassword = ({ ...others }) => {
         changePassword('123456');
     }, []);
 
-    // Extract token from URL query params
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token'); // Make sure to handle if token is null
-
     return (
         <Formik
             initialValues={{
@@ -78,6 +72,7 @@ const AuthResetPassword = ({ ...others }) => {
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
+                    const token = new URLSearchParams(location.search).get('token'); // Extract the token before submission
                     // Send a POST request to reset the password
                     const response = await axios.post('http://localhost:5001/api/auth/reset-password', {
                         token: token, // Include the reset token

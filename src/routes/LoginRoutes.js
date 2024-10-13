@@ -10,6 +10,7 @@ import Loadable from 'ui-component/Loadable';
 const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/Login3')));
 const AuthRegister = Loadable(lazy(() => import('views/pages/authentication/Register3')));
 const AuthForgotPassword = Loadable(lazy(() => import('views/pages/authentication/ForgotPassword3')));
+const AuthResetPassword = Loadable(lazy(() => import('views/pages/authentication/auth-forms/AuthResetPassword'))); // Import your reset password page
 
 // ==============================|| AUTH ROUTING ||============================== //
 
@@ -38,6 +39,10 @@ const LoginRoutes = {
         {
             path: '/forgot',
             element: <AuthForgotPassword />
+        },
+        {
+            path: '/reset-password', // Add the reset password route here
+            element: <AuthResetPassword />
         }
     ]
 };
