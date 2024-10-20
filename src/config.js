@@ -16,4 +16,9 @@ const config = {
     container: false
 };
 
+export const ThemeMode = {
+    LIGHT: 'light',
+    DARK: 'dark'
+};
+
 export default config;

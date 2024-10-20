@@ -3,10 +3,20 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import { Button, Card, Chip, Grid, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 // project imports
 import Avatar from '../extended/Avatar';
+import { getImageUrl, ImagePath } from 'utils/getImageUrl';
+import { ThemeMode } from 'config';
+
 import { gridSpacing } from 'store/constant';
 
 // assets
@@ -14,8 +24,6 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-
-const avatarImage = require.context('assets/images/users', true);
 
 // styles
 const FacebookWrapper = styled(Button)({
@@ -64,7 +72,6 @@ const LinkedInWrapper = styled(Button)({
 
 const UserSimpleCard = ({ avatar, name, status }) => {
     const theme = useTheme();
-    const avatarProfile = avatar && avatarImage(`./${avatar}`);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
@@ -78,11 +85,11 @@ const UserSimpleCard = ({ avatar, name, status }) => {
         <Card
             sx={{
                 p: 2,
-                background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
                 border: '1px solid',
-                borderColor: theme.palette.mode === 'dark' ? 'transparent' : theme.palette.grey[100],
+                borderColor: 'divider',
                 '&:hover': {
-                    border: `1px solid${theme.palette.primary.main}`
+                    borderColor: 'primary.main'
                 }
             }}
         >
@@ -90,10 +97,10 @@ const UserSimpleCard = ({ avatar, name, status }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Avatar alt={name} src={avatarProfile} sx={{ width: 72, height: 72 }} />
+                            <Avatar alt={name} src={avatar && getImageUrl(`${avatar}`, ImagePath.USERS)} sx={{ width: 72, height: 72 }} />
                         </Grid>
                         <Grid item>
-                            <IconButton size="small" sx={{ mt: -0.75, mr: -0.75 }} onClick={handleClick} aria-label="more options">
+                            <IconButton size="small" sx={{ mt: -0.75, mr: -0.75 }} onClick={handleClick}>
                                 <MoreHorizOutlinedIcon
                                     fontSize="small"
                                     color="inherit"
@@ -135,7 +142,7 @@ const UserSimpleCard = ({ avatar, name, status }) => {
                                     label="Active"
                                     size="small"
                                     sx={{
-                                        bgcolor: theme.palette.mode === 'dark' ? theme.palette.dark.dark : 'success.light',
+                                        bgcolor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'success.light',
                                         color: 'success.dark'
                                     }}
                                 />
@@ -144,7 +151,7 @@ const UserSimpleCard = ({ avatar, name, status }) => {
                                     label="Rejected"
                                     size="small"
                                     sx={{
-                                        bgcolor: theme.palette.mode === 'dark' ? theme.palette.dark.dark : 'error.light',
+                                        bgcolor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'error.light',
                                         color: 'error.dark'
                                     }}
                                 />
@@ -155,17 +162,17 @@ const UserSimpleCard = ({ avatar, name, status }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
-                            <FacebookWrapper fullWidth aria-label="facebook">
+                            <FacebookWrapper fullWidth>
                                 <FacebookIcon fontSize="small" />
                             </FacebookWrapper>
                         </Grid>
                         <Grid item xs={4}>
-                            <TwitterWrapper fullWidth aria-label="twitter">
+                            <TwitterWrapper fullWidth>
                                 <TwitterIcon fontSize="small" />
                             </TwitterWrapper>
                         </Grid>
                         <Grid item xs={4}>
-                            <LinkedInWrapper fullWidth aria-label="linkedin">
+                            <LinkedInWrapper fullWidth>
                                 <LinkedInIcon fontSize="small" />
                             </LinkedInWrapper>
                         </Grid>

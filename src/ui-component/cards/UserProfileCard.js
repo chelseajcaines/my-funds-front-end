@@ -2,19 +2,25 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import { Button, Card, CardContent, CardMedia, Chip, Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 // project imports
 import Avatar from '../extended/Avatar';
 import { gridSpacing } from 'store/constant';
+import { getImageUrl, ImagePath } from 'utils/getImageUrl';
+import { ThemeMode } from 'config';
 
 // assets
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import ChatBubbleTwoToneIcon from '@mui/icons-material/ChatBubbleTwoTone';
-
-const avatarImage = require.context('assets/images/users', true);
 
 // styles
 const FacebookWrapper = styled(Button)({
@@ -63,25 +69,32 @@ const LinkedInWrapper = styled(Button)({
 
 const UserProfileCard = ({ avatar, name, profile, role, status }) => {
     const theme = useTheme();
-    const avatarProfile = avatar && avatarImage(`./${avatar}`);
-    const imageProfile = profile && avatarImage(`./${profile}`);
 
     return (
         <Card
             sx={{
-                background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
-                border: theme.palette.mode === 'dark' ? 'none' : '1px solid',
-                borderColor: theme.palette.grey[100],
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
+                border: '1px solid',
+                borderColor: 'divider',
                 textAlign: 'center'
             }}
         >
-            <CardMedia component="img" image={imageProfile} title="Slider5 image" sx={{ height: '125px' }} />
+            <CardMedia
+                component="img"
+                image={profile && getImageUrl(`${profile}`, ImagePath.PROFILE)}
+                title="Slider5 image"
+                sx={{ height: '125px' }}
+            />
             <CardContent sx={{ p: 2, pb: '16px !important' }}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12}>
-                                <Avatar alt={name} src={avatarProfile} sx={{ width: 72, height: 72, m: '-50px auto 0' }} />
+                                <Avatar
+                                    alt={name}
+                                    src={avatar && getImageUrl(`${avatar}`, ImagePath.USERS)}
+                                    sx={{ width: 72, height: 72, m: '-50px auto 0' }}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -99,7 +112,7 @@ const UserProfileCard = ({ avatar, name, profile, role, status }) => {
                                         label="Active"
                                         size="small"
                                         sx={{
-                                            bgcolor: theme.palette.mode === 'dark' ? theme.palette.dark.dark : 'success.light',
+                                            bgcolor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'success.light',
                                             color: 'success.dark'
                                         }}
                                     />
@@ -108,7 +121,7 @@ const UserProfileCard = ({ avatar, name, profile, role, status }) => {
                                         label="Rejected"
                                         size="small"
                                         sx={{
-                                            bgcolor: theme.palette.mode === 'dark' ? theme.palette.dark.dark : 'error.light',
+                                            bgcolor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'error.light',
                                             color: 'error.dark'
                                         }}
                                     />

@@ -3,7 +3,18 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, Card, Grid, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+
+// project import
+import { getImageUrl, ImagePath } from 'utils/getImageUrl';
+import { ThemeMode } from 'config';
 
 // assets
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
@@ -15,13 +26,10 @@ import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import GroupTwoToneIcon from '@mui/icons-material/GroupTwoTone';
 
-const avatarImage = require.context('assets/images/users', true);
-
 // ==============================|| SOCIAL PROFILE - FOLLOWER CARD ||============================== //
 
 const FollowerCard = ({ avatar, follow, location, name }) => {
     const theme = useTheme();
-    const avatarProfile = avatar && avatarImage(`./${avatar}`);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
@@ -35,25 +43,22 @@ const FollowerCard = ({ avatar, follow, location, name }) => {
     return (
         <Card
             sx={{
-                padding: '16px',
-                background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
+                p: 2,
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
                 border: '1px solid',
-                borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[100],
-                '&:hover': {
-                    border: `1px solid${theme.palette.primary.main}`
-                }
+                borderColor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'grey.100',
+                '&:hover': { borderColor: 'primary.main' }
             }}
         >
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item>
-                            <Avatar alt="User 1" src={avatarProfile} />
+                            <Avatar alt="User 1" src={avatar && getImageUrl(`${avatar}`, ImagePath.USERS)} />
                         </Grid>
                         <Grid item xs zeroMinWidth>
                             <Typography
                                 variant="h5"
-                                component="div"
                                 sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}
                             >
                                 {name}
@@ -69,10 +74,7 @@ const FollowerCard = ({ avatar, follow, location, name }) => {
                         <Grid item>
                             <MoreHorizOutlinedIcon
                                 fontSize="small"
-                                sx={{
-                                    color: theme.palette.primary[200],
-                                    cursor: 'pointer'
-                                }}
+                                sx={{ color: 'primary.200', cursor: 'pointer' }}
                                 aria-controls="menu-followers-card"
                                 aria-haspopup="true"
                                 onClick={handleClick}

@@ -3,10 +3,21 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, Card, Grid, IconButton, ListItemIcon, Menu, MenuItem, Typography, Tooltip } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 
 // project imports
 import { gridSpacing } from 'store/constant';
+import { getImageUrl, ImagePath } from 'utils/getImageUrl';
+import { ThemeMode } from 'config';
 
 // assets
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
@@ -18,18 +29,14 @@ import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import GroupTwoToneIcon from '@mui/icons-material/GroupTwoTone';
 
-const avatarImage = require.context('assets/images/users', true);
-
 // ==============================|| SOCIAL PROFILE - FRIENDS CARD ||============================== //
 
 const FriendsCard = ({ avatar, location, name }) => {
     const theme = useTheme();
 
-    const avatarProfile = avatar && avatarImage(`./${avatar}`);
-
     const btnSX = {
-        borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[200],
-        background: theme.palette.mode === 'dark' ? theme.palette.dark.dark : theme.palette.background.paper
+        borderColor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'grey.200',
+        bgcolor: 'background.paper'
     };
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -45,11 +52,11 @@ const FriendsCard = ({ avatar, location, name }) => {
         <Card
             sx={{
                 p: 2,
-                background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
                 border: '1px solid',
-                borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[100],
+                borderColor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'grey.100',
                 '&:hover': {
-                    border: `1px solid${theme.palette.primary.main}`
+                    borderColor: 'primary.main'
                 }
             }}
         >
@@ -57,7 +64,7 @@ const FriendsCard = ({ avatar, location, name }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item>
-                            <Avatar alt="User 1" src={avatarProfile} />
+                            <Avatar alt="User 1" src={avatar && getImageUrl(`${avatar}`, ImagePath.USERS)} />
                         </Grid>
                         <Grid item xs zeroMinWidth>
                             <Typography

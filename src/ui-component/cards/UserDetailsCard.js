@@ -3,24 +3,29 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Button, Card, Grid, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 
 // project imports
 import { gridSpacing } from 'store/constant';
 import Avatar from '../extended/Avatar';
+import { getImageUrl, ImagePath } from 'utils/getImageUrl';
+import { ThemeMode } from 'config';
 
 // assets
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import NotInterestedTwoToneIcon from '@mui/icons-material/NotInterestedTwoTone';
 import ChatBubbleTwoToneIcon from '@mui/icons-material/ChatBubbleTwoTone';
 
-const avatarImage = require.context('assets/images/users', true);
-
 // ==============================|| USER DETAILS CARD ||============================== //
 
 const UserDetailsCard = ({ about, avatar, contact, email, location, name, role }) => {
     const theme = useTheme();
-    const avatarProfile = avatar && avatarImage(`./${avatar}`);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
@@ -35,10 +40,11 @@ const UserDetailsCard = ({ about, avatar, contact, email, location, name, role }
         <Card
             sx={{
                 p: 2,
-                background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
-                border: theme.palette.mode === 'dark' ? '1px solid transparent' : `1px solid${theme.palette.grey[100]}`,
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
+                border: '1px solid',
+                borderColor: 'divider',
                 '&:hover': {
-                    borderColor: theme.palette.primary.main
+                    borderColor: 'primary.main'
                 }
             }}
         >
@@ -46,7 +52,7 @@ const UserDetailsCard = ({ about, avatar, contact, email, location, name, role }
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Avatar alt={name} size="lg" src={avatarProfile} />
+                            <Avatar alt={name} size="lg" src={avatar && getImageUrl(`${avatar}`, ImagePath.USERS)} />
                         </Grid>
                         <Grid item>
                             <IconButton size="small" sx={{ mt: -0.75, mr: -0.75 }} onClick={handleClick} aria-label="more-options">
@@ -83,13 +89,11 @@ const UserDetailsCard = ({ about, avatar, contact, email, location, name, role }
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="h3" component="div">
-                        {name}
-                    </Typography>
+                    <Typography variant="h3">{name}</Typography>
                     <Typography variant="caption">{role}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.grey[700] }}>
+                    <Typography variant="subtitle2" sx={{ color: 'grey.700' }}>
                         {about}
                     </Typography>
                 </Grid>
