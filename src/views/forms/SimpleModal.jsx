@@ -8,15 +8,19 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-import AddIcon from '@mui/icons-material/Add';
+import Fab from '@mui/material/Fab';
+import TextField from '@mui/material/TextField';
+import FormHelperText from '@mui/material/FormHelperText';
+import Button from '@mui/material/Button';
 import { Tooltip } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
+import InputLabel from 'ui-component/extended/Form/InputLabel';
 
 // assets
 import CloseIcon from '@mui/icons-material/Close';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 // generate random
 function rand() {
@@ -44,13 +48,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => (
         <MainCard
             sx={{
                 position: 'absolute',
-                width: { xs: 280, lg: 450 },
+                width: { xs: 280, lg: 650 },
                 top: '50%',
                 left: '50%',
-                transform: 'translate(-50%, -50%)',
-                ...modalStyle
+                transform: 'translate(-50%, -50%)'
+                // ...modalStyle
             }}
-            title="Title"
+            title="New Budget"
             content={false}
             secondary={
                 <IconButton onClick={handleClose} size="large" aria-label="close modal">
@@ -59,15 +63,26 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => (
             }
         >
             <CardContent>
-                <Typography variant="body1">Laboris non ad et aute sint aliquip mollit voluptate velit dolore magna fugiat ex.</Typography>
-                <Typography variant="body2" sx={{ mt: 2 }}>
-                    Commodo amet veniam nostrud mollit quis sint qui nulla elit esse excepteur ullamco esse magna. Nisi duis aute est in
-                    mollit irure enim tempor in.
-                </Typography>
+                <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                        <InputLabel>Budget Name</InputLabel>
+                        <TextField fullWidth placeholder=" " />
+                        {/* <FormHelperText>Please enter your full name</FormHelperText> */}
+                    </Grid>
+                </Grid>
             </CardContent>
             <Divider />
             <CardActions>
-                <SimpleModal />
+                <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
+                    <Grid item>
+                        <Button variant="contained" color="secondary">
+                            Submit
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <Button variant="outlined">Clear</Button>
+                    </Grid>
+                </Grid>
             </CardActions>
         </MainCard>
     </div>
@@ -96,9 +111,9 @@ export default function SimpleModal() {
     return (
         <Grid container justifyContent="flex-end">
             <Tooltip title={'Add Budget'} placement="left">
-                <AddIcon variant="contained" type="button" onClick={handleOpen} fill>
-                    Open Modal
-                </AddIcon>
+                <Fab size="small" color="primary" aria-label="new todo add" onClick={handleOpen}>
+                    <AddRoundedIcon fontSize="small" onClick={handleOpen} />
+                </Fab>
             </Tooltip>
 
             <Modal open={open} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">

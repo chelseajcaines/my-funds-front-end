@@ -3,20 +3,10 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import Chip from '@mui/material/Chip';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
+import { Button, Card, Chip, Grid, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 
 // project imports
 import Avatar from '../extended/Avatar';
-import { getImageUrl, ImagePath } from 'utils/getImageUrl';
-import { ThemeMode } from 'config';
-
 import { gridSpacing } from 'store/constant';
 
 // assets
@@ -24,6 +14,8 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+
+const avatarImage = require.context('assets/images/users', true);
 
 // styles
 const FacebookWrapper = styled(Button)({
@@ -72,62 +64,25 @@ const LinkedInWrapper = styled(Button)({
 
 const UserSimpleCard = ({ avatar, name, status }) => {
     const theme = useTheme();
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const avatarProfile = avatar && avatarImage(`./${avatar}`);
 
     return (
         <Card
-            sx={{
-                p: 2,
-                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
-                border: '1px solid',
-                borderColor: 'divider',
-                '&:hover': {
-                    borderColor: 'primary.main'
-                }
-            }}
+        // sx={{
+        //     p: 2,
+        //     background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
+        //     border: '1px solid',
+        //     borderColor: theme.palette.mode === 'dark' ? 'transparent' : theme.palette.grey[100],
+        //     '&:hover': {
+        //         border: `1px solid${theme.palette.primary.main}`
+        //     }
+        // }}
         >
             <Grid container spacing={gridSpacing}>
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Avatar alt={name} src={avatar && getImageUrl(`${avatar}`, ImagePath.USERS)} sx={{ width: 72, height: 72 }} />
-                        </Grid>
-                        <Grid item>
-                            <IconButton size="small" sx={{ mt: -0.75, mr: -0.75 }} onClick={handleClick}>
-                                <MoreHorizOutlinedIcon
-                                    fontSize="small"
-                                    color="inherit"
-                                    aria-controls="menu-friend-card"
-                                    aria-haspopup="true"
-                                    sx={{ opacity: 0.6 }}
-                                />
-                            </IconButton>
-                            <Menu
-                                id="menu-simple-card"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                                variant="selectedMenu"
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'right'
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right'
-                                }}
-                            >
-                                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                                <MenuItem onClick={handleClose}>Delete</MenuItem>
-                            </Menu>
+                            <Typography variant="h1">$200</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -136,45 +91,12 @@ const UserSimpleCard = ({ avatar, name, status }) => {
                         <Grid item xs zeroMinWidth>
                             <Typography variant="h4">{name}</Typography>
                         </Grid>
-                        <Grid item>
-                            {status === 'Active' ? (
-                                <Chip
-                                    label="Active"
-                                    size="small"
-                                    sx={{
-                                        bgcolor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'success.light',
-                                        color: 'success.dark'
-                                    }}
-                                />
-                            ) : (
-                                <Chip
-                                    label="Rejected"
-                                    size="small"
-                                    sx={{
-                                        bgcolor: theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'error.light',
-                                        color: 'error.dark'
-                                    }}
-                                />
-                            )}
-                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                            <FacebookWrapper fullWidth>
-                                <FacebookIcon fontSize="small" />
-                            </FacebookWrapper>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TwitterWrapper fullWidth>
-                                <TwitterIcon fontSize="small" />
-                            </TwitterWrapper>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <LinkedInWrapper fullWidth>
-                                <LinkedInIcon fontSize="small" />
-                            </LinkedInWrapper>
+                        <Grid item xs={12}>
+                            <Button variant="contained">View Purchases</Button>
                         </Grid>
                     </Grid>
                 </Grid>

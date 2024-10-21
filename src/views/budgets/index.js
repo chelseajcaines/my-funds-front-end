@@ -2,6 +2,7 @@
 import Grid from '@mui/material/Grid';
 
 import UserSimpleCard from 'ui-component/cards/UserSimpleCard';
+import EditMenu from './EditMenu';
 
 import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
@@ -23,7 +24,7 @@ const Budgets = () => {
             <MainCard title="Budgets" secondary={<SimpleModal />}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} lg={4}>
-                        <SubCard title="Basic Card Style 3">
+                        <SubCard title="Groceries" secondary={<EditMenu />}>
                             <UserSimpleCard {...simpleCard} />
                         </SubCard>
                     </Grid>
