@@ -7,7 +7,6 @@ import Loadable from 'ui-component/Loadable';
 
 // sample page routing
 const Overview = Loadable(lazy(() => import('views/overview')));
-const Cards = Loadable(lazy(() => import('views/cards')));
 const Budgets = Loadable(lazy(() => import('views/budgets')));
 const Income = Loadable(lazy(() => import('views/income')));
 const Expences = Loadable(lazy(() => import('views/expences')));
@@ -29,10 +28,6 @@ const MainRoutes = {
         {
             path: '/overview',
             element: <Overview />
-        },
-        {
-            path: '/cards',
-            element: <Cards />
         },
         {
             path: '/budgets',

@@ -14,9 +14,9 @@ const icons = {
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 
-const personal = {
-    id: 'personal',
-    title: <FormattedMessage id="personal" />,
+const finances = {
+    id: 'finances',
+    title: <FormattedMessage id="finances" />,
     icon: icons.IconDashboard,
     type: 'group',
     children: [
@@ -47,4 +47,4 @@ const personal = {
     ]
 };
 
-export default personal;
+export default finances;

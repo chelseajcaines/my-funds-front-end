@@ -14,8 +14,41 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { Box } from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const avatarImage = require.context('assets/images/users', true);
+
+function LinearProgressWithLabel({ value, ...others }) {
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center'
+            }}
+        >
+            <Box
+                sx={{
+                    width: '100%',
+                    mr: 1
+                }}
+            >
+                <LinearProgress value={value} {...others} />
+            </Box>
+            <Box
+                sx={{
+                    minWidth: 35
+                }}
+            >
+                <Typography variant="body2" color="textSecondary">{`${Math.round(value)}%`}</Typography>
+            </Box>
+        </Box>
+    );
+}
+
+LinearProgressWithLabel.propTypes = {
+    value: PropTypes.number
+};
 
 // styles
 const FacebookWrapper = styled(Button)({
@@ -62,7 +95,7 @@ const LinkedInWrapper = styled(Button)({
 
 // ==============================|| USER SIMPLE CARD ||============================== //
 
-const UserSimpleCard = ({ avatar, name, status }) => {
+const UserSimpleCard = ({ avatar }) => {
     const theme = useTheme();
     const avatarProfile = avatar && avatarImage(`./${avatar}`);
 
@@ -83,13 +116,15 @@ const UserSimpleCard = ({ avatar, name, status }) => {
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
                             <Typography variant="h1">$200</Typography>
+                            <Typography variant="body2">Junior</Typography>
+                            <LinearProgressWithLabel color="primary" variant="determinate" value={70} aria-label="junior-skill-progress" />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">{name}</Typography>
+                            <Typography variant="h4">Day 4</Typography>
                         </Grid>
                     </Grid>
                 </Grid>

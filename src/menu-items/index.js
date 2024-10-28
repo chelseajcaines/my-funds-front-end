@@ -1,11 +1,10 @@
 import dashboard from './dashboard';
-import banking from './banking';
-import personal from './personal';
+import finances from './finances';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [dashboard, banking, personal]
+    items: [dashboard, finances]
 };
 
 export default menuItems;
