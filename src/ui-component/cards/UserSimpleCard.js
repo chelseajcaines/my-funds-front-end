@@ -123,8 +123,9 @@ const UserSimpleCard = ({ avatar }) => {
                 </Grid>
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
-                        <Grid item xs zeroMinWidth>
+                        <Grid item xs zeroMinWidth display={'flex'} justifyContent={'space-between'}>
                             <Typography variant="h4">Day 4</Typography>
+                            <Typography variant="h4">Oct. 20th - Oct. 26th</Typography>
                         </Grid>
                     </Grid>
                 </Grid>

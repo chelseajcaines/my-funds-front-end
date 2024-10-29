@@ -65,7 +65,12 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => (
             <CardContent>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12}>
-                        <InputLabel>Budget Name</InputLabel>
+                        <InputLabel>Name</InputLabel>
+                        <TextField fullWidth placeholder=" " />
+                        {/* <FormHelperText>Please enter your full name</FormHelperText> */}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputLabel>Amount</InputLabel>
                         <TextField fullWidth placeholder=" " />
                         {/* <FormHelperText>Please enter your full name</FormHelperText> */}
                     </Grid>

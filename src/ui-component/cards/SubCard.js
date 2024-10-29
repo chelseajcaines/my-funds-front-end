@@ -5,6 +5,7 @@ import React from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import DropMenu from 'ui-component/DropMenu';
 
 // ==============================|| CUSTOM SUB CARD ||============================== //
 
@@ -27,7 +28,16 @@ const SubCard = React.forwardRef(
             >
                 {/* card header and action */}
                 {!darkTitle && title && (
-                    <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h5">{title}</Typography>} action={secondary} />
+                    <CardHeader
+                        sx={{ p: 2.5 }}
+                        title={
+                            <Typography variant="h5" display={'flex'}>
+                                {title + ' / '}
+                                <DropMenu />
+                            </Typography>
+                        }
+                        action={secondary}
+                    />
                 )}
                 {darkTitle && title && (
                     <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h4">{title}</Typography>} action={secondary} />
