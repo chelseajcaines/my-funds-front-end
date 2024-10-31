@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useDispatch } from 'store';
+import { useFormik } from 'formik';
 
 // material-ui
 import CardContent from '@mui/material/CardContent';
@@ -10,9 +12,12 @@ import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
 import Fab from '@mui/material/Fab';
 import TextField from '@mui/material/TextField';
-import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
 import { Tooltip } from '@mui/material';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import * as yup from 'yup';
+import { openSnackbar } from 'store/slices/snackbar';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -39,59 +44,116 @@ function getModalStyle() {
     };
 }
 
-const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => (
-    <div ref={ref} tabIndex={-1}>
-        {/**
-         * sx={...modalStyle}
-         * Property 'style' does not exist on type 'IntrinsicAttributes & MainCardProps & RefAttributes<HTMLDivElement>
-         */}
-        <MainCard
-            sx={{
-                position: 'absolute',
-                width: { xs: 280, lg: 650 },
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)'
-                // ...modalStyle
-            }}
-            title="New Budget"
-            content={false}
-            secondary={
-                <IconButton onClick={handleClose} size="large" aria-label="close modal">
-                    <CloseIcon fontSize="small" />
-                </IconButton>
-            }
-        >
-            <CardContent>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item xs={12}>
-                        <InputLabel>Name</InputLabel>
-                        <TextField fullWidth placeholder=" " />
-                        {/* <FormHelperText>Please enter your full name</FormHelperText> */}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <InputLabel>Amount</InputLabel>
-                        <TextField fullWidth placeholder=" " />
-                        {/* <FormHelperText>Please enter your full name</FormHelperText> */}
-                    </Grid>
-                </Grid>
-            </CardContent>
-            <Divider />
-            <CardActions>
-                <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
-                    <Grid item>
-                        <Button variant="contained" color="secondary">
-                            Submit
-                        </Button>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="outlined">Clear</Button>
-                    </Grid>
-                </Grid>
-            </CardActions>
-        </MainCard>
-    </div>
-));
+const validationSchema = yup.object({
+    age: yup.number().required('Age selection is required.')
+});
+
+const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
+    const dispatch = useDispatch();
+
+    const formik = useFormik({
+        initialValues: {
+            age: ''
+        },
+        validationSchema,
+        onSubmit: () => {
+            dispatch(
+                openSnackbar({
+                    open: true,
+                    message: 'Select - Submit Success',
+                    variant: 'alert',
+                    alert: {
+                        color: 'success'
+                    },
+                    close: false
+                })
+            );
+        }
+    });
+
+    return (
+        <div ref={ref} tabIndex={-1}>
+            <MainCard
+                sx={{
+                    position: 'absolute',
+                    width: { xs: 280, lg: 650 },
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+                title="New Budget"
+                content={false}
+                secondary={
+                    <IconButton onClick={handleClose} size="large" aria-label="close modal">
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                }
+            >
+                <form onSubmit={formik.handleSubmit}>
+                    <CardContent>
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid item xs={12}>
+                                <InputLabel>Name</InputLabel>
+                                <TextField
+                                    fullWidth
+                                    placeholder=" "
+                                    name="name"
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.name && Boolean(formik.errors.name)}
+                                    helperText={formik.touched.name && formik.errors.name}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputLabel>Max Amount</InputLabel>
+                                <TextField
+                                    fullWidth
+                                    placeholder=" "
+                                    name="amount"
+                                    value={formik.values.amount}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.amount && Boolean(formik.errors.amount)}
+                                    helperText={formik.touched.amount && formik.errors.amount}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputLabel>Time Span</InputLabel>
+                                <Select
+                                    fullWidth
+                                    labelId="time-select"
+                                    id="time"
+                                    name="time"
+                                    value={formik.values.time}
+                                    onChange={formik.handleChange}
+                                >
+                                    <MenuItem value={10}>Weekly</MenuItem>
+                                    <MenuItem value={20}>Monthly</MenuItem>
+                                    <MenuItem value={30}>Yearly</MenuItem>
+                                </Select>
+                            </Grid>
+                            <Grid item xs={12}></Grid>
+                        </Grid>
+                    </CardContent>
+                    <Divider />
+                    <CardActions>
+                        <Grid container alignItems="center" justifyContent="flex-end" spacing={2}>
+                            <Grid item>
+                                <Button type="submit" variant="contained" color="secondary">
+                                    Submit
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="outlined" onClick={formik.handleReset}>
+                                    Clear
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </CardActions>
+                </form>
+            </MainCard>
+        </div>
+    );
+});
 
 Body.propTypes = {
     modalStyle: PropTypes.object,
