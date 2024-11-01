@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch } from 'store';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 
 // material-ui
 import CardContent from '@mui/material/CardContent';
@@ -18,6 +19,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import * as yup from 'yup';
 import { openSnackbar } from 'store/slices/snackbar';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -49,6 +53,8 @@ const validationSchema = yup.object({
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
+    const [date1, setDate1] = useState(new Date());
+
     const dispatch = useDispatch();
 
     const formik = useFormik({
@@ -131,7 +137,16 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                     <MenuItem value={30}>Yearly</MenuItem>
                                 </Select>
                             </Grid>
-                            <Grid item xs={12}></Grid>
+                            <Grid item xs={12}>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        label="Insert Date 1"
+                                        value={date1}
+                                        onChange={(newValue) => setDate1(newValue)}
+                                        slotProps={{ textField: { fullWidth: true } }}
+                                    />
+                                </LocalizationProvider>
+                            </Grid>
                         </Grid>
                     </CardContent>
                     <Divider />
