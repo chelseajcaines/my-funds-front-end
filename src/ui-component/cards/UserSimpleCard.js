@@ -116,7 +116,6 @@ const UserSimpleCard = ({ avatar }) => {
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
                             <Typography variant="h1">$200</Typography>
-                            <Typography variant="body2">Junior</Typography>
                             <LinearProgressWithLabel color="primary" variant="determinate" value={70} aria-label="junior-skill-progress" />
                         </Grid>
                     </Grid>

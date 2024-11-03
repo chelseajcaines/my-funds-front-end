@@ -18,7 +18,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import * as yup from 'yup';
 import { openSnackbar } from 'store/slices/snackbar';
-
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import InputLabel from 'ui-component/extended/Form/InputLabel';
@@ -126,12 +128,39 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                     value={formik.values.time}
                                     onChange={formik.handleChange}
                                 >
-                                    <MenuItem value={10}>Weekly</MenuItem>
-                                    <MenuItem value={20}>Monthly</MenuItem>
-                                    <MenuItem value={30}>Yearly</MenuItem>
+                                    <MenuItem value={weekly}>Weekly</MenuItem>
+                                    <MenuItem value={monthly}>Monthly</MenuItem>
+                                    <MenuItem value={yearly}>Yearly</MenuItem>
                                 </Select>
                             </Grid>
-                            <Grid item xs={12}></Grid>
+
+                            <Grid item xs={12}>
+                                <InputLabel> Start Date</InputLabel>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        value={formik.values.date}
+                                        onChange={(newValue) => formik.setFieldValue('date', newValue)}
+                                        slotProps={{ textField: { fullWidth: true } }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                fullWidth
+                                                name="date"
+                                                placeholder="Select Date"
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <IconButton position="end">
+                                                            <CalendarTodayIcon />
+                                                        </IconButton>
+                                                    )
+                                                }}
+                                                error={formik.touched.date && Boolean(formik.errors.date)}
+                                                helperText={formik.touched.date && formik.errors.date}
+                                            />
+                                        )}
+                                    />
+                                </LocalizationProvider>
+                            </Grid>
                         </Grid>
                     </CardContent>
                     <Divider />
