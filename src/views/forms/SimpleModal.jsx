@@ -46,8 +46,24 @@ function getModalStyle() {
     };
 }
 
+const TIME_SPANS = {
+    WEEKLY: 'Weekly',
+    MONTHLY: 'Monthly',
+    YEARLY: 'Yearly'
+};
+
 const validationSchema = yup.object({
-    age: yup.number().required('Age selection is required.')
+    name: yup.string().required('Name is required.'),
+    amount: yup
+        .number()
+        .typeError('Amount must be a number.')
+        .positive('Amount must be a positive number.')
+        .required('Max Amount is required.'),
+    time: yup
+        .string()
+        .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
+        .required('Time Span selection is required.'),
+    date: yup.date().typeError('Date is required.').required('Start Date is required.')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
@@ -55,7 +71,10 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
 
     const formik = useFormik({
         initialValues: {
-            age: ''
+            name: '',
+            amount: '',
+            time: TIME_SPANS.WEEKLY, // Set to a default valid value
+            date: null
         },
         validationSchema,
         onSubmit: () => {
@@ -127,15 +146,17 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                     name="time"
                                     value={formik.values.time}
                                     onChange={formik.handleChange}
+                                    error={formik.touched.time && Boolean(formik.errors.time)}
+                                    helperText={formik.touched.time && formik.errors.time}
                                 >
-                                    <MenuItem value={weekly}>Weekly</MenuItem>
-                                    <MenuItem value={monthly}>Monthly</MenuItem>
-                                    <MenuItem value={yearly}>Yearly</MenuItem>
+                                    <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
+                                    <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
+                                    <MenuItem value={TIME_SPANS.YEARLY}>Yearly</MenuItem>
                                 </Select>
                             </Grid>
 
                             <Grid item xs={12}>
-                                <InputLabel> Start Date</InputLabel>
+                                <InputLabel>Start Date</InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
                                         value={formik.values.date}

@@ -1,6 +1,5 @@
 // material-ui
 import Grid from '@mui/material/Grid';
-import { useState } from 'react';
 
 import UserSimpleCard from 'ui-component/cards/UserSimpleCard';
 import EditMenu from './EditMenu';
@@ -20,12 +19,11 @@ const simpleCard = {
 // ===============================|| UI CARDS ||=============================== //
 
 const Budgets = () => {
-    const [title, setTitle] = useState('Budgets');
     return (
         <>
             <MainCard title="Budgets" secondary={<SimpleModal />}>
                 <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} lg={4}>
+                    <Grid item xs={4} lg={4}>
                         <SubCard title="Groceries" secondary={<EditMenu />}>
                             <UserSimpleCard {...simpleCard} />
                         </SubCard>

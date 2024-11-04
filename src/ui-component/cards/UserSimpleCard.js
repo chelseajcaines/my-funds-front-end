@@ -124,7 +124,7 @@ const UserSimpleCard = ({ avatar }) => {
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth display={'flex'} justifyContent={'space-between'}>
                             <Typography variant="h4">Day 4</Typography>
-                            <Typography variant="h4">Oct. 20th - Oct. 26th</Typography>
+                            <Typography variant="h4">Oct. 20th - Oct. 27th</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -142,8 +142,8 @@ const UserSimpleCard = ({ avatar }) => {
 
 UserSimpleCard.propTypes = {
     avatar: PropTypes.string,
-    name: PropTypes.string,
-    status: PropTypes.string
+    budgetAmount: PropTypes.string,
+    budgetStartDate: PropTypes.string
 };
 
 export default UserSimpleCard;
