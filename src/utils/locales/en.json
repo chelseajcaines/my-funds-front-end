@@ -2,6 +2,11 @@
     "dashboard": "Dashboard",
     "default": "Default",
     "analytics": "Analytics",
+    "Overview": "Overview",
+    "finances": "Finances",
+    "Budgets": "Budgets",
+    "Income": "Income",
+    "Expences": "Expences",
 
     "widget": "Widget",
     "statistics": "Statistics",

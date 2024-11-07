@@ -27,18 +27,15 @@ const verifyToken = (serviceToken) => {
         return false;
     }
     const decoded = jwtDecode(serviceToken);
-    /**
-     * Property 'exp' does not exist on type '<T = unknown>(token, options?: JwtDecodeOptions | undefined) => T'.
-     */
     return decoded.exp > Date.now() / 1000;
 };
 
 const setSession = (serviceToken) => {
     if (serviceToken) {
-        localStorage.setItem('serviceToken', serviceToken);
+        // Set the token in the axios headers for each request
         axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
     } else {
-        localStorage.removeItem('serviceToken');
+        // Remove the token from axios headers when logging out
         delete axios.defaults.headers.common.Authorization;
     }
 };
@@ -52,46 +49,25 @@ export const JWTProvider = ({ children }) => {
     useEffect(() => {
         const init = async () => {
             try {
-                const serviceToken = window.localStorage.getItem('serviceToken');
-                if (serviceToken && verifyToken(serviceToken)) {
-                    setSession(serviceToken);
-                    const response = await axios.get('/api/account/me');
-                    const { user } = response.data;
-                    dispatch({
-                        type: LOGIN,
-                        payload: {
-                            isLoggedIn: true,
-                            user
-                        }
-                    });
-                } else {
-                    dispatch({
-                        type: LOGOUT
-                    });
-                }
-            } catch (err) {
-                console.error(err);
+                console.log('Starting session validation...');
+                const response = await axios.get('http://localhost:5001/api/user/validate');
+                console.log('Response from /api/user/validate:', response.data);
+                const { user } = response.data;
                 dispatch({
-                    type: LOGOUT
+                    type: LOGIN,
+                    payload: {
+                        isLoggedIn: true,
+                        user
+                    }
                 });
+            } catch (err) {
+                console.error('Error validating session:', err);
+                dispatch({ type: LOGOUT });
             }
         };
 
         init();
     }, []);
-
-    // const login = async (email, password) => {
-    //     const response = await axios.post('/api/user/login', { email, password });
-    //     const { serviceToken, user } = response.data;
-    //     setSession(serviceToken);
-    //     dispatch({
-    //         type: LOGIN,
-    //         payload: {
-    //             isLoggedIn: true,
-    //             user
-    //         }
-    //     });
-    // };
 
     const login = async (email, password) => {
         try {
@@ -108,34 +84,12 @@ export const JWTProvider = ({ children }) => {
         } catch (err) {
             throw new Error(err.response?.data?.message || 'Login failed');
         }
-        // try {
-        //     const response = await axios.post('/api/user/login', { email, password });
-        //     const { serviceToken, user } = response.data;
-        //     setSession(serviceToken);
-        //     dispatch({
-        //         type: LOGIN,
-        //         payload: {
-        //             isLoggedIn: true,
-        //             user
-        //         }
-        //     });
-        // } catch (error) {
-        //     console.error('Login Error:', error);
-        //     throw new Error(error.response?.data?.message || 'Login failed'); // Ensure the error message is clear
-        // }
     };
 
-    // const register = async (email, password, firstName, lastName) => {
-    //     // todo: this flow need to be recode as it not verified
-    //     const id = chance.bb_pin();
-    //     const response = await axios.post('http://localhost:5001/api/user', {
-    //         // name: firstName + ' ' + lastName,
-    //         email,
-    //         password
-    //     });
-    //     let users = response.data;
-    //     console.log(users);
-    // };
+    const logout = () => {
+        setSession(null);
+        dispatch({ type: LOGOUT });
+    };
 
     const register = async (email, password, firstName, lastName) => {
         const id = chance.bb_pin();
@@ -148,25 +102,16 @@ export const JWTProvider = ({ children }) => {
         console.log(users);
     };
 
-    const logout = () => {
-        setSession(null);
-        dispatch({ type: LOGOUT });
-    };
-
     const resetPassword = async (email) => {
         console.log(email); // Log the email for debugging
 
         try {
-            // Send a POST request to the backend
             const response = await axios.post('http://localhost:5001/api/auth/forgot-password', { email });
-
-            // Handle the response as needed
-            console.log(response.data); // You can log the response to see if it's successful
+            console.log(response.data); // Log the response to see if it's successful
             return response.data; // Return the data to handle it in your component
         } catch (error) {
-            // Handle errors
             console.error('Error sending reset password request:', error);
-            throw new Error('Failed to send reset password request.'); // Throw an error to catch it in the form
+            throw new Error('Failed to send reset password request.');
         }
     };
 

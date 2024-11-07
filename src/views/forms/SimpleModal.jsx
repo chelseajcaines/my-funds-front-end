@@ -122,7 +122,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
                                     error={formik.touched.name && Boolean(formik.errors.name)}
-                                    helperText={formik.touched.name && formik.errors.name}
+                                    helpertext={formik.touched.name && formik.errors.name}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -134,7 +134,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                     value={formik.values.amount}
                                     onChange={formik.handleChange}
                                     error={formik.touched.amount && Boolean(formik.errors.amount)}
-                                    helperText={formik.touched.amount && formik.errors.amount}
+                                    helpertext={formik.touched.amount && formik.errors.amount}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -147,7 +147,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                     value={formik.values.time}
                                     onChange={formik.handleChange}
                                     error={formik.touched.time && Boolean(formik.errors.time)}
-                                    helperText={formik.touched.time && formik.errors.time}
+                                    helpertext={formik.touched.time && formik.errors.time}
                                 >
                                     <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
                                     <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
@@ -176,7 +176,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                                     )
                                                 }}
                                                 error={formik.touched.date && Boolean(formik.errors.date)}
-                                                helperText={formik.touched.date && formik.errors.date}
+                                                helpertext={formik.touched.date && formik.errors.date}
                                             />
                                         )}
                                     />
@@ -227,7 +227,7 @@ export default function SimpleModal() {
 
     return (
         <Grid container justifyContent="flex-end">
-            <Tooltip title={'Add Budget'} placement="left">
+            <Tooltip title="Add Budget" placement="left">
                 <Fab size="small" color="primary" aria-label="new todo add" onClick={handleOpen}>
                     <AddRoundedIcon fontSize="small" onClick={handleOpen} />
                 </Fab>
