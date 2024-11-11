@@ -22,14 +22,6 @@ const initialState = {
     user: null
 };
 
-const verifyToken = (serviceToken) => {
-    if (!serviceToken) {
-        return false;
-    }
-    const decoded = jwtDecode(serviceToken);
-    return decoded.exp > Date.now() / 1000;
-};
-
 const setSession = (serviceToken) => {
     if (serviceToken) {
         // Set the token in the axios headers for each request
@@ -50,7 +42,7 @@ export const JWTProvider = ({ children }) => {
         const init = async () => {
             try {
                 console.log('Starting session validation...');
-                const response = await axios.get('http://localhost:5001/api/user/validate');
+                const response = await axios.get('http://localhost:5001/api/user/validate', { withCredentials: true });
                 console.log('Response from /api/user/validate:', response.data);
                 const { user } = response.data;
                 dispatch({
@@ -71,7 +63,7 @@ export const JWTProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await axios.post('http://localhost:5001/api/user/login', { email, password });
+            const response = await axios.post('http://localhost:5001/api/user/login', { email, password }, { withCredentials: true });
             const { serviceToken, user } = response.data;
             setSession(serviceToken);
             dispatch({
