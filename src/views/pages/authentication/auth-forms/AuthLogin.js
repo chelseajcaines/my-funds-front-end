@@ -87,7 +87,6 @@ const JWTLogin = ({ loginProp, ...others }) => {
                         <OutlinedInput
                             id="outlined-adornment-email-login"
                             type="email"
-                            value={values.email}
                             name="email"
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -105,7 +104,6 @@ const JWTLogin = ({ loginProp, ...others }) => {
                         <OutlinedInput
                             id="outlined-adornment-password-login"
                             type={showPassword ? 'text' : 'password'}
-                            value={values.password}
                             name="password"
                             onBlur={handleBlur}
                             onChange={handleChange}
