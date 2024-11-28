@@ -32,7 +32,7 @@ const SubCard = React.forwardRef(
                         sx={{ p: 2.5 }}
                         title={
                             <Typography variant="h5" display={'flex'}>
-                                {title + ' / '}
+                                <Typography paddingTop={'4px'}>{title + ' / '}</Typography>
                                 <DropMenu />
                             </Typography>
                         }
