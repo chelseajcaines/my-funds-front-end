@@ -3,55 +3,35 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
-import DropMenu from 'ui-component/DropMenu';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+
+// project-import
+import { ThemeMode } from 'config';
+import useConfig from 'hooks/useConfig';
 
 // ==============================|| CUSTOM SUB CARD ||============================== //
 
 const SubCard = React.forwardRef(
     ({ children, content, contentClass, darkTitle, secondary, sx = {}, contentSX = {}, title, ...others }, ref) => {
-        const theme = useTheme();
+        const { mode } = useConfig();
+        const defaultShadow = mode === ThemeMode.DARK ? '0 2px 14px 0 rgb(33 150 243 / 10%)' : '0 2px 14px 0 rgb(32 40 45 / 8%)';
 
         return (
-            <Card
-                ref={ref}
-                sx={{
-                    border: '1px solid',
-                    borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.light + 15 : theme.palette.grey[200],
-                    ':hover': {
-                        boxShadow: theme.palette.mode === 'dark' ? '0 2px 14px 0 rgb(33 150 243 / 10%)' : '0 2px 14px 0 rgb(32 40 45 / 8%)'
-                    },
-                    ...sx
-                }}
-                {...others}
-            >
+            <Card ref={ref} sx={{ border: '1px solid', borderColor: 'divider', ':hover': { boxShadow: defaultShadow }, ...sx }} {...others}>
                 {/* card header and action */}
                 {!darkTitle && title && (
-                    <CardHeader
-                        sx={{ p: 2.5 }}
-                        title={
-                            <Typography variant="h5" display={'flex'}>
-                                <Typography paddingTop={'4px'}>{title + ' / '}</Typography>
-                                <DropMenu />
-                            </Typography>
-                        }
-                        action={secondary}
-                    />
+                    <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h5">{title}</Typography>} action={secondary} />
                 )}
                 {darkTitle && title && (
                     <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h4">{title}</Typography>} action={secondary} />
                 )}
 
                 {/* content & header divider */}
-                {title && (
-                    <Divider
-                        sx={{
-                            opacity: 1,
-                            borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.light + 15 : theme.palette.grey[200]
-                        }}
-                    />
-                )}
+                {title && <Divider />}
 
                 {/* card content */}
                 {content && (

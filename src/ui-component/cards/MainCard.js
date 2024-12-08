@@ -2,8 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+
+// project-import
+import useConfig from 'hooks/useConfig';
+import { ThemeMode } from 'config';
 
 // constant
 const headerSX = {
@@ -30,7 +37,8 @@ const MainCard = React.forwardRef(
         },
         ref
     ) => {
-        const theme = useTheme();
+        const { mode } = useConfig();
+        const defaultShadow = mode === ThemeMode.DARK ? '0 2px 14px 0 rgb(33 150 243 / 10%)' : '0 2px 14px 0 rgb(32 40 45 / 8%)';
 
         return (
             <Card
@@ -38,12 +46,9 @@ const MainCard = React.forwardRef(
                 {...others}
                 sx={{
                     border: border ? '1px solid' : 'none',
-                    borderColor: theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.grey[300] + 98,
+                    borderColor: 'divider',
                     ':hover': {
-                        boxShadow: boxShadow
-                            ? shadow ||
-                              (theme.palette.mode === 'dark' ? '0 2px 14px 0 rgb(33 150 243 / 10%)' : '0 2px 14px 0 rgb(32 40 45 / 8%)')
-                            : 'inherit'
+                        boxShadow: boxShadow ? shadow || defaultShadow : 'inherit'
                     },
                     ...sx
                 }}

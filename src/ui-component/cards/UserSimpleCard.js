@@ -2,74 +2,80 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import { Button, Card, Grid, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { LinearProgress } from '@mui/material';
 
 // project imports
+import { ThemeMode } from 'config';
+
 import { gridSpacing } from 'store/constant';
 
-// assets
-import { Box } from '@mui/material';
-import LinearProgress from '@mui/material/LinearProgress';
-
-const avatarImage = require.context('assets/images/users', true);
-
-function LinearProgressWithLabel({ value, ...others }) {
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center'
-            }}
-        >
-            <Box
-                sx={{
-                    width: '100%',
-                    mr: 1
-                }}
-            >
-                <LinearProgress value={value} {...others} />
-            </Box>
-            <Box
-                sx={{
-                    minWidth: 35
-                }}
-            >
-                <Typography variant="body2" color="textSecondary">{`${Math.round(value)}%`}</Typography>
-            </Box>
-        </Box>
-    );
-}
-
-LinearProgressWithLabel.propTypes = {
-    value: PropTypes.number
-};
+const DetailsWrapper = styled(Button)({
+    padding: 8,
+    background: 'rgba(29, 161, 242, 0.2)',
+    color: '#1DA1F2',
+    '&:hover': {
+        background: '#1DA1F2',
+        color: '#fff'
+    }
+});
 
 // ==============================|| USER SIMPLE CARD ||============================== //
 
-const UserSimpleCard = ({ avatar }) => {
+const UserSimpleCard = () => {
+    const theme = useTheme();
+
     return (
-        <Card>
+        <Card
+            sx={{
+                p: 2,
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
+                border: '1px solid',
+                borderColor: 'divider'
+            }}
+        >
             <Grid container spacing={gridSpacing}>
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
                             <Typography variant="h1">$200</Typography>
-                            <LinearProgressWithLabel color="primary" variant="determinate" value={70} aria-label="junior-skill-progress" />
+                        </Grid>
+                        <Grid item>
+                            <Typography>/ Week</Typography>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container alignItems="center" spacing={1}>
+                        <Grid item sm zeroMinWidth>
+                            <Typography variant="body2">Day 4</Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="body2" align="right">
+                                80%
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <LinearProgress variant="determinate" value={80} color="primary" aria-label='"traffic progress"' />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
-                        <Grid item xs zeroMinWidth display={'flex'} justifyContent={'space-between'}>
-                            <Typography variant="h4">Day 4</Typography>
-                            <Typography variant="h4">Oct. 20th - Oct. 27th</Typography>
+                        <Grid item xs zeroMinWidth>
+                            <Typography variant="h4">Dec. 1 - Dec. 2</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Button variant="contained">View Purchases</Button>
+                            <DetailsWrapper fullWidth>
+                                <Typography fontSize="small">View Details</Typography>
+                            </DetailsWrapper>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -78,10 +84,6 @@ const UserSimpleCard = ({ avatar }) => {
     );
 };
 
-UserSimpleCard.propTypes = {
-    avatar: PropTypes.string,
-    budgetAmount: PropTypes.string,
-    budgetStartDate: PropTypes.string
-};
+UserSimpleCard.propTypes = {};
 
 export default UserSimpleCard;
