@@ -17,7 +17,7 @@ const Income = () => {
             <MainCard title="Income" secondary={<IncomeModal />}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} lg={4}>
-                        <IncomeSubCard title="Groceries" secondary={<IncomeEditMenu />}>
+                        <IncomeSubCard title="Eastern Health" secondary={<IncomeEditMenu />}>
                             <IncomeSimpleCard />
                         </IncomeSubCard>
                     </Grid>

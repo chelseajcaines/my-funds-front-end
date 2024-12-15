@@ -13,7 +13,7 @@ import { ThemeMode } from 'config';
 
 import { gridSpacing } from 'store/constant';
 
-const DetailsWrapper = styled(Button)({
+const DepositsWrapper = styled(Button)({
     padding: 8,
     background: 'rgba(29, 161, 242, 0.2)',
     color: '#1DA1F2',
@@ -41,41 +41,36 @@ const UserSimpleCard = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h1">$200</Typography>
+                            <Typography variant="h1">$1400</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography>/ Week</Typography>
+                            <Typography>bi-weekly</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <Grid container alignItems="center" spacing={1}>
-                        <Grid item sm zeroMinWidth>
-                            <Typography variant="body2">Day 4</Typography>
+                    <Grid container spacing={gridSpacing} justifyContent="space-between">
+                        <Grid item>
+                            <Typography>Start Date: Nov. 25/24</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography variant="body2" align="right">
-                                80%
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <LinearProgress variant="determinate" value={80} color="primary" aria-label='"traffic progress"' />
+                            <Typography>Full Time</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Dec. 1 - Dec. 2</Typography>
+                            <Typography variant="h4">Pay Week: Dec. 1 - Dec. 15</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <DetailsWrapper fullWidth>
-                                <Typography fontSize="small">View Purchases</Typography>
-                            </DetailsWrapper>
+                            <DepositsWrapper fullWidth>
+                                <Typography fontSize="small">View Deposits</Typography>
+                            </DepositsWrapper>
                         </Grid>
                     </Grid>
                 </Grid>
