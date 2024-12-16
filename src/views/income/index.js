@@ -7,7 +7,7 @@ import { gridSpacing } from 'store/constant';
 import IncomeModal from 'views/forms/IncomeModal';
 import IncomeSimpleCard from '../income/IncomeSimpleCard';
 import IncomeSubCard from '../income/IncomeSubCard';
-import IncomeEditMenu from 'views/budgets/EditMenu';
+import IncomeEditMenu from 'views/income/IncomeEditMenu';
 
 // ===============================|| UI CARDS ||=============================== //
 

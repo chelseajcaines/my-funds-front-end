@@ -40,7 +40,7 @@ const EditMenu = () => {
                         horizontal: 'right'
                     }}
                 >
-                    <MenuItem onClick={handleClose}>Edit</MenuItem>
+                    <MenuItem onClick={handleClose}>Add Deposit</MenuItem>
                     <MenuItem onClick={handleClose}>Delete</MenuItem>
                 </Menu>
             </Grid>

@@ -48,8 +48,16 @@ function getModalStyle() {
 
 const TIME_SPANS = {
     WEEKLY: 'Weekly',
+    BIWEEKLY: 'Bi-Weekly',
     MONTHLY: 'Monthly',
     YEARLY: 'Yearly'
+};
+
+const POSITION_TYPES = {
+    FULLTIME: 'Full Time',
+    PARTTIME: 'Part Time',
+    CASUAL: 'Casual',
+    SIDEJOB: 'Side Job'
 };
 
 const validationSchema = yup.object({
@@ -61,9 +69,16 @@ const validationSchema = yup.object({
         .required('Max Amount is required.'),
     time: yup
         .string()
-        .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
+        .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.BIWEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
         .required('Time Span selection is required.'),
-    date: yup.date().typeError('Date is required.').required('Start Date is required.')
+    date: yup.date().typeError('Date is required.').required('Start Date is required.'),
+    position: yup
+        .string()
+        .oneOf(
+            [POSITION_TYPES.FULLTIME, POSITION_TYPES.PARTTIME, POSITION_TYPES.CASUAL, POSITION_TYPES.SIDEJOB],
+            'Invalid selection for Position Type.'
+        )
+        .required('Position Types selection is required.')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
@@ -73,8 +88,9 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
         initialValues: {
             name: '',
             amount: '',
-            time: TIME_SPANS.WEEKLY, // Set to a default valid value
-            date: null
+            time: TIME_SPANS.BIWEEKLY, // Set to a default valid value
+            date: null,
+            position: POSITION_TYPES.FULLTIME
         },
         validationSchema,
         onSubmit: () => {
@@ -102,7 +118,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                     left: '50%',
                     transform: 'translate(-50%, -50%)'
                 }}
-                title="New Budget"
+                title="New Income"
                 content={false}
                 secondary={
                     <IconButton onClick={handleClose} size="large" aria-label="close modal">
@@ -114,7 +130,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                     <CardContent>
                         <Grid container spacing={2} alignItems="center">
                             <Grid item xs={12}>
-                                <InputLabel>Name</InputLabel>
+                                <InputLabel>Company</InputLabel>
                                 <TextField
                                     fullWidth
                                     placeholder=" "
@@ -126,7 +142,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Max Amount</InputLabel>
+                                <InputLabel>Salary</InputLabel>
                                 <TextField
                                     fullWidth
                                     placeholder=" "
@@ -138,7 +154,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Time Span</InputLabel>
+                                <InputLabel>Pay Period</InputLabel>
                                 <Select
                                     fullWidth
                                     labelId="time-select"
@@ -150,6 +166,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                     helpertext={formik.touched.time && formik.errors.time}
                                 >
                                     <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
+                                    <MenuItem value={TIME_SPANS.BIWEEKLY}>Bi-Weekly</MenuItem>
                                     <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
                                     <MenuItem value={TIME_SPANS.YEARLY}>Yearly</MenuItem>
                                 </Select>
@@ -181,6 +198,24 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                         )}
                                     />
                                 </LocalizationProvider>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputLabel>Contract Type</InputLabel>
+                                <Select
+                                    fullWidth
+                                    labelId="contract-select"
+                                    id="position"
+                                    name="position"
+                                    value={formik.values.position}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.position && Boolean(formik.errors.position)}
+                                    helpertext={formik.touched.position && formik.errors.position}
+                                >
+                                    <MenuItem value={POSITION_TYPES.FULLTIME}>Full Time</MenuItem>
+                                    <MenuItem value={POSITION_TYPES.PARTTIME}>Part Time</MenuItem>
+                                    <MenuItem value={POSITION_TYPES.CASUAL}>Casual</MenuItem>
+                                    <MenuItem value={POSITION_TYPES.SIDEJOB}>Side Job</MenuItem>
+                                </Select>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -227,7 +262,7 @@ export default function SimpleModal() {
 
     return (
         <Grid container justifyContent="flex-end">
-            <Tooltip title="Add Budget" placement="left">
+            <Tooltip title="Add Income" placement="left">
                 <Fab size="small" color="primary" aria-label="new todo add" onClick={handleOpen}>
                     <AddRoundedIcon fontSize="small" onClick={handleOpen} />
                 </Fab>
