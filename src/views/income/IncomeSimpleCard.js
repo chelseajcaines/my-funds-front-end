@@ -61,7 +61,7 @@ const UserSimpleCard = () => {
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Pay Week: Dec. 1 - Dec. 15</Typography>
+                            <Typography variant="h4">Pay Period: Dec. 1 - Dec. 15</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
