@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import ExpencesModal from 'views/forms/ExpencesModal';
 
 // project imports
 import Chip from 'ui-component/extended/Chip';
@@ -39,7 +40,7 @@ export default function Expences() {
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
-                <MainCard title="Expences" content={false}>
+                <MainCard title="Expences" content={false} secondary={<ExpencesModal />}>
                     <TableContainer>
                         <Table sx={{ minWidth: 350 }} aria-label="simple table">
                             <TableHead>
