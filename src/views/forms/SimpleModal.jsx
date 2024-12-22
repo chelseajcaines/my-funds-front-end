@@ -66,7 +66,7 @@ const validationSchema = yup.object({
     date: yup.date().typeError('Date is required.').required('Start Date is required.')
 });
 
-const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
+const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
     const dispatch = useDispatch();
 
     const formik = useFormik({
@@ -77,18 +77,8 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
             date: null
         },
         validationSchema,
-        onSubmit: () => {
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: 'Select - Submit Success',
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: false
-                })
-            );
+        onSubmit: (values) => {
+            onSubmit(values.name, values.amount, values.time); // Pass the name to the parent
         }
     });
 
@@ -207,12 +197,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
 
 Body.propTypes = {
     modalStyle: PropTypes.object,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired
 };
 
 // ==============================|| SIMPLE MODAL ||============================== //
 
-export default function SimpleModal() {
+export default function SimpleModal({ onSubmit }) {
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
 
@@ -234,8 +225,19 @@ export default function SimpleModal() {
             </Tooltip>
 
             <Modal open={open} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-                <Body modalStyle={modalStyle} handleClose={handleClose} />
+                <Body
+                    modalStyle={modalStyle}
+                    handleClose={handleClose}
+                    onSubmit={(name, amount, time) => {
+                        onSubmit(name, amount, time); // Pass the name up
+                        handleClose(); // Close the modal
+                    }}
+                />
             </Modal>
         </Grid>
     );
 }
+
+SimpleModal.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};

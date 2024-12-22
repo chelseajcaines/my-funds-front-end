@@ -25,7 +25,7 @@ const DetailsWrapper = styled(Button)({
 
 // ==============================|| USER SIMPLE CARD ||============================== //
 
-const UserSimpleCard = () => {
+const UserSimpleCard = ({ amount, time }) => {
     const theme = useTheme();
 
     return (
@@ -41,14 +41,14 @@ const UserSimpleCard = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h1">$200</Typography>
+                            <Typography variant="h1">${amount}</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography>/ Week</Typography>
+                            <Typography>{time}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item sm zeroMinWidth>
                             <Typography variant="body2">Day 4</Typography>
@@ -62,11 +62,11 @@ const UserSimpleCard = () => {
                             <LinearProgress variant="determinate" value={80} color="primary" aria-label='"traffic progress"' />
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Dec. 1 - Dec. 2</Typography>
+                            <Typography variant="h4">Start Date:</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -84,6 +84,9 @@ const UserSimpleCard = () => {
     );
 };
 
-UserSimpleCard.propTypes = {};
+UserSimpleCard.propTypes = {
+    amount: PropTypes.string,
+    time: PropTypes.string
+};
 
 export default UserSimpleCard;

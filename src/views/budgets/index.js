@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 // material-ui
 import Grid from '@mui/material/Grid';
 
@@ -12,13 +13,24 @@ import EditMenu from './EditMenu';
 // ===============================|| UI CARDS ||=============================== //
 
 const Budgets = () => {
+    const [budgetName, setBudgetName] = useState('');
+    const [budgetAmount, setBudgetAmount] = useState('');
+    const [budgetTime, setBudgetTime] = useState('');
+    // const [budgetDate, setBudgetDate] = useState('');
+
+    const handleBudgetSubmit = (name, amount, time) => {
+        setBudgetName(name);
+        setBudgetAmount(amount);
+        setBudgetTime(time);
+        // setBudgetDate(date);
+    };
     return (
         <>
-            <MainCard title="Budgets" secondary={<SimpleModal />}>
+            <MainCard title="Budgets" secondary={<SimpleModal onSubmit={handleBudgetSubmit} />}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} lg={4}>
-                        <SubCard title="Groceries" secondary={<EditMenu />}>
-                            <UserSimpleCard />
+                        <SubCard title={budgetName} secondary={<EditMenu />}>
+                            <UserSimpleCard amount={budgetAmount} time={budgetTime} />
                         </SubCard>
                     </Grid>
                 </Grid>
