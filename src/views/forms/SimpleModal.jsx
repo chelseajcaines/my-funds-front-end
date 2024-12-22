@@ -66,29 +66,29 @@ const validationSchema = yup.object({
     date: yup.date().typeError('Date is required.').required('Start Date is required.')
 });
 
-const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
+const Body = React.forwardRef(({ modalStyle, handleClose, formData, updateFormData }, ref) => {
     const dispatch = useDispatch();
 
     const formik = useFormik({
-        initialValues: {
-            name: '',
-            amount: '',
-            time: TIME_SPANS.WEEKLY, // Set to a default valid value
-            date: null
-        },
+        initialValues: formData,
         validationSchema,
-        onSubmit: () => {
+        onSubmit: (values) => {
+            console.log('Form Submitted:', values);
+            // Update the parent state
+            updateFormData(values);
+
+            // Show a success message
             dispatch(
                 openSnackbar({
                     open: true,
-                    message: 'Select - Submit Success',
+                    message: 'Budget successfully created!',
                     variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
+                    alert: { color: 'success' },
                     close: false
                 })
             );
+
+            handleClose(); // Close the modal after submission
         }
     });
 
@@ -112,71 +112,56 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
             >
                 <form onSubmit={formik.handleSubmit}>
                     <CardContent>
+                        {/* Form Fields */}
                         <Grid container spacing={2} alignItems="center">
                             <Grid item xs={12}>
                                 <InputLabel>Name</InputLabel>
                                 <TextField
                                     fullWidth
-                                    placeholder=" "
                                     name="name"
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
                                     error={formik.touched.name && Boolean(formik.errors.name)}
-                                    helpertext={formik.touched.name && formik.errors.name}
+                                    helperText={formik.touched.name && formik.errors.name}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <InputLabel>Max Amount</InputLabel>
                                 <TextField
                                     fullWidth
-                                    placeholder=" "
                                     name="amount"
                                     value={formik.values.amount}
                                     onChange={formik.handleChange}
                                     error={formik.touched.amount && Boolean(formik.errors.amount)}
-                                    helpertext={formik.touched.amount && formik.errors.amount}
+                                    helperText={formik.touched.amount && formik.errors.amount}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <InputLabel>Time Span</InputLabel>
                                 <Select
                                     fullWidth
-                                    labelId="time-select"
-                                    id="time"
                                     name="time"
                                     value={formik.values.time}
                                     onChange={formik.handleChange}
                                     error={formik.touched.time && Boolean(formik.errors.time)}
-                                    helpertext={formik.touched.time && formik.errors.time}
                                 >
                                     <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
                                     <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
                                     <MenuItem value={TIME_SPANS.YEARLY}>Yearly</MenuItem>
                                 </Select>
                             </Grid>
-
                             <Grid item xs={12}>
                                 <InputLabel>Start Date</InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
                                         value={formik.values.date}
                                         onChange={(newValue) => formik.setFieldValue('date', newValue)}
-                                        slotProps={{ textField: { fullWidth: true } }}
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
                                                 fullWidth
-                                                name="date"
-                                                placeholder="Select Date"
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <IconButton position="end">
-                                                            <CalendarTodayIcon />
-                                                        </IconButton>
-                                                    )
-                                                }}
                                                 error={formik.touched.date && Boolean(formik.errors.date)}
-                                                helpertext={formik.touched.date && formik.errors.date}
+                                                helperText={formik.touched.date && formik.errors.date}
                                             />
                                         )}
                                     />
@@ -207,23 +192,31 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
 
 Body.propTypes = {
     modalStyle: PropTypes.object,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    formData: PropTypes.object.isRequired,
+    updateFormData: PropTypes.func.isRequired
 };
 
 // ==============================|| SIMPLE MODAL ||============================== //
 
-export default function SimpleModal() {
+export default function SimpleModal({ formData, updateFormData }) {
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
-
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-        setOpen(true);
-    };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    // const [formData, setFormData] = React.useState({
+    //     name: '',
+    //     amount: '',
+    //     time: TIME_SPANS.WEEKLY,
+    //     date: null
+    // });
+
+    // const updateFormData = (field, value) => {
+    //     setFormData((prev) => ({ ...prev, [field]: value }));
+    // };
 
     return (
         <Grid container justifyContent="flex-end">
@@ -234,7 +227,12 @@ export default function SimpleModal() {
             </Tooltip>
 
             <Modal open={open} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-                <Body modalStyle={modalStyle} handleClose={handleClose} />
+                <Body
+                    modalStyle={modalStyle}
+                    handleClose={handleClose}
+                    formData={formData}
+                    updateFormData={(field, value) => updateFormData({ ...formData, [field]: value })}
+                />
             </Modal>
         </Grid>
     );

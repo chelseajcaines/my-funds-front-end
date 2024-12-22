@@ -25,7 +25,7 @@ const DetailsWrapper = styled(Button)({
 
 // ==============================|| USER SIMPLE CARD ||============================== //
 
-const UserSimpleCard = () => {
+const UserSimpleCard = ({ formData }) => {
     const theme = useTheme();
 
     return (
@@ -41,10 +41,10 @@ const UserSimpleCard = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h1">$200</Typography>
+                            <Typography variant="h1">{formData.amount}</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography>/ Week</Typography>
+                            <Typography>/ {formData.time}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>

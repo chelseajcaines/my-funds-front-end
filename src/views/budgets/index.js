@@ -1,5 +1,6 @@
 // material-ui
 import Grid from '@mui/material/Grid';
+import React, { useState } from 'react';
 
 // project imports
 import UserSimpleCard from 'ui-component/cards/UserSimpleCard';
@@ -12,18 +13,27 @@ import EditMenu from './EditMenu';
 // ===============================|| UI CARDS ||=============================== //
 
 const Budgets = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        amount: '',
+        time: 'Weekly',
+        date: null
+    });
+
+    const updateFormData = (updatedData) => {
+        setFormData(updatedData);
+    };
+
     return (
-        <>
-            <MainCard title="Budgets" secondary={<SimpleModal />}>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} lg={4}>
-                        <SubCard title="Groceries" secondary={<EditMenu />}>
-                            <UserSimpleCard />
-                        </SubCard>
-                    </Grid>
+        <MainCard title="Budgets" secondary={<SimpleModal formData={formData} updateFormData={updateFormData} />}>
+            <Grid container spacing={gridSpacing}>
+                <Grid item xs={12} lg={4}>
+                    <SubCard title={formData.name} secondary={<EditMenu />}>
+                        <UserSimpleCard formData={formData} />
+                    </SubCard>
                 </Grid>
-            </MainCard>
-        </>
+            </Grid>
+        </MainCard>
     );
 };
 
