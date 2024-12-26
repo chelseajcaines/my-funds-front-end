@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch } from 'store';
 import { useFormik } from 'formik';
+import { format } from 'date-fns';
 
 // material-ui
 import CardContent from '@mui/material/CardContent';
@@ -78,10 +79,10 @@ const validationSchema = yup.object({
             [POSITION_TYPES.FULLTIME, POSITION_TYPES.PARTTIME, POSITION_TYPES.CASUAL, POSITION_TYPES.SIDEJOB],
             'Invalid selection for Position Type.'
         )
-        .required('Position Types selection is required.')
+        .required('Position Type selection is required.')
 });
 
-const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
+const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
     const dispatch = useDispatch();
 
     const formik = useFormik({
@@ -93,18 +94,8 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
             position: POSITION_TYPES.FULLTIME
         },
         validationSchema,
-        onSubmit: () => {
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: 'Select - Submit Success',
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: false
-                })
-            );
+        onSubmit: (values) => {
+            onSubmit(values.name, values.amount, values.time, values.date, values.position);
         }
     });
 
@@ -176,8 +167,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                 <InputLabel>Start Date</InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
-                                        value={formik.values.date}
-                                        onChange={(newValue) => formik.setFieldValue('date', newValue)}
+                                        // value={formik.values.date}
+                                        value={formik.values.date ? new Date(formik.values.date) : null} // Convert string to Date for the DatePicker
+                                        onChange={(newValue) => {
+                                            const formattedDate = newValue ? format(newValue, 'yyyy-MM-dd') : ''; // Format the Date object to a string
+                                            formik.setFieldValue('date', formattedDate); // Set the formatted string in formik
+                                        }}
+                                        // onChange={(newValue) => formik.setFieldValue('date', newValue)}
                                         slotProps={{ textField: { fullWidth: true } }}
                                         renderInput={(params) => (
                                             <TextField
@@ -242,12 +238,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
 
 Body.propTypes = {
     modalStyle: PropTypes.object,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired
 };
 
 // ==============================|| SIMPLE MODAL ||============================== //
 
-export default function SimpleModal() {
+export default function IncomeModal({ onSubmit }) {
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
 
@@ -269,8 +266,19 @@ export default function SimpleModal() {
             </Tooltip>
 
             <Modal open={open} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-                <Body modalStyle={modalStyle} handleClose={handleClose} />
+                <Body
+                    modalStyle={modalStyle}
+                    handleClose={handleClose}
+                    onSubmit={(name, amount, time, date, position) => {
+                        onSubmit(name, amount, time, date, position);
+                        handleClose();
+                    }}
+                />
             </Modal>
         </Grid>
     );
 }
+
+IncomeModal.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};

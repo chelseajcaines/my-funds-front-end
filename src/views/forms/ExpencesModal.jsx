@@ -46,39 +46,25 @@ function getModalStyle() {
     };
 }
 
-const TIME_SPANS = {
-    WEEKLY: 'Weekly',
-    BIWEEKLY: 'Bi-Weekly',
-    MONTHLY: 'Monthly',
-    YEARLY: 'Yearly'
-};
-
-const POSITION_TYPES = {
-    FULLTIME: 'Full Time',
-    PARTTIME: 'Part Time',
-    CASUAL: 'Casual',
-    SIDEJOB: 'Side Job'
+const PAYMENT_TYPE = {
+    CREDIT: 'Credit',
+    DEBIT: 'Debit',
+    CASH: 'Cash'
 };
 
 const validationSchema = yup.object({
-    name: yup.string().required('Name is required.'),
+    category: yup.string().required('Category is required.'),
+    location: yup.string().required('Location is required.'),
     amount: yup
         .number()
         .typeError('Amount must be a number.')
         .positive('Amount must be a positive number.')
-        .required('Max Amount is required.'),
-    time: yup
+        .required('Purchase Amount is required.'),
+    date: yup.date().typeError('Date is required.').required('Date is required.'),
+    payment: yup
         .string()
-        .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.BIWEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
-        .required('Time Span selection is required.'),
-    date: yup.date().typeError('Date is required.').required('Start Date is required.'),
-    position: yup
-        .string()
-        .oneOf(
-            [POSITION_TYPES.FULLTIME, POSITION_TYPES.PARTTIME, POSITION_TYPES.CASUAL, POSITION_TYPES.SIDEJOB],
-            'Invalid selection for Position Type.'
-        )
-        .required('Position Types selection is required.')
+        .oneOf([PAYMENT_TYPE.CREDIT, PAYMENT_TYPE.DEBIT, PAYMENT_TYPE.CASH], 'Invalid selection for Payment Type.')
+        .required('Payment Type selection is required.')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
@@ -86,11 +72,11 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
+            category: '',
+            location: '',
             amount: '',
-            time: TIME_SPANS.BIWEEKLY, // Set to a default valid value
             date: null,
-            position: POSITION_TYPES.FULLTIME
+            payment: PAYMENT_TYPE.DEBIT
         },
         validationSchema,
         onSubmit: () => {
@@ -118,7 +104,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                     left: '50%',
                     transform: 'translate(-50%, -50%)'
                 }}
-                title="New Income"
+                title="New Expense"
                 content={false}
                 secondary={
                     <IconButton onClick={handleClose} size="large" aria-label="close modal">
@@ -130,19 +116,31 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                     <CardContent>
                         <Grid container spacing={2} alignItems="center">
                             <Grid item xs={12}>
-                                <InputLabel>Company</InputLabel>
+                                <InputLabel>Category</InputLabel>
+                                <TextField
+                                    fullWidth
+                                    placeholder=" "
+                                    name="Category"
+                                    value={formik.values.category}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.category && Boolean(formik.errors.category)}
+                                    helpertext={formik.touched.category && formik.errors.category}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputLabel>Location</InputLabel>
                                 <TextField
                                     fullWidth
                                     placeholder=" "
                                     name="name"
-                                    value={formik.values.name}
+                                    value={formik.values.location}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.name && Boolean(formik.errors.name)}
-                                    helpertext={formik.touched.name && formik.errors.name}
+                                    error={formik.touched.location && Boolean(formik.errors.location)}
+                                    helpertext={formik.touched.location && formik.errors.location}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Salary</InputLabel>
+                                <InputLabel>Amount</InputLabel>
                                 <TextField
                                     fullWidth
                                     placeholder=" "
@@ -154,26 +152,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Pay Period</InputLabel>
-                                <Select
-                                    fullWidth
-                                    labelId="time-select"
-                                    id="time"
-                                    name="time"
-                                    value={formik.values.time}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.time && Boolean(formik.errors.time)}
-                                    helpertext={formik.touched.time && formik.errors.time}
-                                >
-                                    <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.BIWEEKLY}>Bi-Weekly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.YEARLY}>Yearly</MenuItem>
-                                </Select>
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <InputLabel>Start Date</InputLabel>
+                                <InputLabel>Date</InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
                                         value={formik.values.date}
@@ -200,21 +179,20 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                 </LocalizationProvider>
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Contract Type</InputLabel>
+                                <InputLabel>Payment Type</InputLabel>
                                 <Select
                                     fullWidth
-                                    labelId="contract-select"
-                                    id="position"
-                                    name="position"
-                                    value={formik.values.position}
+                                    labelId="payment-type"
+                                    id="payment"
+                                    name="payment"
+                                    value={formik.values.payment}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.position && Boolean(formik.errors.position)}
-                                    helpertext={formik.touched.position && formik.errors.position}
+                                    error={formik.touched.payment && Boolean(formik.errors.payment)}
+                                    helpertext={formik.touched.payment && formik.errors.payment}
                                 >
-                                    <MenuItem value={POSITION_TYPES.FULLTIME}>Full Time</MenuItem>
-                                    <MenuItem value={POSITION_TYPES.PARTTIME}>Part Time</MenuItem>
-                                    <MenuItem value={POSITION_TYPES.CASUAL}>Casual</MenuItem>
-                                    <MenuItem value={POSITION_TYPES.SIDEJOB}>Side Job</MenuItem>
+                                    <MenuItem value={PAYMENT_TYPE.CREDIT}>Credit</MenuItem>
+                                    <MenuItem value={PAYMENT_TYPE.DEBIT}>Debit</MenuItem>
+                                    <MenuItem value={PAYMENT_TYPE.CASH}>Cash</MenuItem>
                                 </Select>
                             </Grid>
                         </Grid>

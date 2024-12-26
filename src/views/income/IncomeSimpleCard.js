@@ -25,7 +25,7 @@ const DepositsWrapper = styled(Button)({
 
 // ==============================|| USER SIMPLE CARD ||============================== //
 
-const UserSimpleCard = () => {
+const UserSimpleCard = ({ amount, time, date, position }) => {
     const theme = useTheme();
 
     return (
@@ -41,27 +41,27 @@ const UserSimpleCard = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h1">$1400</Typography>
+                            <Typography variant="h1">${amount}</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography>bi-weekly</Typography>
+                            <Typography>{time}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing} justifyContent="space-between">
                         <Grid item>
-                            <Typography>Start Date: Nov. 25/24</Typography>
+                            <Typography>Start Date: {date}</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography>Full Time</Typography>
+                            <Typography>{position}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Pay Period: Dec. 1 - Dec. 15</Typography>
+                            <Typography variant="h4">Current Pay Period: Dec. 1 - Dec. 15</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -79,6 +79,11 @@ const UserSimpleCard = () => {
     );
 };
 
-UserSimpleCard.propTypes = {};
+UserSimpleCard.propTypes = {
+    amount: PropTypes.string,
+    time: PropTypes.string,
+    date: PropTypes.string,
+    position: PropTypes.string
+};
 
 export default UserSimpleCard;
