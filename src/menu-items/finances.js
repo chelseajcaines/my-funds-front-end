@@ -37,10 +37,10 @@ const finances = {
             breadcrumbs: false
         },
         {
-            id: 'expences',
-            title: <FormattedMessage id="Expences" />,
+            id: 'expenses',
+            title: <FormattedMessage id="Expenses" />,
             type: 'item',
-            url: '/expences',
+            url: '/expenses',
             icon: LocalMallOutlinedIcon,
             breadcrumbs: false
         }

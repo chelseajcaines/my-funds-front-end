@@ -67,7 +67,7 @@ const validationSchema = yup.object({
         .required('Payment Type selection is required.')
 });
 
-const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
+const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
     const dispatch = useDispatch();
 
     const formik = useFormik({
@@ -79,18 +79,8 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
             payment: PAYMENT_TYPE.DEBIT
         },
         validationSchema,
-        onSubmit: () => {
-            dispatch(
-                openSnackbar({
-                    open: true,
-                    message: 'Select - Submit Success',
-                    variant: 'alert',
-                    alert: {
-                        color: 'success'
-                    },
-                    close: false
-                })
-            );
+        onSubmit: (values) => {
+            onSubmit(values.category, values.location, values.amount, values.date, values.payment);
         }
     });
 
@@ -120,7 +110,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                 <TextField
                                     fullWidth
                                     placeholder=" "
-                                    name="Category"
+                                    name="category"
                                     value={formik.values.category}
                                     onChange={formik.handleChange}
                                     error={formik.touched.category && Boolean(formik.errors.category)}
@@ -132,7 +122,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
                                 <TextField
                                     fullWidth
                                     placeholder=" "
-                                    name="name"
+                                    name="location"
                                     value={formik.values.location}
                                     onChange={formik.handleChange}
                                     error={formik.touched.location && Boolean(formik.errors.location)}
@@ -220,12 +210,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose }, ref) => {
 
 Body.propTypes = {
     modalStyle: PropTypes.object,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    onSubmit: PropTypes.func.isRequired
 };
 
 // ==============================|| SIMPLE MODAL ||============================== //
 
-export default function SimpleModal() {
+export default function ExpensesModal({ onSubmit }) {
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
 
@@ -247,8 +238,19 @@ export default function SimpleModal() {
             </Tooltip>
 
             <Modal open={open} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-                <Body modalStyle={modalStyle} handleClose={handleClose} />
+                <Body
+                    modalStyle={modalStyle}
+                    handleClose={handleClose}
+                    onSubmit={(category, location, amount, date, payment) => {
+                        onSubmit(category, location, amount, date, payment);
+                        handleClose();
+                    }}
+                />
             </Modal>
         </Grid>
     );
 }
+
+ExpensesModal.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+};

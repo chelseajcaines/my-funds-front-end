@@ -9,7 +9,7 @@ import Loadable from 'ui-component/Loadable';
 const Overview = Loadable(lazy(() => import('views/overview')));
 const Budgets = Loadable(lazy(() => import('views/budgets')));
 const Income = Loadable(lazy(() => import('views/income')));
-const Expences = Loadable(lazy(() => import('views/expences')));
+const Expenses = Loadable(lazy(() => import('views/expenses')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -38,8 +38,8 @@ const MainRoutes = {
             element: <Income />
         },
         {
-            path: '/expences',
-            element: <Expences />
+            path: '/expenses',
+            element: <Expenses />
         }
     ]
 };
