@@ -33,22 +33,13 @@ function createData(category, location, amount, date, payment, statuscolor) {
 export default function Expenses() {
     const [expenseCard, setExpenseCard] = useState(false);
 
-    const [expenseCategory, setExpenseCategory] = useState('');
-    const [expenseLocation, setExpenseLocation] = useState('');
-    const [expenseAmount, setExpenseAmount] = useState('');
-    const [expenseDate, setExpenseDate] = useState('');
-    const [expensePayment, setExpensePayment] = useState('');
+    const [rows, setRows] = useState([]);
 
     const handleExpenseSubmit = (category, location, amount, date, payment) => {
-        setExpenseCategory(category);
-        setExpenseLocation(location);
-        setExpenseAmount(amount);
-        setExpenseDate(date);
-        setExpensePayment(payment);
+        const newRow = createData(category, location, amount, date, payment, 'warning');
+        setRows((prevRows) => [...prevRows, newRow]);
         setExpenseCard(true);
     };
-
-    const rows = [createData(expenseCategory, expenseLocation, expenseAmount, expenseDate, expensePayment, 'warning')];
 
     return (
         <Grid container spacing={gridSpacing}>
@@ -72,12 +63,12 @@ export default function Expenses() {
                                 <TableBody>
                                     {rows.map((row, index) => (
                                         <TableRow hover key={index}>
-                                            <TableCell sx={{ pl: 3 }}>{row.expenseCategory}</TableCell>
-                                            <TableCell align="center">{row.expenseLocation}</TableCell>
-                                            <TableCell align="center">{row.expenseAmount}</TableCell>
-                                            <TableCell align="center">{row.expenseDate}</TableCell>
+                                            <TableCell sx={{ pl: 3 }}>{row.category}</TableCell>
+                                            <TableCell align="center">{row.location}</TableCell>
+                                            <TableCell align="center">{row.amount}</TableCell>
+                                            <TableCell align="center">{row.date}</TableCell>
                                             <TableCell align="center">
-                                                <Chip chipcolor={row.statuscolor} label={row.expensePayment} size="small" />
+                                                <Chip chipcolor={row.statuscolor} label={row.payment} size="small" />
                                             </TableCell>
                                             <TableCell align="center" sx={{ pr: 3 }}>
                                                 <Stack direction="row" justifyContent="center" alignItems="center">

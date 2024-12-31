@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch } from 'store';
 import { useFormik } from 'formik';
+import { format } from 'date-fns';
 
 // material-ui
 import CardContent from '@mui/material/CardContent';
@@ -145,8 +146,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 <InputLabel>Date</InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
-                                        value={formik.values.date}
-                                        onChange={(newValue) => formik.setFieldValue('date', newValue)}
+                                        // value={formik.values.date}
+                                        value={formik.values.date ? new Date(formik.values.date) : null} // Convert string to Date for the DatePicker
+                                        onChange={(newValue) => {
+                                            const formattedDate = newValue ? format(newValue, 'yyyy-MM-dd') : ''; // Format the Date object to a string
+                                            formik.setFieldValue('date', formattedDate); // Set the formatted string in formik
+                                        }}
+                                        // onChange={(newValue) => formik.setFieldValue('date', newValue)}
                                         slotProps={{ textField: { fullWidth: true } }}
                                         renderInput={(params) => (
                                             <TextField
