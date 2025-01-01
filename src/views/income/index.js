@@ -13,34 +13,24 @@ import IncomeEditMenu from 'views/income/IncomeEditMenu';
 // ===============================|| UI CARDS ||=============================== //
 
 const Income = () => {
-    const [incomeCard, setIncomeCard] = useState(false);
-
-    const [incomeName, setIncomeName] = useState('');
-    const [incomeAmount, setIncomeAmount] = useState('');
-    const [incomeTime, setIncomeTime] = useState('');
-    const [incomeDate, setIncomeDate] = useState('');
-    const [incomePosition, setIncomePosition] = useState('');
+    const [incomes, setIncomes] = useState([]);
 
     const handleIncomeSubmit = (name, amount, time, date, position) => {
-        setIncomeName(name);
-        setIncomeAmount(amount);
-        setIncomeTime(time);
-        setIncomeDate(date);
-        setIncomePosition(position);
-        setIncomeCard(true);
+        const newIncome = { name, amount, time, date, position };
+        setIncomes((prevIncomes) => [...prevIncomes, newIncome]);
     };
 
     return (
         <>
             <MainCard title="Income" secondary={<IncomeModal onSubmit={handleIncomeSubmit} />}>
                 <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} lg={4}>
-                        {incomeCard && (
-                            <IncomeSubCard title={incomeName} secondary={<IncomeEditMenu />}>
-                                <IncomeSimpleCard amount={incomeAmount} time={incomeTime} date={incomeDate} position={incomePosition} />
+                    {incomes.map((income, index) => (
+                        <Grid item xs={12} sm={6} lg={4} key={index}>
+                            <IncomeSubCard title={income.name} secondary={<IncomeEditMenu />}>
+                                <IncomeSimpleCard amount={income.amount} time={income.time} date={income.date} position={income.position} />
                             </IncomeSubCard>
-                        )}
-                    </Grid>
+                        </Grid>
+                    ))}
                 </Grid>
             </MainCard>
         </>
