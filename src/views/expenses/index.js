@@ -36,7 +36,22 @@ export default function Expenses() {
     const [rows, setRows] = useState([]);
 
     const handleExpenseSubmit = (category, location, amount, date, payment) => {
-        const newRow = createData(category, location, amount, date, payment, 'warning');
+        let statuscolor;
+        switch (payment.toLowerCase()) {
+            case 'debit':
+                statuscolor = 'primary'; // Replace 'primary' with your desired color
+                break;
+            case 'credit':
+                statuscolor = 'secondary'; // Replace 'secondary' with your desired color
+                break;
+            case 'cash':
+                statuscolor = 'success'; // Replace 'success' with your desired color
+                break;
+            default:
+                statuscolor = 'warning'; // Default color for undefined payment types
+        }
+
+        const newRow = createData(category, location, amount, date, payment, statuscolor);
         setRows((prevRows) => [...prevRows, newRow]);
         setExpenseCard(true);
     };
