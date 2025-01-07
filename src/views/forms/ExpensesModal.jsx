@@ -53,6 +53,10 @@ const PAYMENT_TYPE = {
     CASH: 'Cash'
 };
 
+const DEDUCT_BUDGET = {
+    NONE: 'None'
+};
+
 const validationSchema = yup.object({
     category: yup.string().required('Category is required.'),
     location: yup.string().required('Location is required.'),
@@ -65,7 +69,8 @@ const validationSchema = yup.object({
     payment: yup
         .string()
         .oneOf([PAYMENT_TYPE.CREDIT, PAYMENT_TYPE.DEBIT, PAYMENT_TYPE.CASH], 'Invalid selection for Payment Type.')
-        .required('Payment Type selection is required.')
+        .required('Payment Type selection is required.'),
+    deduct: yup.string().oneOf([DEDUCT_BUDGET.NONE], 'Invalid selection for Deduct from Budget.').required('Please choose a budget or None')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
@@ -77,11 +82,12 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
             location: '',
             amount: '',
             date: null,
-            payment: PAYMENT_TYPE.DEBIT
+            payment: PAYMENT_TYPE.DEBIT,
+            deduct: DEDUCT_BUDGET.NONE
         },
         validationSchema,
         onSubmit: (values) => {
-            onSubmit(values.category, values.location, values.amount, values.date, values.payment);
+            onSubmit(values.category, values.location, values.amount, values.date, values.payment, values.deduct);
         }
     });
 
@@ -191,6 +197,21 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     <MenuItem value={PAYMENT_TYPE.CASH}>Cash</MenuItem>
                                 </Select>
                             </Grid>
+                            <Grid item xs={12}>
+                                <InputLabel>Deduct from Budget</InputLabel>
+                                <Select
+                                    fullWidth
+                                    labelId="deduct-budget"
+                                    id="deduct"
+                                    name="deduct"
+                                    value={formik.values.deduct}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.deduct && Boolean(formik.errors.deduct)}
+                                    helpertext={formik.touched.deduct && formik.errors.deduct}
+                                >
+                                    <MenuItem value={DEDUCT_BUDGET.NONE}>None</MenuItem>
+                                </Select>
+                            </Grid>
                         </Grid>
                     </CardContent>
                     <Divider />
@@ -247,8 +268,8 @@ export default function ExpensesModal({ onSubmit }) {
                 <Body
                     modalStyle={modalStyle}
                     handleClose={handleClose}
-                    onSubmit={(category, location, amount, date, payment) => {
-                        onSubmit(category, location, amount, date, payment);
+                    onSubmit={(category, location, amount, date, payment, deduct) => {
+                        onSubmit(category, location, amount, date, payment, deduct);
                         handleClose();
                     }}
                 />

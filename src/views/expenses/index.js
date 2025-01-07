@@ -24,8 +24,8 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import MainCard from 'ui-component/cards/MainCard';
 
 // table data
-function createData(category, location, amount, date, payment, statuscolor) {
-    return { category, location, amount, date, payment, statuscolor };
+function createData(category, location, amount, date, payment, deduction, statuscolor) {
+    return { category, location, amount, date, payment, deduction, statuscolor };
 }
 
 // =========================|| LATEST ORDER CARD ||========================= //
@@ -35,7 +35,7 @@ export default function Expenses() {
 
     const [rows, setRows] = useState([]);
 
-    const handleExpenseSubmit = (category, location, amount, date, payment) => {
+    const handleExpenseSubmit = (category, location, amount, date, payment, deduction) => {
         let statuscolor;
         switch (payment.toLowerCase()) {
             case 'debit':
@@ -51,7 +51,7 @@ export default function Expenses() {
                 statuscolor = 'warning'; // Default color for undefined payment types
         }
 
-        const newRow = createData(category, location, amount, date, payment, statuscolor);
+        const newRow = createData(category, location, amount, date, payment, deduction, statuscolor);
         setRows((prevRows) => [...prevRows, newRow]);
         setExpenseCard(true);
     };
@@ -69,6 +69,7 @@ export default function Expenses() {
                                     <TableCell align="center">Amount</TableCell>
                                     <TableCell align="center">Date</TableCell>
                                     <TableCell align="center">Payment Type</TableCell>
+                                    <TableCell align="center">Budget Deduction</TableCell>
                                     <TableCell align="center" sx={{ pr: 3 }}>
                                         Action
                                     </TableCell>
@@ -85,6 +86,7 @@ export default function Expenses() {
                                             <TableCell align="center">
                                                 <Chip chipcolor={row.statuscolor} label={row.payment} size="small" />
                                             </TableCell>
+                                            <TableCell align="center">{row.deduction}</TableCell>
                                             <TableCell align="center" sx={{ pr: 3 }}>
                                                 <Stack direction="row" justifyContent="center" alignItems="center">
                                                     <IconButton color="primary" size="large" aria-label='"edit"'>
