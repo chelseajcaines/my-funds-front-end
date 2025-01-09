@@ -43,6 +43,14 @@ const finances = {
             url: '/expenses',
             icon: LocalMallOutlinedIcon,
             breadcrumbs: false
+        },
+        {
+            id: 'savings',
+            title: <FormattedMessage id="Savings" />,
+            type: 'item',
+            url: '/savings',
+            icon: LocalMallOutlinedIcon,
+            breadcrumbs: false
         }
     ]
 };
