@@ -25,7 +25,7 @@ const DepositsWrapper = styled(Button)({
 
 // ==============================|| USER SIMPLE CARD ||============================== //
 
-const IncomeSimpleCard = ({ amount, time, date, position }) => {
+const SavingsSimpleCard = ({ amount, time, date, position }) => {
     const theme = useTheme();
 
     return (
@@ -79,11 +79,11 @@ const IncomeSimpleCard = ({ amount, time, date, position }) => {
     );
 };
 
-IncomeSimpleCard.propTypes = {
+SavingsSimpleCard.propTypes = {
     amount: PropTypes.string,
     time: PropTypes.string,
     date: PropTypes.string,
     position: PropTypes.string
 };
 
-export default IncomeSimpleCard;
+export default SavingsSimpleCard;

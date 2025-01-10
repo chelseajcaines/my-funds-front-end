@@ -15,7 +15,7 @@ import useConfig from 'hooks/useConfig';
 
 // ==============================|| CUSTOM SUB CARD ||============================== //
 
-const IncomeSubCard = React.forwardRef(
+const SavingsSubCard = React.forwardRef(
     ({ children, content, contentClass, darkTitle, secondary, sx = {}, contentSX = {}, title, ...others }, ref) => {
         const { mode } = useConfig();
         const defaultShadow = mode === ThemeMode.DARK ? '0 2px 14px 0 rgb(33 150 243 / 10%)' : '0 2px 14px 0 rgb(32 40 45 / 8%)';
@@ -45,7 +45,7 @@ const IncomeSubCard = React.forwardRef(
     }
 );
 
-IncomeSubCard.propTypes = {
+SavingsSubCard.propTypes = {
     children: PropTypes.node,
     content: PropTypes.bool,
     contentClass: PropTypes.string,
@@ -56,8 +56,8 @@ IncomeSubCard.propTypes = {
     title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object])
 };
 
-IncomeSubCard.defaultProps = {
+SavingsSubCard.defaultProps = {
     content: true
 };
 
-export default IncomeSubCard;
+export default SavingsSubCard;
