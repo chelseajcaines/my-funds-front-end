@@ -13,7 +13,7 @@ import { ThemeMode } from 'config';
 
 import { gridSpacing } from 'store/constant';
 
-const DepositsWrapper = styled(Button)({
+const SavingsWrapper = styled(Button)({
     padding: 8,
     background: 'rgba(29, 161, 242, 0.2)',
     color: '#1DA1F2',
@@ -25,7 +25,7 @@ const DepositsWrapper = styled(Button)({
 
 // ==============================|| USER SIMPLE CARD ||============================== //
 
-const SavingsSimpleCard = ({ amount, time, date, position }) => {
+const SavingsSimpleCard = ({ amount, deposit_amount, time, date }) => {
     const theme = useTheme();
 
     return (
@@ -54,23 +54,16 @@ const SavingsSimpleCard = ({ amount, time, date, position }) => {
                             <Typography>Start Date: {date}</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography>{position}</Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12} alignItems="center">
-                    <Grid container spacing={gridSpacing}>
-                        <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Current Pay Period: Dec. 1 - Dec. 15</Typography>
+                            <Typography>${deposit_amount}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <DepositsWrapper fullWidth>
+                            <SavingsWrapper fullWidth>
                                 <Typography fontSize="small">View Deposits</Typography>
-                            </DepositsWrapper>
+                            </SavingsWrapper>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -81,9 +74,9 @@ const SavingsSimpleCard = ({ amount, time, date, position }) => {
 
 SavingsSimpleCard.propTypes = {
     amount: PropTypes.string,
+    deposit_amount: PropTypes.string,
     time: PropTypes.string,
-    date: PropTypes.string,
-    position: PropTypes.string
+    date: PropTypes.string
 };
 
 export default SavingsSimpleCard;

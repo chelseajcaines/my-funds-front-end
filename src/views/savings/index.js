@@ -15,8 +15,8 @@ import SavingsEditMenu from 'views/savings/SavingsEditMenu';
 const Savings = () => {
     const [savings, setSavings] = useState([]);
 
-    const handleSavingsSubmit = (name, amount, time, date, position) => {
-        const newSavings = { name, amount, time, date, position };
+    const handleSavingsSubmit = (name, amount, deposit_amount, time, date) => {
+        const newSavings = { name, amount, deposit_amount, time, date };
         setSavings((prevSavings) => [...prevSavings, newSavings]);
     };
 
@@ -29,9 +29,9 @@ const Savings = () => {
                             <SavingsSubCard title={saving.name} secondary={<SavingsEditMenu />}>
                                 <SavingsSimpleCard
                                     amount={saving.amount}
+                                    deposit_amount={saving.deposit_amount}
                                     time={saving.time}
                                     date={saving.date}
-                                    position={saving.position}
                                 />
                             </SavingsSubCard>
                         </Grid>

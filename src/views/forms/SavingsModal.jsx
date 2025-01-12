@@ -47,18 +47,12 @@ function getModalStyle() {
     };
 }
 
-const TIME_SPANS = {
+const DEPOSIT_FREQUENCY = {
+    DAILY: 'Daily',
     WEEKLY: 'Weekly',
     BIWEEKLY: 'Bi-Weekly',
     MONTHLY: 'Monthly',
     YEARLY: 'Yearly'
-};
-
-const POSITION_TYPES = {
-    FULLTIME: 'Full Time',
-    PARTTIME: 'Part Time',
-    CASUAL: 'Casual',
-    SIDEJOB: 'Side Job'
 };
 
 const validationSchema = yup.object({
@@ -68,18 +62,25 @@ const validationSchema = yup.object({
         .typeError('Amount must be a number.')
         .positive('Amount must be a positive number.')
         .required('Max Amount is required.'),
+    deposit_amount: yup
+        .number()
+        .typeError('Amount must be a number.')
+        .positive('Amount must be a positive number.')
+        .required('Deposit Amount is required.'),
     time: yup
         .string()
-        .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.BIWEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
-        .required('Time Span selection is required.'),
-    date: yup.date().typeError('Date is required.').required('Start Date is required.'),
-    position: yup
-        .string()
         .oneOf(
-            [POSITION_TYPES.FULLTIME, POSITION_TYPES.PARTTIME, POSITION_TYPES.CASUAL, POSITION_TYPES.SIDEJOB],
-            'Invalid selection for Position Type.'
+            [
+                DEPOSIT_FREQUENCY.DAILY,
+                DEPOSIT_FREQUENCY.WEEKLY,
+                DEPOSIT_FREQUENCY.BIWEEKLY,
+                DEPOSIT_FREQUENCY.MONTHLY,
+                DEPOSIT_FREQUENCY.YEARLY
+            ],
+            'Invalid selection for Time Span.'
         )
-        .required('Position Type selection is required.')
+        .required('Time Span selection is required.'),
+    date: yup.date().typeError('Date is required.').required('Start Date is required.')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
@@ -89,13 +90,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
         initialValues: {
             name: '',
             amount: '',
-            time: TIME_SPANS.BIWEEKLY, // Set to a default valid value
-            date: null,
-            position: POSITION_TYPES.FULLTIME
+            deposit_amount: '',
+            time: DEPOSIT_FREQUENCY.DAILY, // Set to a default valid value
+            date: null
         },
         validationSchema,
         onSubmit: (values) => {
-            onSubmit(values.name, values.amount, values.time, values.date, values.position);
+            onSubmit(values.name, values.amount, values.deposit_amount, values.time, values.date);
         }
     });
 
@@ -109,7 +110,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                     left: '50%',
                     transform: 'translate(-50%, -50%)'
                 }}
-                title="New Income"
+                title="New Savings Goal"
                 content={false}
                 secondary={
                     <IconButton onClick={handleClose} size="large" aria-label="close modal">
@@ -121,7 +122,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                     <CardContent>
                         <Grid container spacing={2} alignItems="center">
                             <Grid item xs={12}>
-                                <InputLabel>Company</InputLabel>
+                                <InputLabel>Title</InputLabel>
                                 <TextField
                                     fullWidth
                                     placeholder=" "
@@ -133,7 +134,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Salary</InputLabel>
+                                <InputLabel>Goal Amount</InputLabel>
                                 <TextField
                                     fullWidth
                                     placeholder=" "
@@ -145,7 +146,19 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Pay Period</InputLabel>
+                                <InputLabel>Ideal Deposit Amount</InputLabel>
+                                <TextField
+                                    fullWidth
+                                    placeholder=" "
+                                    name="deposit_amount"
+                                    value={formik.values.deposit_amount}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.deposit_amount && Boolean(formik.errors.deposit_amount)}
+                                    helpertext={formik.touched.deposit_amount && formik.errors.deposit_amount}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <InputLabel>Deposit Frequency</InputLabel>
                                 <Select
                                     fullWidth
                                     labelId="time-select"
@@ -156,10 +169,11 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     error={formik.touched.time && Boolean(formik.errors.time)}
                                     helpertext={formik.touched.time && formik.errors.time}
                                 >
-                                    <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.BIWEEKLY}>Bi-Weekly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.YEARLY}>Yearly</MenuItem>
+                                    <MenuItem value={DEPOSIT_FREQUENCY.DAILY}>Daily</MenuItem>
+                                    <MenuItem value={DEPOSIT_FREQUENCY.WEEKLY}>Weekly</MenuItem>
+                                    <MenuItem value={DEPOSIT_FREQUENCY.BIWEEKLY}>Bi-Weekly</MenuItem>
+                                    <MenuItem value={DEPOSIT_FREQUENCY.MONTHLY}>Monthly</MenuItem>
+                                    <MenuItem value={DEPOSIT_FREQUENCY.YEARLY}>Yearly</MenuItem>
                                 </Select>
                             </Grid>
 
@@ -194,24 +208,6 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                         )}
                                     />
                                 </LocalizationProvider>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <InputLabel>Contract Type</InputLabel>
-                                <Select
-                                    fullWidth
-                                    labelId="contract-select"
-                                    id="position"
-                                    name="position"
-                                    value={formik.values.position}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.position && Boolean(formik.errors.position)}
-                                    helpertext={formik.touched.position && formik.errors.position}
-                                >
-                                    <MenuItem value={POSITION_TYPES.FULLTIME}>Full Time</MenuItem>
-                                    <MenuItem value={POSITION_TYPES.PARTTIME}>Part Time</MenuItem>
-                                    <MenuItem value={POSITION_TYPES.CASUAL}>Casual</MenuItem>
-                                    <MenuItem value={POSITION_TYPES.SIDEJOB}>Side Job</MenuItem>
-                                </Select>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -269,8 +265,8 @@ export default function SavingsModal({ onSubmit }) {
                 <Body
                     modalStyle={modalStyle}
                     handleClose={handleClose}
-                    onSubmit={(name, amount, time, date, position) => {
-                        onSubmit(name, amount, time, date, position);
+                    onSubmit={(name, amount, deposit_amount, time, date) => {
+                        onSubmit(name, amount, deposit_amount, time, date);
                         handleClose();
                     }}
                 />
