@@ -33,7 +33,7 @@
         "prop-types": "^15.8.1",
         "react": "^18.2.0",
         "react-18-image-lightbox": "^5.1.4",
-        "react-apexcharts": "^1.4.1",
+        "react-apexcharts": "^1.7.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.45.4",
         "react-intl": "^6.4.4",

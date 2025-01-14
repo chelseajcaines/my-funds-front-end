@@ -9,6 +9,7 @@ import SavingsModal from 'views/forms/SavingsModal';
 import SavingsSimpleCard from '../savings/SavingsSimpleCard';
 import SavingsSubCard from '../savings/SavingsSubCard';
 import SavingsEditMenu from 'views/savings/SavingsEditMenu';
+import ApexRedialBarChart from './ApexRedialChart';
 
 // ===============================|| UI CARDS ||=============================== //
 
@@ -36,6 +37,11 @@ const Savings = () => {
                             </SavingsSubCard>
                         </Grid>
                     ))}
+                </Grid>
+                <Grid container spacing={gridSpacing}>
+                    <Grid item xs={12} sm={6} lg={4}>
+                        <ApexRedialBarChart />
+                    </Grid>
                 </Grid>
             </MainCard>
         </>
