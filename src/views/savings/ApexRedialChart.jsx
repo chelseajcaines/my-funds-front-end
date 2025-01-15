@@ -23,41 +23,41 @@ const redialBarChartOptions = {
             endAngle: 360,
             hollow: {
                 margin: 5,
-                size: '50%',
+                size: '30%',
                 background: 'transparent',
                 image: undefined
             },
             dataLabels: {
                 name: {
-                    show: false
+                    show: true
                 },
                 value: {
-                    show: false
+                    show: true
                 }
             }
         }
     },
-    labels: ['Vimeo'],
-    legend: {
-        show: true,
-        floating: true,
-        fontSize: '16px',
-        position: 'left',
-        offsetX: 0,
-        offsetY: 15,
-        labels: {
-            useSeriesColors: true
-        },
-        markers: {
-            size: 0
-        },
-        formatter(seriesName, opts) {
-            return `${seriesName}:  ${opts.w.globals.series[opts.seriesIndex]}`;
-        },
-        itemMargin: {
-            vertical: 3
-        }
-    },
+    labels: ['hello'],
+    // legend: {
+    //     show: true,
+    //     floating: true,
+    //     fontSize: '16px',
+    //     position: 'left',
+    //     offsetX: 0,
+    //     offsetY: 15,
+    //     labels: {
+    //         useSeriesColors: true
+    //     },
+    //     markers: {
+    //         size: 0
+    //     },
+    //     formatter(seriesName, opts) {
+    //         return `${seriesName}:  ${opts.w.globals.series[opts.seriesIndex]}`;
+    //     },
+    //     itemMargin: {
+    //         vertical: 3
+    //     }
+    // },
     responsive: [
         {
             breakpoint: 450,
