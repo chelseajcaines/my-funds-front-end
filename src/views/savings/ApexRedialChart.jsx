@@ -1,134 +1,42 @@
-import React, { useState } from 'react';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-
-// third-party
+import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-// project import
-import useConfig from 'hooks/useConfig';
-
-// chart options
-const redialBarChartOptions = {
-    chart: {
-        type: 'radialBar',
-        width: 450,
-        height: 450
-    },
-    plotOptions: {
-        radialBar: {
-            offsetY: 0,
-            startAngle: 0,
-            endAngle: 360,
-            hollow: {
-                margin: 5,
-                size: '30%',
-                background: 'transparent',
-                image: undefined
-            },
-            dataLabels: {
-                name: {
-                    show: true
+const ApexRedialChart = () => {
+    const options = {
+        chart: {
+            type: 'radialBar'
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '70%' // Adjust the hollow size as needed
                 },
-                value: {
-                    show: true
-                }
-            }
-        }
-    },
-    labels: ['hello'],
-    // legend: {
-    //     show: true,
-    //     floating: true,
-    //     fontSize: '16px',
-    //     position: 'left',
-    //     offsetX: 0,
-    //     offsetY: 15,
-    //     labels: {
-    //         useSeriesColors: true
-    //     },
-    //     markers: {
-    //         size: 0
-    //     },
-    //     formatter(seriesName, opts) {
-    //         return `${seriesName}:  ${opts.w.globals.series[opts.seriesIndex]}`;
-    //     },
-    //     itemMargin: {
-    //         vertical: 3
-    //     }
-    // },
-    responsive: [
-        {
-            breakpoint: 450,
-            chart: {
-                width: 280,
-                height: 280
-            },
-            options: {
-                legend: {
-                    show: false,
-                    position: 'bottom'
-                }
-            }
-        }
-    ]
-};
-
-// ==============================|| RADIAL BAR CHART ||============================== //
-
-const ApexRedialBarChart = () => {
-    const theme = useTheme();
-    const { mode } = useConfig();
-
-    const { primary } = theme.palette.text;
-    const darkLight = theme.palette.dark.light;
-    const divider = theme.palette.divider;
-
-    const [series] = useState([76]);
-    const [options, setOptions] = useState(redialBarChartOptions);
-
-    const secondary = theme.palette.secondary.main;
-    const primaryMain = theme.palette.primary.main;
-    const successDark = theme.palette.success.dark;
-    const error = theme.palette.error.main;
-
-    React.useEffect(() => {
-        setOptions((prevState) => ({
-            ...prevState,
-            colors: [secondary, primaryMain, successDark, error],
-            xaxis: {
-                labels: {
-                    style: {
-                        colors: [primary, primary, primary, primary, primary, primary, primary]
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [primary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: divider
-            },
-            plotOptions: {
-                radialBar: {
-                    track: {
-                        background: divider
+                dataLabels: {
+                    name: {
+                        show: true, // Show the name label
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        offsetY: -10 // Adjust the position of the name label
+                    },
+                    value: {
+                        show: true, // Show only the value
+                        fontSize: '20px',
+                        fontWeight: 600
                     }
                 }
             }
-        }));
-    }, [mode, primary, darkLight, divider, secondary, primaryMain, successDark, error]);
+        },
+        colors: ['#2196F3'], // Set a single color for the bar
+        labels: ['New House'] // Set the name displayed in the chart
+    };
+
+    const series = [70]; // Value for the radial bar (percentage)
 
     return (
         <div id="chart">
-            <ReactApexChart options={options} series={series} type="radialBar" />
+            <ReactApexChart options={options} series={series} type="radialBar" height={250} />
         </div>
     );
 };
 
-export default ApexRedialBarChart;
+export default ApexRedialChart;
