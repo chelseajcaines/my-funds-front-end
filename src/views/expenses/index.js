@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
-import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
