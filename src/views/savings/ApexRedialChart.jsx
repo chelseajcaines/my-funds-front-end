@@ -14,20 +14,21 @@ const ApexRedialChart = () => {
                 dataLabels: {
                     name: {
                         show: true, // Show the name label
-                        fontSize: '16px',
+                        fontSize: '30px',
                         fontWeight: 600,
-                        offsetY: -10 // Adjust the position of the name label
-                    },
-                    value: {
-                        show: true, // Show only the value
-                        fontSize: '20px',
-                        fontWeight: 600
+                        offsetY: -10, // Adjust the position of the name label
+                        color: '#000'
                     }
+                    // value: {
+                    //     show: true, // Show only the value
+                    //     fontSize: '20px',
+                    //     fontWeight: 600
+                    // }
                 }
             }
         },
         colors: ['#2196F3'], // Set a single color for the bar
-        labels: ['New House'] // Set the name displayed in the chart
+        labels: ['$12,120'] // Set the name displayed in the chart
     };
 
     const series = [70]; // Value for the radial bar (percentage)
