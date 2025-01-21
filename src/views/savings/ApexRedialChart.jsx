@@ -13,22 +13,25 @@ const ApexRedialChart = () => {
                 },
                 dataLabels: {
                     name: {
-                        show: true, // Show the name label
-                        fontSize: '30px',
-                        fontWeight: 600,
-                        offsetY: -10, // Adjust the position of the name label
+                        show: true, // Show the word "goal"
+                        fontSize: '20px',
+                        fontWeight: 400,
+                        offsetY: 30, // Position the word below the value
                         color: '#000'
+                    },
+                    value: {
+                        show: true, // Show the amount
+                        fontSize: '40px',
+                        fontWeight: 600,
+                        offsetY: -10, // Position the amount
+                        color: '#000',
+                        formatter: () => '$12,120' // Customize the displayed value
                     }
-                    // value: {
-                    //     show: true, // Show only the value
-                    //     fontSize: '20px',
-                    //     fontWeight: 600
-                    // }
                 }
             }
         },
         colors: ['#2196F3'], // Set a single color for the bar
-        labels: ['$12,120'] // Set the name displayed in the chart
+        labels: ['/ 50000'] // This label applies to the "name"
     };
 
     const series = [70]; // Value for the radial bar (percentage)
