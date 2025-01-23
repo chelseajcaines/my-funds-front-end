@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography'; // Import Typography from Mat
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
 
 const SavingsWrapper = styled(Button)({
     padding: 8,
@@ -16,7 +17,7 @@ const SavingsWrapper = styled(Button)({
     }
 });
 
-const ApexRadialChart = () => {
+const ApexRadialChart = ({ amount, deposit_amount, time, date }) => {
     const options = {
         chart: {
             type: 'radialBar'
@@ -40,13 +41,13 @@ const ApexRadialChart = () => {
                         fontWeight: 600,
                         offsetY: -10, // Position the amount
                         color: '#000',
-                        formatter: () => '$12,120' // Customize the displayed value
+                        formatter: () => '$12,000'
                     }
                 }
             }
         },
         colors: ['#2196F3'], // Set a single color for the bar
-        labels: ['/ 50000'] // This label applies to the "name"
+        labels: ['/' + ' ' + '$' + amount] // This label applies to the "name"
     };
 
     const series = [70]; // Value for the radial bar (percentage)
@@ -56,10 +57,10 @@ const ApexRadialChart = () => {
             <ReactApexChart options={options} series={series} type="radialBar" height={250} />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography variant="h6" style={{ color: '#333' }}>
-                    Start Date:
+                    Start Date: {date}
                 </Typography>
                 <Typography variant="h6" style={{ color: '#333' }}>
-                    Ideal Deposit Amount:
+                    Ideal Deposit Amount: ${deposit_amount} {time}
                 </Typography>
             </div>
             <Grid item xs={12}>
@@ -73,6 +74,13 @@ const ApexRadialChart = () => {
             </Grid>
         </div>
     );
+};
+
+ApexRadialChart.propTypes = {
+    amount: PropTypes.string,
+    deposit_amount: PropTypes.string,
+    time: PropTypes.string,
+    date: PropTypes.string
 };
 
 export default ApexRadialChart;

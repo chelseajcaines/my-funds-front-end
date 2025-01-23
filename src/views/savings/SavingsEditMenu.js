@@ -2,14 +2,32 @@ import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { IconButton, Menu, MenuItem } from '@mui/material';
+import AddDepositModal from 'views/forms/AddDepositModal'; // Adjust the import as necessary
 
-const EditMenu = () => {
+const SavingsEditMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleAddDeposit = () => {
+        setIsModalOpen(true); // Open the modal
+        handleClose(); // Close the menu
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false); // Close the modal
+    };
+
+    const handleSubmit = (name, amount, time, date) => {
+        // Handle form submission here
+        console.log('Submitted values:', { name, amount, time, date });
     };
 
     return (
@@ -41,12 +59,15 @@ const EditMenu = () => {
                     }}
                 >
                     <MenuItem onClick={handleClose}>Edit</MenuItem>
-                    <MenuItem onClick={handleClose}>Add Deposit</MenuItem>
+                    <MenuItem onClick={handleAddDeposit}>Add Deposit</MenuItem>
                     <MenuItem onClick={handleClose}>Delete</MenuItem>
                 </Menu>
             </Grid>
+
+            {/* Add Deposit Modal */}
+            <AddDepositModal open={isModalOpen} onClose={handleModalClose} onSubmit={handleSubmit} />
         </>
     );
 };
 
-export default EditMenu;
+export default SavingsEditMenu;

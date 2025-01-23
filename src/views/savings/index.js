@@ -25,11 +25,18 @@ const Savings = () => {
         <>
             <MainCard title="Savings" secondary={<SavingsModal onSubmit={handleSavingsSubmit} />}>
                 <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} sm={6} lg={4}>
-                        <SavingsSubCard title="New House" secondary={<SavingsEditMenu />}>
-                            <ApexRedialBarChart />
-                        </SavingsSubCard>
-                    </Grid>
+                    {savings.map((saving, index) => (
+                        <Grid item xs={12} sm={6} lg={4} key={index}>
+                            <SavingsSubCard title={saving.name} secondary={<SavingsEditMenu />}>
+                                <ApexRedialBarChart
+                                    amount={saving.amount}
+                                    deposit_amount={saving.deposit_amount}
+                                    time={saving.time}
+                                    date={saving.date}
+                                />
+                            </SavingsSubCard>
+                        </Grid>
+                    ))}
                 </Grid>
             </MainCard>
         </>
