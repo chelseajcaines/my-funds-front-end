@@ -3,8 +3,9 @@ import Grid from '@mui/material/Grid';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import AddDepositModal from 'views/forms/AddDepositModal'; // Adjust the import as necessary
+import PropTypes from 'prop-types';
 
-const SavingsEditMenu = () => {
+const SavingsEditMenu = ({ onAddDeposit }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,10 +26,14 @@ const SavingsEditMenu = () => {
         setIsModalOpen(false); // Close the modal
     };
 
-    const handleSubmit = (name, amount, time, date) => {
-        // Handle form submission here
-        console.log('Submitted values:', { name, amount, time, date });
+    const handleSubmit = (current_amount) => {
+        if (onAddDeposit) {
+            onAddDeposit(current_amount);
+        }
+        handleModalClose();
     };
+
+    console.log('Modal open state:', isModalOpen);
 
     return (
         <>
@@ -68,6 +73,10 @@ const SavingsEditMenu = () => {
             <AddDepositModal open={isModalOpen} onClose={handleModalClose} onSubmit={handleSubmit} />
         </>
     );
+};
+
+SavingsEditMenu.propTypes = {
+    onAddDeposit: PropTypes.func.isRequired
 };
 
 export default SavingsEditMenu;

@@ -42,7 +42,7 @@ const validationSchema = yup.object({
         .number()
         .typeError('Amount must be a number.')
         .positive('Amount must be a positive number.')
-        .required('Max Amount is required.')
+        .required('Amount is required.')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
@@ -128,7 +128,9 @@ const AddDepositModal = ({ open, onClose, onSubmit }) => {
             <Body
                 handleClose={onClose}
                 onSubmit={(current_amount) => {
+                    console.log('Submitting deposit:', current_amount);
                     onSubmit(current_amount);
+                    console.log('Closing modal');
                     onClose();
                 }}
             />

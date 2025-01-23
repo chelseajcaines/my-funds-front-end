@@ -17,7 +17,7 @@ const SavingsWrapper = styled(Button)({
     }
 });
 
-const ApexRadialChart = ({ amount, deposit_amount, time, date }) => {
+const ApexRadialChart = ({ amount, deposit_amount, time, date, current_amount }) => {
     const options = {
         chart: {
             type: 'radialBar'
@@ -41,7 +41,7 @@ const ApexRadialChart = ({ amount, deposit_amount, time, date }) => {
                         fontWeight: 600,
                         offsetY: -10, // Position the amount
                         color: '#000',
-                        formatter: () => '$12,000'
+                        formatter: () => `$${current_amount}`
                     }
                 }
             }
@@ -80,7 +80,8 @@ ApexRadialChart.propTypes = {
     amount: PropTypes.string,
     deposit_amount: PropTypes.string,
     time: PropTypes.string,
-    date: PropTypes.string
+    date: PropTypes.string,
+    current_amount: PropTypes.string
 };
 
 export default ApexRadialChart;
