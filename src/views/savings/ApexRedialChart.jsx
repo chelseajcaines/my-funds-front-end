@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import Typography from '@mui/material/Typography'; // Import Typography from Material-UI (if using Material-UI)
 import Grid from '@mui/material/Grid';
@@ -18,6 +18,15 @@ const SavingsWrapper = styled(Button)({
 });
 
 const ApexRadialChart = ({ amount, deposit_amount, time, date, current_amount }) => {
+    const [cumulativeAmount, setCumulativeAmount] = useState(0); // Track the cumulative amount
+
+    // Update the cumulative amount when current_amount changes
+    useEffect(() => {
+        if (current_amount) {
+            setCumulativeAmount((prevAmount) => prevAmount + parseFloat(current_amount));
+        }
+    }, [current_amount]);
+
     const options = {
         chart: {
             type: 'radialBar'
@@ -41,7 +50,7 @@ const ApexRadialChart = ({ amount, deposit_amount, time, date, current_amount })
                         fontWeight: 600,
                         offsetY: -10, // Position the amount
                         color: '#000',
-                        formatter: () => `$${current_amount}`
+                        formatter: () => `$${cumulativeAmount.toFixed(2)}`
                     }
                 }
             }
