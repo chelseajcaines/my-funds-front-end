@@ -21,7 +21,7 @@ const Savings = () => {
         setSavings((prevSavings) => [...prevSavings, newSavings]);
     };
 
-    const handleAddDeposit = (index, current_amount) => {
+    const handleAddDeposit = (index, deposit) => {
         setSavings((prevSavings) => {
             if (!Array.isArray(prevSavings)) {
                 console.error('prevSavings is not an array', prevSavings);
@@ -29,7 +29,7 @@ const Savings = () => {
             }
 
             const updatedSavings = [...prevSavings];
-            updatedSavings[index].current_amount = current_amount; // Update the current_amount
+            updatedSavings[index].current_amount += parseFloat(deposit); // Add deposit to current_amount
             return updatedSavings;
         });
     };
@@ -42,7 +42,7 @@ const Savings = () => {
                         <Grid item xs={12} sm={6} lg={4} key={index}>
                             <SavingsSubCard
                                 title={saving.name}
-                                secondary={<SavingsEditMenu onAddDeposit={(current_amount) => handleAddDeposit(index, current_amount)} />}
+                                secondary={<SavingsEditMenu onAddDeposit={(deposit) => handleAddDeposit(index, deposit)} />}
                             >
                                 <ApexRedialBarChart
                                     amount={saving.amount}
