@@ -18,6 +18,9 @@ const SavingsWrapper = styled(Button)({
 });
 
 const ApexRadialChart = ({ amount, deposit_amount, time, date, current_amount }) => {
+    const percentage = amount > 0 ? (current_amount / amount) * 100 : 0;
+    const series = [percentage]; // Dynamic value for the radial bar
+
     const options = {
         chart: {
             type: 'radialBar'
@@ -50,8 +53,6 @@ const ApexRadialChart = ({ amount, deposit_amount, time, date, current_amount })
         labels: ['/' + ' ' + '$' + amount] // This label applies to the "name"
     };
 
-    const series = [70]; // Value for the radial bar (percentage)
-
     return (
         <div id="chart">
             <ReactApexChart options={options} series={series} type="radialBar" height={250} />
@@ -77,11 +78,11 @@ const ApexRadialChart = ({ amount, deposit_amount, time, date, current_amount })
 };
 
 ApexRadialChart.propTypes = {
-    amount: PropTypes.string,
-    deposit_amount: PropTypes.string,
-    time: PropTypes.string,
-    date: PropTypes.string,
-    current_amount: PropTypes.string
+    amount: PropTypes.number.isRequired, // Changed to number for better type safety
+    deposit_amount: PropTypes.number.isRequired,
+    time: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    current_amount: PropTypes.number.isRequired // Changed to number
 };
 
 export default ApexRadialChart;
