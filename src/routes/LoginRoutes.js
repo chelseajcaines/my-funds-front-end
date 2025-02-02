@@ -15,7 +15,7 @@ const ResetPassword = Loadable(lazy(() => import('views/pages/authentication/Res
 // ==============================|| AUTH ROUTING ||============================== //
 
 const LoginRoutes = {
-    path: '/',
+    path: '/', // This is the root path
     element: (
         <NavMotion>
             <GuestGuard>
@@ -25,23 +25,23 @@ const LoginRoutes = {
     ),
     children: [
         {
-            path: '/',
+            index: true, // This will load the login page when visiting '/'
             element: <AuthLogin />
         },
         {
-            path: '/login',
+            path: 'login', // /login (relative to /)
             element: <AuthLogin />
         },
         {
-            path: '/register',
+            path: 'register', // /register
             element: <AuthRegister />
         },
         {
-            path: '/forgot',
+            path: 'forgot', // /forgot
             element: <AuthForgotPassword />
         },
         {
-            path: '/reset-password', // Add the reset password route here
+            path: 'reset-password', // /reset-password (relative to /)
             element: <ResetPassword />
         }
     ]

@@ -42,6 +42,16 @@ export const JWTProvider = ({ children }) => {
         const init = async () => {
             try {
                 console.log('Starting session validation...');
+
+                // Get the current pathname without using useLocation()
+                const currentPath = window.location.pathname;
+
+                // Skip session validation if on the reset password page
+                if (currentPath.startsWith('/reset-password')) {
+                    console.log('Skipping session validation for reset password page');
+                    return;
+                }
+
                 const response = await axios.get('http://localhost:5001/api/user/validate', { withCredentials: true });
                 console.log('Response from /api/user/validate:', response.data);
                 const { user } = response.data;

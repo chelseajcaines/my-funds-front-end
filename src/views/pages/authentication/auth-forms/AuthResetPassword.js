@@ -62,6 +62,7 @@ const AuthResetPassword = ({ ...others }) => {
     // Extract token from URL query params
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get('token'); // Make sure to handle if token is null
+    console.log('Reset Password Token:', token); // Add this line to check the token
 
     return (
         <Formik
@@ -78,21 +79,22 @@ const AuthResetPassword = ({ ...others }) => {
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
-                    // Send a POST request to reset the password
+                    console.log('Submitting reset password request...', values);
+
                     const response = await axios.post('http://localhost:5001/api/auth/reset-password', {
-                        token: token, // Include the reset token
-                        newPassword: values.password // Send the new password
+                        token: token, // Ensure this token exists
+                        newPassword: values.password
                     });
 
-                    // Handle successful response
+                    console.log('Reset password response:', response.data); // Log response
+
                     if (response.data) {
                         setStatus({ success: true });
                         setSubmitting(false);
-                        // Navigate to login page or show a success message
                         navigate('/login', { replace: true });
                     }
                 } catch (err) {
-                    console.error(err);
+                    console.error('Reset password error:', err);
                     if (scriptedRef.current) {
                         setStatus({ success: false });
                         setErrors({ submit: err.response?.data?.message || 'Reset password failed' });

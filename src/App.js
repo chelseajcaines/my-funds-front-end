@@ -1,7 +1,7 @@
-import { RouterProvider } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 // routing
-import router from 'routes';
+// import router from 'routes';
 
 // project imports
 import Locales from 'ui-component/Locales';
@@ -13,7 +13,8 @@ import Notistack from 'ui-component/third-party/Notistack';
 import ThemeCustomization from 'themes';
 
 // auth provider
-import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
+import AuthWrapper from './contexts/AuthWrapper'; // Import the new wrapper
+// import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
 // import { FirebaseProvider as AuthProvider } from 'contexts/FirebaseContext';
 // import { AWSCognitoProvider as AuthProvider } from 'contexts/AWSCognitoContext';
 // import { Auth0Provider as AuthProvider } from 'contexts/Auth0Context';
@@ -22,20 +23,16 @@ import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
 
 const App = () => (
     <ThemeCustomization>
-        {/* <RTLLayout> */}
         <Locales>
             <NavigationScroll>
-                <AuthProvider>
-                    <>
-                        <Notistack>
-                            <RouterProvider router={router} />
-                            <Snackbar />
-                        </Notistack>
-                    </>
-                </AuthProvider>
+                <Notistack>
+                    <BrowserRouter>
+                        <AuthWrapper />
+                    </BrowserRouter>
+                    <Snackbar />
+                </Notistack>
             </NavigationScroll>
         </Locales>
-        {/* </RTLLayout> */}
     </ThemeCustomization>
 );
 

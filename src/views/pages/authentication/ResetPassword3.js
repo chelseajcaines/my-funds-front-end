@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // material-ui
 import Grid from '@mui/material/Grid';
@@ -19,6 +20,9 @@ import AuthFooter from 'ui-component/cards/AuthFooter';
 
 const ResetPassword = () => {
     const downMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
+    useEffect(() => {
+        console.log('Reset Password page loaded'); // Debugging
+    }, []);
 
     return (
         <AuthWrapper1>
