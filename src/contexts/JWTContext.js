@@ -78,7 +78,12 @@ export const JWTProvider = ({ children }) => {
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
+        try {
+            await axios.post('http://localhost:5001/api/user/logout', {}, { withCredentials: true });
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
         setSession(null);
         dispatch({ type: LOGOUT });
     };
