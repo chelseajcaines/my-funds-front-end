@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // material-ui
 import Grid from '@mui/material/Grid';
+import axios from 'axios';
 
 // project imports
 import UserSimpleCard from 'ui-component/cards/UserSimpleCard';
@@ -15,10 +16,26 @@ import EditMenu from './EditMenu';
 const Budgets = () => {
     const [budgets, setBudgets] = useState([]);
 
-    const handleBudgetSubmit = (name, amount, time, date) => {
-        const newBudget = { name, amount, time, date };
-        setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
+    const handleBudgetSubmit = async (name, amount, time, date) => {
+        try {
+            const response = await axios.post('http://localhost:5001/api/budget', {
+                name,
+                amount,
+                time,
+                date
+            });
+
+            console.log('Budget created:', response.data);
+            setBudgets((prevBudgets) => [...prevBudgets, response.data.data]); // Assuming response follows `rest.success`
+        } catch (error) {
+            console.error('Error creating budget:', error.response?.data || error.message);
+        }
     };
+
+    // const handleBudgetSubmit = (name, amount, time, date) => {
+    //     const newBudget = { name, amount, time, date };
+    //     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
+    // };
 
     return (
         <>

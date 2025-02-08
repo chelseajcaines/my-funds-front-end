@@ -153,8 +153,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                         // value={formik.values.date}
                                         value={formik.values.date ? new Date(formik.values.date) : null} // Convert string to Date for the DatePicker
                                         onChange={(newValue) => {
-                                            const formattedDate = newValue ? format(newValue, 'yyyy-MM-dd') : ''; // Format the Date object to a string
-                                            formik.setFieldValue('date', formattedDate); // Set the formatted string in formik
+                                            if (newValue) {
+                                                // Format for DB storage (YYYY-MM-DD)
+                                                const formattedDate = format(newValue, 'yyyy-MM-dd');
+                                                formik.setFieldValue('date', formattedDate);
+                                            } else {
+                                                formik.setFieldValue('date', '');
+                                            }
                                         }}
                                         // onChange={(newValue) => formik.setFieldValue('date', newValue)}
                                         slotProps={{ textField: { fullWidth: true } }}

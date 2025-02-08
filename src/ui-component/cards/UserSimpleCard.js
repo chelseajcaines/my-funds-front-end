@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { format } from 'date-fns';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -66,7 +67,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Start Date: {date}</Typography>
+                            <Typography variant="h4">Start Date: {date ? format(new Date(date), 'MMM. dd/yy') : ''}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
