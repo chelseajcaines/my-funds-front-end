@@ -11,6 +11,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ExpensesModal from 'views/forms/ExpensesModal';
 import { useState } from 'react';
+import axios from 'axios';
+import { format } from 'date-fns';
 
 // project imports
 import Chip from 'ui-component/extended/Chip';
@@ -34,7 +36,24 @@ export default function Expenses() {
 
     const [rows, setRows] = useState([]);
 
-    const handleExpenseSubmit = (category, location, amount, date, payment, deduction) => {
+    // const handleIncomeSubmit = async (name, amount, time, date, position) => {
+    //     try {
+    //         const response = await axios.post('http://localhost:5001/api/income', {
+    //             name,
+    //             amount,
+    //             time,
+    //             date,
+    //             position
+    //         });
+
+    //         console.log('Income created:', response.data);
+    //         setIncomes((prevIncomes) => [...prevIncomes, response.data.data]); // Assuming response follows `rest.success`
+    //     } catch (error) {
+    //         console.error('Error creating income:', error.response?.data || error.message);
+    //     }
+    // };
+
+    const handleExpenseSubmit = async (category, location, amount, date, payment, deduction) => {
         let statuscolor;
         switch (payment.toLowerCase()) {
             case 'debit':
@@ -50,9 +69,39 @@ export default function Expenses() {
                 statuscolor = 'warning'; // Default color for undefined payment types
         }
 
-        const newRow = createData(category, location, amount, date, payment, deduction, statuscolor);
-        setRows((prevRows) => [...prevRows, newRow]);
-        setExpenseCard(true);
+        const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
+
+        try {
+            const response = await axios.post('http://localhost:5001/api/expense', {
+                category,
+                location,
+                amount,
+                date: formattedDate,
+                payment,
+                deduction
+            });
+
+            console.log('Expense created:', response.data);
+
+            // Update the UI with the new expense
+            const newRow = createData(
+                response.data.data.category,
+                response.data.data.location,
+                response.data.data.amount,
+                response.data.data.date,
+                response.data.data.payment,
+                response.data.data.deduction
+            );
+
+            setRows((prevRows) => [...prevRows, newRow]);
+            setExpenseCard(true);
+        } catch (error) {
+            console.error('Error creating expense:', error.response?.data || error.message);
+        }
+
+        // const newRow = createData(category, location, amount, date, payment, deduction, statuscolor);
+        // setRows((prevRows) => [...prevRows, newRow]);
+        // setExpenseCard(true);
     };
 
     return (
@@ -81,7 +130,7 @@ export default function Expenses() {
                                             <TableCell sx={{ pl: 3 }}>{row.category}</TableCell>
                                             <TableCell align="center">{row.location}</TableCell>
                                             <TableCell align="center">{row.amount}</TableCell>
-                                            <TableCell align="center">{row.date}</TableCell>
+                                            <TableCell align="center">{row.date ? format(new Date(row.date), 'MMM. dd/yy') : ''}</TableCell>
                                             <TableCell align="center">
                                                 <Chip chipcolor={row.statuscolor} label={row.payment} size="small" />
                                             </TableCell>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // material-ui
 import Grid from '@mui/material/Grid';
+import axios from 'axios';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -15,10 +16,27 @@ import IncomeEditMenu from 'views/income/IncomeEditMenu';
 const Income = () => {
     const [incomes, setIncomes] = useState([]);
 
-    const handleIncomeSubmit = (name, amount, time, date, position) => {
-        const newIncome = { name, amount, time, date, position };
-        setIncomes((prevIncomes) => [...prevIncomes, newIncome]);
+    const handleIncomeSubmit = async (name, amount, time, date, position) => {
+        try {
+            const response = await axios.post('http://localhost:5001/api/income', {
+                name,
+                amount,
+                time,
+                date,
+                position
+            });
+
+            console.log('Income created:', response.data);
+            setIncomes((prevIncomes) => [...prevIncomes, response.data.data]); // Assuming response follows `rest.success`
+        } catch (error) {
+            console.error('Error creating income:', error.response?.data || error.message);
+        }
     };
+
+    // const handleIncomeSubmit = (name, amount, time, date, position) => {
+    //     const newIncome = { name, amount, time, date, position };
+    //     setIncomes((prevIncomes) => [...prevIncomes, newIncome]);
+    // };
 
     return (
         <>

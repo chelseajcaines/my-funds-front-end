@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { format } from 'date-fns';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -50,7 +51,7 @@ const IncomeSimpleCard = ({ amount, time, date, position }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing} justifyContent="space-between">
                         <Grid item>
-                            <Typography>Start Date: {date}</Typography>
+                            <Typography>Start Date: {date ? format(new Date(date), 'MMM. dd/yy') : ''}</Typography>
                         </Grid>
                         <Grid item>
                             <Typography>{position}</Typography>
