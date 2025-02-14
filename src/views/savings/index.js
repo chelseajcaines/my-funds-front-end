@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 // material-ui
 import Grid from '@mui/material/Grid';
+import axios from 'axios';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -16,9 +17,26 @@ import ApexRedialBarChart from './ApexRedialChart';
 const Savings = () => {
     const [savings, setSavings] = useState([]);
 
-    const handleSavingsSubmit = (name, amount, deposit_amount, time, date) => {
-        const newSavings = { name, amount, deposit_amount, time, date, current_amount: 0 };
-        setSavings((prevSavings) => [...prevSavings, newSavings]);
+    // const handleSavingsSubmit = (name, amount, deposit_amount, time, date) => {
+    //     const newSavings = { name, amount, deposit_amount, time, date, current_amount: 0 };
+    //     setSavings((prevSavings) => [...prevSavings, newSavings]);
+    // };
+
+    const handleSavingsSubmit = async (name, amount, deposit_amount, time, date) => {
+        try {
+            const response = await axios.post('http://localhost:5001/api/savings', {
+                name,
+                amount,
+                deposit_amount,
+                time,
+                date
+            });
+
+            console.log('Savings created:', response.data);
+            setSavings((prevSavings) => [...prevSavings, response.data.data]); // Assuming response follows `rest.success`
+        } catch (error) {
+            console.error('Error creating saving:', error.response?.data || error.message);
+        }
     };
 
     const handleAddDeposit = (index, deposit) => {
