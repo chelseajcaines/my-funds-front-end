@@ -28,14 +28,14 @@ const finances = {
             icon: BalanceOutlinedIcon,
             breadcrumbs: false
         },
-        {
-            id: 'income',
-            title: <FormattedMessage id="Income" />,
-            type: 'item',
-            url: '/income',
-            icon: AttachMoneyOutlinedIcon,
-            breadcrumbs: false
-        },
+        // {
+        //     id: 'income',
+        //     title: <FormattedMessage id="Income" />,
+        //     type: 'item',
+        //     url: '/income',
+        //     icon: AttachMoneyOutlinedIcon,
+        //     breadcrumbs: false
+        // },
         {
             id: 'expenses',
             title: <FormattedMessage id="Expenses" />,
@@ -43,15 +43,15 @@ const finances = {
             url: '/expenses',
             icon: LocalMallOutlinedIcon,
             breadcrumbs: false
-        },
-        {
-            id: 'savings',
-            title: <FormattedMessage id="Savings" />,
-            type: 'item',
-            url: '/savings',
-            icon: LocalMallOutlinedIcon,
-            breadcrumbs: false
         }
+        // {
+        //     id: 'savings',
+        //     title: <FormattedMessage id="Savings" />,
+        //     type: 'item',
+        //     url: '/savings',
+        //     icon: LocalMallOutlinedIcon,
+        //     breadcrumbs: false
+        // }
     ]
 };
 

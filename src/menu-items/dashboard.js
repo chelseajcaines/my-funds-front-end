@@ -3,6 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import { IconDashboard, IconDeviceAnalytics } from '@tabler/icons-react';
+import BalanceOutlinedIcon from '@mui/icons-material/BalanceOutlined';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 
 const icons = {
     IconDashboard,
@@ -18,13 +20,29 @@ const dashboard = {
     type: 'group',
     children: [
         {
-            id: 'overview',
-            title: <FormattedMessage id="Overview" />,
+            id: 'budgets',
+            title: <FormattedMessage id="Budgets" />,
             type: 'item',
-            url: '/overview',
-            icon: icons.IconDashboard,
+            url: '/budgets',
+            icon: BalanceOutlinedIcon,
+            breadcrumbs: false
+        },
+        {
+            id: 'expenses',
+            title: <FormattedMessage id="Expenses" />,
+            type: 'item',
+            url: '/expenses',
+            icon: LocalMallOutlinedIcon,
             breadcrumbs: false
         }
+        // {
+        //     id: 'overview',
+        //     title: <FormattedMessage id="Overview" />,
+        //     type: 'item',
+        //     url: '/overview',
+        //     icon: icons.IconDashboard,
+        //     breadcrumbs: false
+        // }
     ]
 };
 
