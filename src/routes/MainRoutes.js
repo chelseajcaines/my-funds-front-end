@@ -7,7 +7,7 @@ import Loadable from 'ui-component/Loadable';
 import { Navigate } from 'react-router-dom';
 
 // sample page routing
-const Overview = Loadable(lazy(() => import('views/overview')));
+// const Overview = Loadable(lazy(() => import('views/overview')));
 const Budgets = Loadable(lazy(() => import('views/budgets')));
 const Income = Loadable(lazy(() => import('views/income')));
 const Expenses = Loadable(lazy(() => import('views/expenses')));
@@ -25,7 +25,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <Navigate to="/budgets" replace />
+            element: <Budgets />
         },
         // {
         //     path: '/overview',
