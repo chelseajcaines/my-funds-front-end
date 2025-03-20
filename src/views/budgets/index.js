@@ -32,11 +32,6 @@ const Budgets = () => {
         }
     };
 
-    // const handleBudgetSubmit = (name, amount, time, date) => {
-    //     const newBudget = { name, amount, time, date };
-    //     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
-    // };
-
     return (
         <>
             <MainCard title="Budgets" secondary={<SimpleModal onSubmit={handleBudgetSubmit} />}>
