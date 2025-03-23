@@ -10,9 +10,9 @@ import LogoSection from '../LogoSection';
 import MobileSection from './MobileSection';
 import ProfileSection from './ProfileSection';
 import FullScreenSection from './FullScreenSection';
-import LocalizationSection from './LocalizationSection';
-import MegaMenuSection from './MegaMenuSection';
-import NotificationSection from './NotificationSection';
+// import LocalizationSection from './LocalizationSection';
+// import MegaMenuSection from './MegaMenuSection';
+// import NotificationSection from './NotificationSection';
 
 import { useDispatch, useSelector } from 'store';
 import { openDrawer } from 'store/slices/menu';

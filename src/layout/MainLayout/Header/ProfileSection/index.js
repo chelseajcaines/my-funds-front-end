@@ -45,11 +45,11 @@ import useConfig from 'hooks/useConfig';
 const ProfileSection = () => {
     const theme = useTheme();
     const { borderRadius } = useConfig();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const [sdm, setSdm] = useState(true);
-    const [value, setValue] = useState('');
-    const [notification, setNotification] = useState(false);
+    // const [sdm, setSdm] = useState(true);
+    // const [value, setValue] = useState('');
+    // const [notification, setNotification] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const { logout, user } = useAuth();
     const [open, setOpen] = useState(false);
@@ -71,14 +71,14 @@ const ProfileSection = () => {
         }
         setOpen(false);
     };
-    const handleListItemClick = (event, index, route = '') => {
-        setSelectedIndex(index);
-        handleClose(event);
+    // const handleListItemClick = (event, index, route = '') => {
+    //     setSelectedIndex(index);
+    //     handleClose(event);
 
-        if (route && route !== '') {
-            navigate(route);
-        }
-    };
+    //     if (route && route !== '') {
+    //         navigate(route);
+    //     }
+    // };
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
     };
@@ -114,26 +114,34 @@ const ProfileSection = () => {
                         lineHeight: 0
                     }
                 }}
-                icon={
-                    <Avatar
-                        src={User1}
-                        sx={{
-                            ...theme.typography.mediumAvatar,
-                            margin: '8px 0 8px 8px !important',
-                            cursor: 'pointer'
-                        }}
-                        ref={anchorRef}
+                // icon={
+                //     <Avatar
+                //         src={User1}
+                //         sx={{
+                //             ...theme.typography.mediumAvatar,
+                //             margin: '8px 0 8px 8px !important',
+                //             cursor: 'pointer'
+                //         }}
+                //         ref={anchorRef}
+                //         aria-controls={open ? 'menu-list-grow' : undefined}
+                //         aria-haspopup="true"
+                //         color="inherit"
+                //         alt="user-account"
+                //     />
+                // }
+                label={
+                    <IconSettings
+                        stroke={1.5}
+                        size="24px"
+                        color={theme.palette.primary.main}
                         aria-controls={open ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"
-                        color="inherit"
-                        alt="user-account"
                     />
                 }
-                label={<IconSettings stroke={1.5} size="24px" color={theme.palette.primary.main} />}
                 variant="outlined"
                 ref={anchorRef}
-                aria-controls={open ? 'menu-list-grow' : undefined}
-                aria-haspopup="true"
+                // aria-controls={open ? 'menu-list-grow' : undefined}
+                // aria-haspopup="true"
                 onClick={handleToggle}
                 color="primary"
             />
@@ -161,7 +169,7 @@ const ProfileSection = () => {
                                 {open && (
                                     <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                                         <Box sx={{ p: 2, pb: 0 }}>
-                                            <Stack>
+                                            {/* <Stack>
                                                 <Stack direction="row" spacing={0.5} alignItems="center">
                                                     <Typography variant="h4">Good Morning,</Typography>
                                                     <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
@@ -169,7 +177,7 @@ const ProfileSection = () => {
                                                     </Typography>
                                                 </Stack>
                                                 <Typography variant="subtitle2">Project Admin</Typography>
-                                            </Stack>
+                                            </Stack> */}
                                             {/* <OutlinedInput
                                                 sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
                                                 id="input-search-profile"
@@ -188,17 +196,17 @@ const ProfileSection = () => {
                                             /> */}
                                             {/* <Divider /> */}
                                         </Box>
-                                        <PerfectScrollbar
+                                        {/* <PerfectScrollbar
                                             style={{
                                                 height: '100%',
                                                 maxHeight: 'calc(100vh - 250px)',
                                                 overflowX: 'hidden'
                                             }}
-                                        >
-                                            <Box sx={{ p: 2, pt: 0 }}>
-                                                {/* <UpgradePlanCard /> */}
-                                                {/* <Divider /> */}
-                                                {/* <Card
+                                        > */}
+                                        <Box sx={{ p: 2, pt: 0 }}>
+                                            {/* <UpgradePlanCard /> */}
+                                            {/* <Divider /> */}
+                                            {/* <Card
                                                     sx={{
                                                         bgcolor:
                                                             theme.palette.mode === 'dark'
@@ -207,44 +215,44 @@ const ProfileSection = () => {
                                                         my: 2
                                                     }}
                                                 > */}
-                                                {/* <CardContent> */}
-                                                {/* <Grid container spacing={3} direction="column"> */}
-                                                {/* <Grid item> */}
-                                                {/* <Grid item container alignItems="center" justifyContent="space-between"> */}
-                                                {/* <Grid item> */}
-                                                {/* <Typography variant="subtitle1">Start DND Mode</Typography> */}
-                                                {/* </Grid> */}
-                                                {/* <Grid item> */}
-                                                {/* <Switch
+                                            {/* <CardContent> */}
+                                            {/* <Grid container spacing={3} direction="column"> */}
+                                            {/* <Grid item> */}
+                                            {/* <Grid item container alignItems="center" justifyContent="space-between"> */}
+                                            {/* <Grid item> */}
+                                            {/* <Typography variant="subtitle1">Start DND Mode</Typography> */}
+                                            {/* </Grid> */}
+                                            {/* <Grid item> */}
+                                            {/* <Switch
                                                                             color="primary"
                                                                             checked={sdm}
                                                                             onChange={(e) => setSdm(e.target.checked)}
                                                                             name="sdm"
                                                                             size="small"
                                                                         /> */}
-                                                {/* </Grid> */}
-                                                {/* </Grid> */}
-                                                {/* </Grid> */}
-                                                {/* <Grid item> */}
-                                                {/* <Grid item container alignItems="center" justifyContent="space-between"> */}
-                                                {/* <Grid item> */}
-                                                {/* <Typography variant="subtitle1">Allow Notifications</Typography> */}
-                                                {/* </Grid> */}
-                                                {/* <Grid item> */}
-                                                {/* <Switch
+                                            {/* </Grid> */}
+                                            {/* </Grid> */}
+                                            {/* </Grid> */}
+                                            {/* <Grid item> */}
+                                            {/* <Grid item container alignItems="center" justifyContent="space-between"> */}
+                                            {/* <Grid item> */}
+                                            {/* <Typography variant="subtitle1">Allow Notifications</Typography> */}
+                                            {/* </Grid> */}
+                                            {/* <Grid item> */}
+                                            {/* <Switch
                                                                             checked={notification}
                                                                             onChange={(e) => setNotification(e.target.checked)}
                                                                             name="sdm"
                                                                             size="small"
                                                                         /> */}
-                                                {/* </Grid> */}
-                                                {/* </Grid> */}
-                                                {/* </Grid> */}
-                                                {/* </Grid> */}
-                                                {/* </CardContent> */}
-                                                {/* </Card> */}
-                                                {/* <Divider /> */}
-                                                <List
+                                            {/* </Grid> */}
+                                            {/* </Grid> */}
+                                            {/* </Grid> */}
+                                            {/* </Grid> */}
+                                            {/* </CardContent> */}
+                                            {/* </Card> */}
+                                            {/* <Divider /> */}
+                                            {/* <List
                                                     component="nav"
                                                     sx={{
                                                         width: '100%',
@@ -259,8 +267,8 @@ const ProfileSection = () => {
                                                             mt: 0.5
                                                         }
                                                     }}
-                                                >
-                                                    <ListItemButton
+                                                > */}
+                                            {/* <ListItemButton
                                                         sx={{ borderRadius: `${borderRadius}px` }}
                                                         selected={selectedIndex === 0}
                                                         onClick={(event) => handleListItemClick(event, 0, '/user/account-profile/profile1')}
@@ -275,54 +283,54 @@ const ProfileSection = () => {
                                                                 </Typography>
                                                             }
                                                         />
-                                                    </ListItemButton>
-                                                    {/* <ListItemButton
+                                                    </ListItemButton> */}
+                                            {/* <ListItemButton
                                                         sx={{ borderRadius: `${borderRadius}px` }}
                                                         selected={selectedIndex === 1}
                                                         onClick={(event) => handleListItemClick(event, 1, '/user/social-profile/posts')}
                                                     > */}
-                                                    {/* <ListItemIcon>
+                                            {/* <ListItemIcon>
                                                             <IconUser stroke={1.5} size="20px" />
                                                         </ListItemIcon> */}
-                                                    {/* <ListItemText
+                                            {/* <ListItemText
                                                             primary={ */}
-                                                    {/* <Grid container spacing={1} justifyContent="space-between">
+                                            {/* <Grid container spacing={1} justifyContent="space-between">
                                                                     <Grid item> */}
-                                                    {/* <Typography variant="body2">
+                                            {/* <Typography variant="body2">
                                                                             <FormattedMessage id="social-profile" /> */}
-                                                    {/* </Typography>
+                                            {/* </Typography>
                                                                     </Grid> */}
-                                                    {/* <Grid item> */}
-                                                    {/* <Chip
+                                            {/* <Grid item> */}
+                                            {/* <Chip
                                                                             label="02"
                                                                             size="small"
                                                                             color="warning"
                                                                             sx={{ '& .MuiChip-label': { mt: 0.25 } }}
                                                                         /> */}
-                                                    {/* </Grid>
+                                            {/* </Grid>
                                                                 </Grid> */}
-                                                    {/* }
+                                            {/* }
                                                         /> */}
-                                                    {/* </ListItemButton> */}
-                                                    <ListItemButton
-                                                        sx={{ borderRadius: `${borderRadius}px` }}
-                                                        selected={selectedIndex === 4}
-                                                        onClick={handleLogout}
-                                                    >
-                                                        <ListItemIcon>
-                                                            <IconLogout stroke={1.5} size="20px" />
-                                                        </ListItemIcon>
-                                                        <ListItemText
-                                                            primary={
-                                                                <Typography variant="body2">
-                                                                    <FormattedMessage id="logout" />
-                                                                </Typography>
-                                                            }
-                                                        />
-                                                    </ListItemButton>
-                                                </List>
-                                            </Box>
-                                        </PerfectScrollbar>
+                                            {/* </ListItemButton> */}
+                                            <ListItemButton
+                                                sx={{ borderRadius: `${borderRadius}px` }}
+                                                selected={selectedIndex === 4}
+                                                onClick={handleLogout}
+                                            >
+                                                <ListItemIcon>
+                                                    <IconLogout stroke={1.5} size="20px" />
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    primary={
+                                                        <Typography variant="body2">
+                                                            <FormattedMessage id="logout" />
+                                                        </Typography>
+                                                    }
+                                                />
+                                            </ListItemButton>
+                                            {/* </List> */}
+                                        </Box>
+                                        {/* </PerfectScrollbar> */}
                                     </MainCard>
                                 )}
                             </Paper>
