@@ -123,9 +123,15 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     placeholder=" "
                                     name="amount"
                                     value={formik.values.amount}
-                                    onChange={formik.handleChange}
+                                    onChange={(event) => {
+                                        const value = event.target.value;
+                                        if (/^\d*\.?\d*$/.test(value)) {
+                                            // Allows only numbers and an optional decimal point
+                                            formik.setFieldValue('amount', value);
+                                        }
+                                    }}
                                     error={formik.touched.amount && Boolean(formik.errors.amount)}
-                                    helpertext={formik.touched.amount && formik.errors.amount}
+                                    helperText={formik.touched.amount && formik.errors.amount}
                                 />
                             </Grid>
                             <Grid item xs={12}>
