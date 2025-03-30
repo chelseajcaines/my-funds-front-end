@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'store';
 import { useFormik } from 'formik';
 import { format } from 'date-fns';
+import InputAdornment from '@mui/material/InputAdornment';
 
 // material-ui
 import CardContent from '@mui/material/CardContent';
@@ -120,18 +121,28 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 <InputLabel>Max Amount</InputLabel>
                                 <TextField
                                     fullWidth
-                                    placeholder=" "
+                                    placeholder="0.00"
                                     name="amount"
                                     value={formik.values.amount}
                                     onChange={(event) => {
-                                        const value = event.target.value;
-                                        if (/^\d*\.?\d*$/.test(value)) {
-                                            // Allows only numbers and an optional decimal point
-                                            formik.setFieldValue('amount', value);
-                                        }
+                                        let rawValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
+                                        if (!rawValue) rawValue = '0'; // Ensure at least "0"
+
+                                        let numberValue = parseFloat(rawValue) / 100; // Convert to cents
+                                        let formattedValue = numberValue.toLocaleString('en-US', {
+                                            style: 'currency',
+                                            currency: 'USD',
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        });
+
+                                        formik.setFieldValue('amount', formattedValue.replace('$', '')); // Remove dollar sign from value
                                     }}
                                     error={formik.touched.amount && Boolean(formik.errors.amount)}
                                     helperText={formik.touched.amount && formik.errors.amount}
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start">$</InputAdornment>
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
