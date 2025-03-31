@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // material-ui
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
@@ -16,19 +16,41 @@ import EditMenu from './EditMenu';
 const Budgets = () => {
     const [budgets, setBudgets] = useState([]);
 
+    // Fetch budgets when the component mounts
+    useEffect(() => {
+        const fetchBudgets = async () => {
+            try {
+                const response = await axios.get('http://localhost:5001/api/budget', {
+                    withCredentials: true // Ensures JWT token is sent with the request
+                });
+
+                console.log('Fetched budgets:', response.data);
+                setBudgets(response.data.data); // Assuming response.data contains a `data` field
+            } catch (error) {
+                console.error('Error fetching budgets:', error.response?.data || error.message);
+            }
+        };
+
+        fetchBudgets();
+    }, []); // Empty dependency array means this runs only once when the component mounts
+
     const handleBudgetSubmit = async (name, amount, time, date) => {
         try {
-            const response = await axios.post('http://localhost:5001/api/budget', {
-                name,
-                amount,
-                time,
-                date
-            });
+            const response = await axios.post(
+                'http://localhost:5001/api/budget',
+                { name, amount, time, date },
+                { withCredentials: true } // Ensures cookies are sent with the request
+            );
 
             console.log('Budget created:', response.data);
             setBudgets((prevBudgets) => [...prevBudgets, response.data.data]); // Assuming response follows `rest.success`
         } catch (error) {
-            console.error('Error creating budget:', error.response?.data || error.message);
+            if (error.response?.status === 401) {
+                console.error('Unauthorized: Please log in again');
+                // Redirect user to login page (if applicable)
+            } else {
+                console.error('Error creating budget:', error.response?.data || error.message);
+            }
         }
     };
 
