@@ -18,15 +18,21 @@ const Budgets = () => {
 
     const handleBudgetSubmit = async (name, amount, time, date) => {
         try {
-            const response = await axios.post('http://localhost:5001/api/budget', {
-                name,
-                amount,
-                time,
-                date
-            });
+            const response = await axios.post(
+                'http://localhost:5001/api/budget',
+                {
+                    name,
+                    amount,
+                    time,
+                    date
+                },
+                {
+                    withCredentials: true // ✅ Ensures JWT cookie is sent
+                }
+            );
 
             console.log('Budget created:', response.data);
-            setBudgets((prevBudgets) => [...prevBudgets, response.data.data]); // Assuming response follows `rest.success`
+            setBudgets((prevBudgets) => [...prevBudgets, response.data.data]);
         } catch (error) {
             console.error('Error creating budget:', error.response?.data || error.message);
         }
