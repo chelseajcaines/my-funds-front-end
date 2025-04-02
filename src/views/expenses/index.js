@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ExpensesModal from 'views/forms/ExpensesModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
 
@@ -36,50 +36,45 @@ export default function Expenses() {
 
     const [rows, setRows] = useState([]);
 
-    // const handleIncomeSubmit = async (name, amount, time, date, position) => {
-    //     try {
-    //         const response = await axios.post('http://localhost:5001/api/income', {
-    //             name,
-    //             amount,
-    //             time,
-    //             date,
-    //             position
-    //         });
+    // useEffect to fetch expenses on component mount
+    useEffect(() => {
+        const fetchExpenses = async () => {
+            try {
+                const response = await axios.get('http://localhost:5001/api/expense', { withCredentials: true });
+                setRows(response.data.data); // Set rows directly from the response
+            } catch (error) {
+                console.error('Error fetching expenses:', error.response?.data || error.message);
+            }
+        };
 
-    //         console.log('Income created:', response.data);
-    //         setIncomes((prevIncomes) => [...prevIncomes, response.data.data]); // Assuming response follows `rest.success`
-    //     } catch (error) {
-    //         console.error('Error creating income:', error.response?.data || error.message);
-    //     }
-    // };
+        fetchExpenses();
+    }, []);
 
+    // handleExpenseSubmit function remains unchanged except for setExpenseCard removal
     const handleExpenseSubmit = async (category, location, amount, date, payment, deduction) => {
         let statuscolor;
         switch (payment.toLowerCase()) {
             case 'debit':
-                statuscolor = 'primary'; // Replace 'primary' with your desired color
+                statuscolor = 'primary';
                 break;
             case 'credit':
-                statuscolor = 'secondary'; // Replace 'secondary' with your desired color
+                statuscolor = 'secondary';
                 break;
             case 'cash':
-                statuscolor = 'success'; // Replace 'success' with your desired color
+                statuscolor = 'success';
                 break;
             default:
-                statuscolor = 'warning'; // Default color for undefined payment types
+                statuscolor = 'warning';
         }
 
         const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
 
         try {
-            const response = await axios.post('http://localhost:5001/api/expense', {
-                category,
-                location,
-                amount,
-                date: formattedDate,
-                payment,
-                deduction
-            });
+            const response = await axios.post(
+                'http://localhost:5001/api/expense',
+                { category, location, amount, date: formattedDate, payment, deduction },
+                { withCredentials: true }
+            );
 
             console.log('Expense created:', response.data);
 
@@ -93,15 +88,10 @@ export default function Expenses() {
                 response.data.data.deduction
             );
 
-            setRows((prevRows) => [...prevRows, newRow]);
-            setExpenseCard(true);
+            setRows((prevRows) => [...prevRows, newRow]); // Only update rows
         } catch (error) {
             console.error('Error creating expense:', error.response?.data || error.message);
         }
-
-        // const newRow = createData(category, location, amount, date, payment, deduction, statuscolor);
-        // setRows((prevRows) => [...prevRows, newRow]);
-        // setExpenseCard(true);
     };
 
     return (
