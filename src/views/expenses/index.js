@@ -36,23 +36,6 @@ export default function Expenses() {
 
     const [rows, setRows] = useState([]);
 
-    // const handleIncomeSubmit = async (name, amount, time, date, position) => {
-    //     try {
-    //         const response = await axios.post('http://localhost:5001/api/income', {
-    //             name,
-    //             amount,
-    //             time,
-    //             date,
-    //             position
-    //         });
-
-    //         console.log('Income created:', response.data);
-    //         setIncomes((prevIncomes) => [...prevIncomes, response.data.data]); // Assuming response follows `rest.success`
-    //     } catch (error) {
-    //         console.error('Error creating income:', error.response?.data || error.message);
-    //     }
-    // };
-
     const handleExpenseSubmit = async (category, location, amount, date, payment, deduction) => {
         let statuscolor;
         switch (payment.toLowerCase()) {
