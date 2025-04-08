@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ExpensesModal from 'views/forms/ExpensesModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
 
@@ -32,9 +32,24 @@ function createData(category, location, amount, date, payment, deduction, status
 // =========================|| LATEST ORDER CARD ||========================= //
 
 export default function Expenses() {
-    const [expenseCard, setExpenseCard] = useState(false);
+    const [expense, setExpense] = useState([]);
 
-    const [rows, setRows] = useState([]);
+    useEffect(() => {
+        const fetchExpense = async () => {
+            try {
+                const response = await axios.get('http://localhost:5001/api/expense', {
+                    withCredentials: true // Ensures JWT token is sent with the request
+                });
+
+                console.log('Fetched expense:', response.data);
+                setExpense(response.data.data); // Assuming response.data contains a `data` field
+            } catch (error) {
+                console.error('Error fetching expense:', error.response?.data || error.message);
+            }
+        };
+
+        fetchExpense();
+    }, []);
 
     const handleExpenseSubmit = async (category, location, amount, date, payment, deduction) => {
         let statuscolor;
@@ -55,36 +70,40 @@ export default function Expenses() {
         const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
 
         try {
-            const response = await axios.post('http://localhost:5001/api/expense', {
-                category,
-                location,
-                amount,
-                date: formattedDate,
-                payment,
-                deduction
-            });
+            const response = await axios.post(
+                'http://localhost:5001/api/expense',
+                {
+                    category,
+                    location,
+                    amount,
+                    date: formattedDate,
+                    payment,
+                    deduction
+                },
+                { withCredentials: true }
+            );
 
             console.log('Expense created:', response.data);
 
             // Update the UI with the new expense
-            const newRow = createData(
-                response.data.data.category,
-                response.data.data.location,
-                response.data.data.amount,
-                response.data.data.date,
-                response.data.data.payment,
-                response.data.data.deduction
-            );
+            // const newRow = createData(
+            //     response.data.data.category,
+            //     response.data.data.location,
+            //     response.data.data.amount,
+            //     response.data.data.date,
+            //     response.data.data.payment,
+            //     response.data.data.deduction
+            // );
 
-            setRows((prevRows) => [...prevRows, newRow]);
-            setExpenseCard(true);
+            setExpense((prevExpense) => [...prevExpense, response.data.data]);
         } catch (error) {
-            console.error('Error creating expense:', error.response?.data || error.message);
+            if (error.response?.status === 401) {
+                console.error('Unauthorized: Please log in again');
+                // Redirect user to login page (if applicable)
+            } else {
+                console.error('Error creating expense:', error.response?.data || error.message);
+            }
         }
-
-        // const newRow = createData(category, location, amount, date, payment, deduction, statuscolor);
-        // setRows((prevRows) => [...prevRows, newRow]);
-        // setExpenseCard(true);
     };
 
     return (
@@ -106,32 +125,32 @@ export default function Expenses() {
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
-                            {expenseCard && (
-                                <TableBody>
-                                    {rows.map((row, index) => (
-                                        <TableRow hover key={index}>
-                                            <TableCell sx={{ pl: 3 }}>{row.category}</TableCell>
-                                            <TableCell align="center">{row.location}</TableCell>
-                                            <TableCell align="center">{row.amount}</TableCell>
-                                            <TableCell align="center">{row.date ? format(new Date(row.date), 'MMM. dd/yy') : ''}</TableCell>
-                                            <TableCell align="center">
-                                                <Chip chipcolor={row.statuscolor} label={row.payment} size="small" />
-                                            </TableCell>
-                                            <TableCell align="center">{row.deduction}</TableCell>
-                                            <TableCell align="center" sx={{ pr: 3 }}>
-                                                <Stack direction="row" justifyContent="center" alignItems="center">
-                                                    <IconButton color="primary" size="large" aria-label='"edit"'>
-                                                        <EditOutlinedIcon />
-                                                    </IconButton>
-                                                    <IconButton color="inherit" size="large" aria-label='"delete"'>
-                                                        <DeleteOutlineOutlinedIcon />
-                                                    </IconButton>
-                                                </Stack>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                            {expense.map((expense, index) => (
+                                <TableBody key={index}>
+                                    <TableRow hover>
+                                        <TableCell sx={{ pl: 3 }}>{expense.category}</TableCell>
+                                        <TableCell align="center">{expense.location}</TableCell>
+                                        <TableCell align="center">{expense.amount}</TableCell>
+                                        <TableCell align="center">
+                                            {expense.date ? format(new Date(expense.date), 'MMM. dd/yy') : ''}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <Chip chipcolor={expense.statuscolor} label={expense.payment} size="small" />
+                                        </TableCell>
+                                        <TableCell align="center">{expense.deduction}</TableCell>
+                                        <TableCell align="center" sx={{ pr: 3 }}>
+                                            <Stack direction="row" justifyContent="center" alignItems="center">
+                                                <IconButton color="primary" size="large" aria-label='"edit"'>
+                                                    <EditOutlinedIcon />
+                                                </IconButton>
+                                                <IconButton color="inherit" size="large" aria-label='"delete"'>
+                                                    <DeleteOutlineOutlinedIcon />
+                                                </IconButton>
+                                            </Stack>
+                                        </TableCell>
+                                    </TableRow>
                                 </TableBody>
-                            )}
+                            ))}
                         </Table>
                     </TableContainer>
                     <CardActions sx={{ justifyContent: 'flex-end' }}>
