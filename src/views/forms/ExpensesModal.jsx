@@ -124,7 +124,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     value={formik.values.category}
                                     onChange={formik.handleChange}
                                     error={formik.touched.category && Boolean(formik.errors.category)}
-                                    helpertext={formik.touched.category && formik.errors.category}
+                                    helperText={formik.touched.category && formik.errors.category}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -136,7 +136,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     value={formik.values.location}
                                     onChange={formik.handleChange}
                                     error={formik.touched.location && Boolean(formik.errors.location)}
-                                    helpertext={formik.touched.location && formik.errors.location}
+                                    helperText={formik.touched.location && formik.errors.location}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -178,24 +178,15 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                             formik.setFieldValue('date', formattedDate); // Set the formatted string in formik
                                         }}
                                         // onChange={(newValue) => formik.setFieldValue('date', newValue)}
-                                        slotProps={{ textField: { fullWidth: true } }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                fullWidth
-                                                name="date"
-                                                placeholder="Select Date"
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <IconButton position="end">
-                                                            <CalendarTodayIcon />
-                                                        </IconButton>
-                                                    )
-                                                }}
-                                                error={formik.touched.date && Boolean(formik.errors.date)}
-                                                helpertext={formik.touched.date && formik.errors.date}
-                                            />
-                                        )}
+                                        slotProps={{
+                                            textField: {
+                                                fullWidth: true,
+                                                name: 'date',
+                                                placeholder: 'Select Date',
+                                                error: formik.touched.date && Boolean(formik.errors.date),
+                                                helperText: formik.touched.date && formik.errors.date
+                                            }
+                                        }}
                                     />
                                 </LocalizationProvider>
                             </Grid>
@@ -209,7 +200,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     value={formik.values.payment}
                                     onChange={formik.handleChange}
                                     error={formik.touched.payment && Boolean(formik.errors.payment)}
-                                    helpertext={formik.touched.payment && formik.errors.payment}
+                                    helperText={formik.touched.payment && formik.errors.payment}
                                 >
                                     <MenuItem value={PAYMENT_TYPE.CREDIT}>Credit</MenuItem>
                                     <MenuItem value={PAYMENT_TYPE.DEBIT}>Debit</MenuItem>
@@ -226,7 +217,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     value={formik.values.deduct}
                                     onChange={formik.handleChange}
                                     error={formik.touched.deduct && Boolean(formik.errors.deduct)}
-                                    helpertext={formik.touched.deduct && formik.errors.deduct}
+                                    helperText={formik.touched.deduct && formik.errors.deduct}
                                 >
                                     <MenuItem value={DEDUCT_BUDGET.NONE}>None</MenuItem>
                                 </Select>

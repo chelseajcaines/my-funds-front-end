@@ -4,6 +4,8 @@ import { useDispatch } from 'store';
 import { useFormik } from 'formik';
 import { format } from 'date-fns';
 import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 
 // material-ui
 import CardContent from '@mui/material/CardContent';
@@ -114,7 +116,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     value={formik.values.name}
                                     onChange={formik.handleChange}
                                     error={formik.touched.name && Boolean(formik.errors.name)}
-                                    helpertext={formik.touched.name && formik.errors.name}
+                                    helperText={formik.touched.name && formik.errors.name}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -147,20 +149,20 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                             </Grid>
                             <Grid item xs={12}>
                                 <InputLabel>Time Span</InputLabel>
-                                <Select
-                                    fullWidth
-                                    labelId="time-select"
-                                    id="time"
-                                    name="time"
-                                    value={formik.values.time}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.time && Boolean(formik.errors.time)}
-                                    helpertext={formik.touched.time && formik.errors.time}
-                                >
-                                    <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
-                                    <MenuItem value={TIME_SPANS.YEARLY}>Yearly</MenuItem>
-                                </Select>
+                                <FormControl fullWidth error={formik.touched.time && Boolean(formik.errors.time)}>
+                                    <Select
+                                        labelId="time-select"
+                                        id="time"
+                                        name="time"
+                                        value={formik.values.time}
+                                        onChange={formik.handleChange}
+                                    >
+                                        <MenuItem value={TIME_SPANS.WEEKLY}>Weekly</MenuItem>
+                                        <MenuItem value={TIME_SPANS.MONTHLY}>Monthly</MenuItem>
+                                        <MenuItem value={TIME_SPANS.YEARLY}>Yearly</MenuItem>
+                                    </Select>
+                                    {formik.touched.time && formik.errors.time && <FormHelperText>{formik.errors.time}</FormHelperText>}
+                                </FormControl>
                             </Grid>
 
                             <Grid item xs={12}>
@@ -179,24 +181,15 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                             }
                                         }}
                                         // onChange={(newValue) => formik.setFieldValue('date', newValue)}
-                                        slotProps={{ textField: { fullWidth: true } }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                fullWidth
-                                                name="date"
-                                                placeholder="Select Date"
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <IconButton position="end">
-                                                            <CalendarTodayIcon />
-                                                        </IconButton>
-                                                    )
-                                                }}
-                                                error={formik.touched.date && Boolean(formik.errors.date)}
-                                                helpertext={formik.touched.date && formik.errors.date}
-                                            />
-                                        )}
+                                        slotProps={{
+                                            textField: {
+                                                fullWidth: true,
+                                                name: 'date',
+                                                placeholder: 'Select Date',
+                                                error: formik.touched.date && Boolean(formik.errors.date),
+                                                helperText: formik.touched.date && formik.errors.date
+                                            }
+                                        }}
                                     />
                                 </LocalizationProvider>
                             </Grid>

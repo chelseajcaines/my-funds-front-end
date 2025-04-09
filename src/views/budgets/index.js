@@ -54,13 +54,33 @@ const Budgets = () => {
         }
     };
 
+    const handleBudgetDelete = async (id) => {
+        console.log('Deleting budget with id:', id); // Log the budget ID being deleted
+
+        try {
+            await axios.delete(`http://localhost:5001/api/budget/${id}`, {
+                withCredentials: true
+            });
+
+            // Re-fetch budgets after successful deletion
+            const response = await axios.get('http://localhost:5001/api/budget', {
+                withCredentials: true
+            });
+
+            setBudgets(response.data.data); // Assuming response contains updated budgets
+            console.log('Budget deleted:', id);
+        } catch (error) {
+            console.error('Error deleting budget:', error.response?.data || error.message);
+        }
+    };
+
     return (
         <>
             <MainCard title="Budgets" secondary={<SimpleModal onSubmit={handleBudgetSubmit} />}>
                 <Grid container spacing={gridSpacing}>
                     {budgets.map((budget, index) => (
                         <Grid item xs={12} sm={6} lg={4} key={index}>
-                            <SubCard title={budget.name} secondary={<EditMenu />}>
+                            <SubCard title={budget.name} secondary={<EditMenu onDelete={() => handleBudgetDelete(budget.id)} />}>
                                 <UserSimpleCard amount={budget.amount} time={budget.time} date={budget.date} />
                             </SubCard>
                         </Grid>

@@ -106,6 +106,25 @@ export default function Expenses() {
         }
     };
 
+    const handleExpenseDelete = async (id) => {
+        console.log('Deleting expense with id:', id); // Log the budget ID being deleted
+
+        try {
+            await axios.delete(`http://localhost:5001/api/expense/${id}`, {
+                withCredentials: true
+            });
+
+            const response = await axios.get('http://localhost:5001/api/expense', {
+                withCredentials: true
+            });
+
+            setExpense(response.data.data);
+            console.log('Expense deleted:', id);
+        } catch (error) {
+            console.error('Error deleting expense:', error.response?.data || error.message);
+        }
+    };
+
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
@@ -143,7 +162,12 @@ export default function Expenses() {
                                                 <IconButton color="primary" size="large" aria-label='"edit"'>
                                                     <EditOutlinedIcon />
                                                 </IconButton>
-                                                <IconButton color="inherit" size="large" aria-label='"delete"'>
+                                                <IconButton
+                                                    color="inherit"
+                                                    size="large"
+                                                    aria-label='"delete"'
+                                                    onClick={() => handleExpenseDelete(expense.id)}
+                                                >
                                                     <DeleteOutlineOutlinedIcon />
                                                 </IconButton>
                                             </Stack>
@@ -153,11 +177,11 @@ export default function Expenses() {
                             ))}
                         </Table>
                     </TableContainer>
-                    <CardActions sx={{ justifyContent: 'flex-end' }}>
+                    {/* <CardActions sx={{ justifyContent: 'flex-end' }}>
                         <Button variant="text" size="small">
                             View all Expenses
                         </Button>
-                    </CardActions>
+                    </CardActions> */}
                 </MainCard>
             </Grid>
         </Grid>

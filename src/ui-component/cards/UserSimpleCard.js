@@ -71,7 +71,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <DetailsWrapper fullWidth>
@@ -79,7 +79,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                             </DetailsWrapper>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> */}
             </Grid>
         </Card>
     );
