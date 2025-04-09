@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ExpensesModal from 'views/forms/ExpensesModal';
+import ExpensesEditModal from 'views/forms/ExpensesEditModal';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -33,6 +34,7 @@ function createData(category, location, amount, date, payment, deduction, status
 
 export default function Expenses() {
     const [expense, setExpense] = useState([]);
+    const [editModalOpen, setEditModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchExpense = async () => {
@@ -125,6 +127,10 @@ export default function Expenses() {
         }
     };
 
+    const handleEditClick = () => {
+        setEditModalOpen(true);
+    };
+
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
@@ -159,7 +165,12 @@ export default function Expenses() {
                                         <TableCell align="center">{expense.deduction}</TableCell>
                                         <TableCell align="center" sx={{ pr: 3 }}>
                                             <Stack direction="row" justifyContent="center" alignItems="center">
-                                                <IconButton color="primary" size="large" aria-label='"edit"'>
+                                                <IconButton
+                                                    color="primary"
+                                                    size="large"
+                                                    aria-label='"edit"'
+                                                    onClick={() => handleEditClick()}
+                                                >
                                                     <EditOutlinedIcon />
                                                 </IconButton>
                                                 <IconButton
@@ -183,6 +194,13 @@ export default function Expenses() {
                         </Button>
                     </CardActions> */}
                 </MainCard>
+                {editModalOpen && (
+                    <ExpensesEditModal
+                        open={editModalOpen}
+                        handleClose={() => setEditModalOpen(false)}
+                        // onSubmit={handleUpdateExpense}
+                    />
+                )}
             </Grid>
         </Grid>
     );
