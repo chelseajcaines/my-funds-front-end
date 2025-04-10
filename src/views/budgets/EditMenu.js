@@ -4,9 +4,11 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 // import axios from 'axios';
 import PropTypes from 'prop-types';
+import SimpleEditModal from 'views/forms/SimpleEditModal';
 
 const EditMenu = ({ onDelete }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [editModalOpen, setEditModalOpen] = useState(false);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -19,6 +21,11 @@ const EditMenu = ({ onDelete }) => {
     const handleDelete = () => {
         handleClose();
         onDelete(); // call the passed in onDelete function
+    };
+
+    const handleEdit = () => {
+        setEditModalOpen(true);
+        handleClose();
     };
 
     return (
@@ -49,9 +56,16 @@ const EditMenu = ({ onDelete }) => {
                         horizontal: 'right'
                     }}
                 >
-                    <MenuItem onClick={handleClose}>Edit</MenuItem>
+                    <MenuItem onClick={handleEdit}>Edit</MenuItem>
                     <MenuItem onClick={handleDelete}>Delete</MenuItem>
                 </Menu>
+                {editModalOpen && (
+                    <SimpleEditModal
+                        open={editModalOpen}
+                        handleClose={() => setEditModalOpen(false)}
+                        // onSubmit={handleUpdateExpense}
+                    />
+                )}
             </Grid>
         </>
     );
