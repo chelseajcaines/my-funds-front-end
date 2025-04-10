@@ -6,7 +6,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import SimpleEditModal from 'views/forms/SimpleEditModal';
 
-const EditMenu = ({ onDelete }) => {
+const EditMenu = ({ onDelete, budget, onUpdate }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -63,7 +63,11 @@ const EditMenu = ({ onDelete }) => {
                     <SimpleEditModal
                         open={editModalOpen}
                         handleClose={() => setEditModalOpen(false)}
-                        // onSubmit={handleUpdateExpense}
+                        budget={budget}
+                        onSubmit={(updatedBudget) => {
+                            onUpdate(updatedBudget);
+                            setEditModalOpen(false);
+                        }}
                     />
                 )}
             </Grid>
@@ -74,24 +78,7 @@ const EditMenu = ({ onDelete }) => {
 export default EditMenu;
 
 EditMenu.propTypes = {
-    onDelete: PropTypes.func.isRequired // Expect a function for the delete handler
+    onDelete: PropTypes.func.isRequired, // Expect a function for the delete handler
+    budget: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired
 };
-
-// budgetId: PropTypes.number.isRequired, // Expect a number for the budget ID
-
-// const handleDelete = async () => {
-//     console.log('Attempting to delete budget with id:', budgetId); // Log to check the process
-//     try {
-//         // Make DELETE request
-//         await axios.delete(`http://localhost:5001/api/budget/${budgetId}`, {
-//             withCredentials: true
-//         });
-
-//         // After the budget is deleted from the backend, call onDelete to update the frontend state
-//         onDelete(budgetId); // Remove from frontend (passed from parent)
-//     } catch (error) {
-//         console.error('Failed to delete budget:', error.response?.data || error.message);
-//     } finally {
-//         handleClose(); // Close the menu after the operation
-//     }
-// };

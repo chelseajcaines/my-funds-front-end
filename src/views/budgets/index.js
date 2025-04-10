@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // material-ui
 import Grid from '@mui/material/Grid';
 import axios from 'axios';
+import { format } from 'date-fns';
 
 // project imports
 import UserSimpleCard from 'ui-component/cards/UserSimpleCard';
@@ -74,13 +75,54 @@ const Budgets = () => {
         }
     };
 
+    const handleBudgetUpdate = async (updatedBudget) => {
+        console.log('Updated Budget:', updatedBudget);
+        const { id, name, amount, time, date } = updatedBudget;
+        console.log('Updating budget with Id:', id);
+
+        try {
+            const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
+
+            const response = await axios.put(
+                `http://localhost:5001/api/budget/${id}`,
+                {
+                    name,
+                    amount,
+                    time,
+                    date: formattedDate
+                },
+                { withCredentials: true }
+            );
+
+            console.log('Budget updated:', response.data);
+
+            // Option 1: Refresh the list
+            const fetchUpdatedBudget = await axios.get('http://localhost:5001/api/budget', {
+                withCredentials: true
+            });
+
+            setBudgets(fetchUpdatedBudget.data.data);
+        } catch (error) {
+            console.error('Error updating budget:', error.response?.data || error.message);
+        }
+    };
+
     return (
         <>
             <MainCard title="Budgets" secondary={<SimpleModal onSubmit={handleBudgetSubmit} />}>
                 <Grid container spacing={gridSpacing}>
                     {budgets.map((budget, index) => (
                         <Grid item xs={12} sm={6} lg={4} key={index}>
-                            <SubCard title={budget.name} secondary={<EditMenu onDelete={() => handleBudgetDelete(budget.id)} />}>
+                            <SubCard
+                                title={budget.name}
+                                secondary={
+                                    <EditMenu
+                                        onDelete={() => handleBudgetDelete(budget.id)}
+                                        budget={budget}
+                                        onUpdate={(updatedBudget) => handleBudgetUpdate({ ...budget, ...updatedBudget })}
+                                    />
+                                }
+                            >
                                 <UserSimpleCard amount={budget.amount} time={budget.time} date={budget.date} />
                             </SubCard>
                         </Grid>

@@ -4,6 +4,8 @@ import { useDispatch } from 'store';
 import { useFormik } from 'formik';
 import { format } from 'date-fns';
 import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 
 // material-ui
 import CardContent from '@mui/material/CardContent';
@@ -71,7 +73,10 @@ const validationSchema = yup.object({
         .string()
         .oneOf([PAYMENT_TYPE.CREDIT, PAYMENT_TYPE.DEBIT, PAYMENT_TYPE.CASH], 'Invalid selection for Payment Type.')
         .required('Payment Type selection is required.'),
-    deduct: yup.string().oneOf([DEDUCT_BUDGET.NONE], 'Invalid selection for Deduct from Budget.').required('Please choose a budget or None')
+    deduction: yup
+        .string()
+        .oneOf([DEDUCT_BUDGET.NONE], 'Invalid selection for Deduct from Budget.')
+        .required('Please choose a budget or None')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, ref) => {
@@ -84,11 +89,19 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
             amount: expense?.amount || '',
             date: expense?.date || null,
             payment: expense?.payment || PAYMENT_TYPE.DEBIT,
-            deduct: expense?.deduction || DEDUCT_BUDGET.NONE
+            deduction: expense?.deduction || DEDUCT_BUDGET.NONE
         },
         validationSchema,
         onSubmit: (values) => {
-            onSubmit(values.category, values.location, values.amount, values.date, values.payment, values.deduct);
+            onSubmit({
+                id: expense?.id,
+                category: values.category,
+                location: values.location,
+                amount: values.amount,
+                date: values.date,
+                payment: values.payment,
+                deduction: values.deduction
+            });
         }
     });
 
@@ -191,36 +204,30 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
                                 </LocalizationProvider>
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Payment Type</InputLabel>
-                                <Select
-                                    fullWidth
-                                    labelId="payment-type"
-                                    id="payment"
-                                    name="payment"
-                                    value={formik.values.payment}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.payment && Boolean(formik.errors.payment)}
-                                    helperText={formik.touched.payment && formik.errors.payment}
-                                >
-                                    <MenuItem value={PAYMENT_TYPE.CREDIT}>Credit</MenuItem>
-                                    <MenuItem value={PAYMENT_TYPE.DEBIT}>Debit</MenuItem>
-                                    <MenuItem value={PAYMENT_TYPE.CASH}>Cash</MenuItem>
-                                </Select>
+                                <FormControl fullWidth error={formik.touched.payment && Boolean(formik.errors.payment)}>
+                                    <InputLabel>Payment Type</InputLabel>
+                                    <Select name="payment" value={formik.values.payment} onChange={formik.handleChange}>
+                                        <MenuItem value={PAYMENT_TYPE.CREDIT}>Credit</MenuItem>
+                                        <MenuItem value={PAYMENT_TYPE.DEBIT}>Debit</MenuItem>
+                                        <MenuItem value={PAYMENT_TYPE.CASH}>Cash</MenuItem>
+                                    </Select>
+                                    <FormHelperText>{formik.touched.payment && formik.errors.payment}</FormHelperText>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12}>
-                                <InputLabel>Deduct from Budget</InputLabel>
-                                <Select
-                                    fullWidth
-                                    labelId="deduct-budget"
-                                    id="deduct"
-                                    name="deduct"
-                                    value={formik.values.deduct}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.deduct && Boolean(formik.errors.deduct)}
-                                    helperText={formik.touched.deduct && formik.errors.deduct}
-                                >
-                                    <MenuItem value={DEDUCT_BUDGET.NONE}>None</MenuItem>
-                                </Select>
+                                <FormControl fullWidth error={formik.touched.deduction && Boolean(formik.errors.deduction)}>
+                                    <InputLabel id="deduct-budget-label">Deduct from Budget</InputLabel>
+                                    <Select
+                                        labelId="deduct-budget-label"
+                                        id="deduction"
+                                        name="deduction"
+                                        value={formik.values.deduction}
+                                        onChange={formik.handleChange}
+                                    >
+                                        <MenuItem value={DEDUCT_BUDGET.NONE}>None</MenuItem>
+                                    </Select>
+                                    <FormHelperText>{formik.touched.deduction && formik.errors.deduction}</FormHelperText>
+                                </FormControl>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -254,7 +261,7 @@ Body.propTypes = {
 
 // ==============================|| SIMPLE MODAL ||============================== //
 
-export default function ExpensesEditModal({ open, handleClose, onSubmit, expense }) {
+export default function ExpensesEditModal({ open, handleClose, onUpdate, expense }) {
     const [modalStyle] = React.useState(getModalStyle);
 
     return (
@@ -262,8 +269,8 @@ export default function ExpensesEditModal({ open, handleClose, onSubmit, expense
             <Body
                 modalStyle={modalStyle}
                 handleClose={handleClose}
-                onSubmit={(category, location, amount, date, payment, deduct) => {
-                    onSubmit(category, location, amount, date, payment, deduct);
+                onSubmit={(updatedExpense) => {
+                    onUpdate(updatedExpense); // Use onUpdate here (which is handleExpenseUpdate)
                     handleClose();
                 }}
                 expense={expense}
@@ -275,6 +282,6 @@ export default function ExpensesEditModal({ open, handleClose, onSubmit, expense
 ExpensesEditModal.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
     expense: PropTypes.object
 };

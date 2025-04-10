@@ -35,6 +35,7 @@ function createData(category, location, amount, date, payment, deduction, status
 export default function Expenses() {
     const [expense, setExpense] = useState([]);
     const [editModalOpen, setEditModalOpen] = useState(false);
+    const [selectedExpense, setSelectedExpense] = useState(null);
 
     useEffect(() => {
         const fetchExpense = async () => {
@@ -127,8 +128,48 @@ export default function Expenses() {
         }
     };
 
-    const handleEditClick = () => {
+    const handleEditClick = (expenseData) => {
         setEditModalOpen(true);
+        setSelectedExpense(expenseData); // Set the selected expense data
+    };
+
+    const handleExpenseUpdate = async (updatedExpense) => {
+        const { id, category, location, amount, date, payment, deduction } = updatedExpense;
+
+        try {
+            const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
+
+            const response = await axios.put(
+                `http://localhost:5001/api/expense/${id}`,
+                {
+                    category,
+                    location,
+                    amount,
+                    date: formattedDate,
+                    payment,
+                    deduction
+                },
+                { withCredentials: true }
+            );
+
+            console.log('Expense updated:', response.data);
+
+            // Option 1: Refresh the list
+            const fetchUpdatedExpenses = await axios.get('http://localhost:5001/api/expense', {
+                withCredentials: true
+            });
+
+            setExpense(fetchUpdatedExpenses.data.data);
+
+            // Option 2 (alternative): Update only the changed item in local state
+            // setExpense((prev) =>
+            //     prev.map((exp) => (exp.id === id ? { ...exp, ...response.data.data } : exp))
+            // );
+
+            setEditModalOpen(false);
+        } catch (error) {
+            console.error('Error updating expense:', error.response?.data || error.message);
+        }
     };
 
     return (
@@ -169,7 +210,7 @@ export default function Expenses() {
                                                     color="primary"
                                                     size="large"
                                                     aria-label='"edit"'
-                                                    onClick={() => handleEditClick()}
+                                                    onClick={() => handleEditClick(expense)}
                                                 >
                                                     <EditOutlinedIcon />
                                                 </IconButton>
@@ -198,7 +239,8 @@ export default function Expenses() {
                     <ExpensesEditModal
                         open={editModalOpen}
                         handleClose={() => setEditModalOpen(false)}
-                        // onSubmit={handleUpdateExpense}
+                        expense={selectedExpense} // Pass selected expense data
+                        onUpdate={handleExpenseUpdate}
                     />
                 )}
             </Grid>

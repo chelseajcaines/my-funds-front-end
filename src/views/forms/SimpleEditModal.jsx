@@ -174,7 +174,9 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, budgets }, r
                                         onChange={(newValue) => {
                                             if (newValue) {
                                                 // Format for DB storage (YYYY-MM-DD)
+                                                console.log(format);
                                                 const formattedDate = format(newValue, 'yyyy-MM-dd');
+                                                console.log('Formatted Date:', formattedDate);
                                                 formik.setFieldValue('date', formattedDate);
                                             } else {
                                                 formik.setFieldValue('date', '');
@@ -225,7 +227,7 @@ Body.propTypes = {
 
 // ==============================|| SIMPLE MODAL ||============================== //
 
-export default function SimpleEditModal({ open, handleClose, onSubmit, budgets }) {
+export default function SimpleEditModal({ open, handleClose, onSubmit, budget }) {
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
 
@@ -235,10 +237,15 @@ export default function SimpleEditModal({ open, handleClose, onSubmit, budgets }
                 modalStyle={modalStyle}
                 handleClose={handleClose}
                 onSubmit={(name, amount, time, date) => {
-                    onSubmit(name, amount, time, date);
+                    onSubmit({
+                        name,
+                        amount,
+                        time,
+                        date
+                    });
                     handleClose();
                 }}
-                budgets={budgets}
+                budgets={budget}
             />
         </Modal>
     );
@@ -248,5 +255,5 @@ SimpleEditModal.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    budgets: PropTypes.object
+    budget: PropTypes.object
 };
