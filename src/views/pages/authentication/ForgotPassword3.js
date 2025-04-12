@@ -45,7 +45,7 @@ const ForgotPassword = () => {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Typography variant="caption" fontSize="16px" textAlign="center">
-                                                    Enter your email address below and we&apos;ll send you password reset OTP.
+                                                    Enter your email address below and we&apos;ll send you a password reset link.
                                                 </Typography>
                                             </Grid>
                                         </Grid>

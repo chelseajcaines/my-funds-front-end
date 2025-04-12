@@ -71,7 +71,7 @@ const AuthResetPassword = ({ ...others }) => {
                 submit: null
             }}
             validationSchema={Yup.object().shape({
-                password: Yup.string().max(255).required('Password is required'),
+                password: Yup.string().min(6, 'Password must be at least 6 characters').max(255).required('Password is required'),
                 confirmPassword: Yup.string()
                     .required('Confirm Password is required')
                     .test('confirmPassword', 'Both Password must match!', (confirmPassword, yup) => yup.parent.password === confirmPassword)

@@ -74,9 +74,9 @@ const JWTRegister = ({ ...others }) => {
         <>
             <Grid container direction="column" justifyContent="center" spacing={2}>
                 <Grid item xs={12} container alignItems="center" justifyContent="center">
-                    <Box sx={{ mb: 2 }}>
+                    {/* <Box sx={{ mb: 2 }}>
                         <Typography variant="subtitle1">Sign up with Email address</Typography>
-                    </Box>
+                    </Box> */}
                 </Grid>
             </Grid>
 
@@ -89,6 +89,8 @@ const JWTRegister = ({ ...others }) => {
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
+                    firstName: Yup.string().required('First name is required'),
+                    lastName: Yup.string().required('Last name is required'),
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                     password: Yup.string().max(255).required('Password is required')
                 })}
@@ -137,6 +139,8 @@ const JWTRegister = ({ ...others }) => {
                                     value={values.firstName}
                                     onBlur={handleBlur}
                                     onChange={handleChange}
+                                    error={Boolean(touched.firstName && errors.firstName)}
+                                    helperText={touched.firstName && errors.firstName}
                                     sx={{ ...theme.typography.customInput }}
                                 />
                             </Grid>
@@ -150,6 +154,8 @@ const JWTRegister = ({ ...others }) => {
                                     value={values.lastName}
                                     onBlur={handleBlur}
                                     onChange={handleChange}
+                                    error={Boolean(touched.lastName && errors.lastName)}
+                                    helperText={touched.lastName && errors.lastName}
                                     sx={{ ...theme.typography.customInput }}
                                 />
                             </Grid>
@@ -231,7 +237,7 @@ const JWTRegister = ({ ...others }) => {
                             </FormControl>
                         )}
 
-                        <Grid container alignItems="center" justifyContent="space-between">
+                        {/* <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
                                 <FormControlLabel
                                     control={
@@ -252,7 +258,7 @@ const JWTRegister = ({ ...others }) => {
                                     }
                                 />
                             </Grid>
-                        </Grid>
+                        </Grid> */}
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>
                                 <FormHelperText error>{errors.submit}</FormHelperText>

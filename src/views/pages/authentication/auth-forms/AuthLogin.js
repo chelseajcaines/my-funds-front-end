@@ -54,8 +54,8 @@ const JWTLogin = ({ loginProp, ...others }) => {
     return (
         <Formik
             initialValues={{
-                email: 'info@codedthemes.com',
-                password: '123456',
+                email: '',
+                password: '',
                 submit: null
             }}
             validationSchema={Yup.object().shape({
@@ -130,8 +130,8 @@ const JWTLogin = ({ loginProp, ...others }) => {
                         )}
                     </FormControl>
 
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
+                    <Grid container alignItems="center" justifyContent="right" paddingTop="10px">
+                        {/* <Grid item>
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -143,7 +143,7 @@ const JWTLogin = ({ loginProp, ...others }) => {
                                 }
                                 label="Keep me logged in"
                             />
-                        </Grid>
+                        </Grid> */}
                         <Grid item>
                             <Typography
                                 variant="subtitle1"

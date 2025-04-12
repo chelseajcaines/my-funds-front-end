@@ -1,5 +1,5 @@
 import dashboard from './dashboard';
-// import finances from './finances';
+import finances from './finances';
 
 // ==============================|| MENU ITEMS ||============================== //
 

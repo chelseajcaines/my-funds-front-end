@@ -9,7 +9,7 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from './auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-// import AuthFooter from 'ui-component/cards/AuthFooter';
+import AuthFooter from 'ui-component/cards/AuthFooter';
 import useAuth from 'hooks/useAuth';
 import { height, width } from '@mui/system';
 
@@ -49,14 +49,14 @@ const Login = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Hi, Welcome Back
+                                                        Welcome!
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
                                                         fontSize="16px"
                                                         textAlign={matchDownSM ? 'center' : 'inherit'}
                                                     >
-                                                        Enter your credentials to continue
+                                                        Login or Sign Up
                                                     </Typography>
                                                 </Stack>
                                             </Grid>
@@ -86,7 +86,7 @@ const Login = () => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-                    {/* <AuthFooter /> */}
+                    <AuthFooter />
                 </Grid>
             </Grid>
         </AuthWrapper1>

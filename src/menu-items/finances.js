@@ -20,14 +20,14 @@ const finances = {
     icon: icons.IconDashboard,
     type: 'group',
     children: [
-        {
-            id: 'budgets',
-            title: <FormattedMessage id="Budgets" />,
-            type: 'item',
-            url: '/budgets',
-            icon: BalanceOutlinedIcon,
-            breadcrumbs: false
-        },
+        // {
+        //     id: 'budgets',
+        //     title: <FormattedMessage id="Budgets" />,
+        //     type: 'item',
+        //     url: '/budgets',
+        //     icon: BalanceOutlinedIcon,
+        //     breadcrumbs: false
+        // },
         // {
         //     id: 'income',
         //     title: <FormattedMessage id="Income" />,
@@ -36,14 +36,14 @@ const finances = {
         //     icon: AttachMoneyOutlinedIcon,
         //     breadcrumbs: false
         // },
-        {
-            id: 'expenses',
-            title: <FormattedMessage id="Expenses" />,
-            type: 'item',
-            url: '/expenses',
-            icon: LocalMallOutlinedIcon,
-            breadcrumbs: false
-        }
+        // {
+        //     id: 'expenses',
+        //     title: <FormattedMessage id="Expenses" />,
+        //     type: 'item',
+        //     url: '/expenses',
+        //     icon: LocalMallOutlinedIcon,
+        //     breadcrumbs: false
+        // }
         // {
         //     id: 'savings',
         //     title: <FormattedMessage id="Savings" />,

@@ -50,7 +50,7 @@ const ResetPassword = () => {
                                                         fontSize="16px"
                                                         textAlign={{ xs: 'center', md: 'inherit' }}
                                                     >
-                                                        Please choose your new password
+                                                        Please enter your new password
                                                     </Typography>
                                                 </Stack>
                                             </Grid>

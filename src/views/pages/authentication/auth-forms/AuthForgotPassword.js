@@ -44,7 +44,7 @@ const AuthForgotPassword = ({ ...others }) => {
                         dispatch(
                             openSnackbar({
                                 open: true,
-                                message: 'Check mail for reset password link',
+                                message: 'Reset password link has been sent!',
                                 variant: 'alert',
                                 alert: {
                                     color: 'success'
@@ -69,7 +69,7 @@ const AuthForgotPassword = ({ ...others }) => {
             {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                 <form noValidate onSubmit={handleSubmit} {...others}>
                     <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                        <InputLabel htmlFor="outlined-adornment-email-forgot">Email Address / Username</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-email-forgot">Email Address</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-email-forgot"
                             type="email"
@@ -104,7 +104,7 @@ const AuthForgotPassword = ({ ...others }) => {
                                 variant="contained"
                                 color="secondary"
                             >
-                                Send Mail
+                                Send Email
                             </Button>
                         </AnimateButton>
                     </Box>
