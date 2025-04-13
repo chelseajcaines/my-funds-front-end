@@ -204,30 +204,25 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
                                 </LocalizationProvider>
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControl fullWidth error={formik.touched.payment && Boolean(formik.errors.payment)}>
-                                    <InputLabel>Payment Type</InputLabel>
-                                    <Select name="payment" value={formik.values.payment} onChange={formik.handleChange}>
-                                        <MenuItem value={PAYMENT_TYPE.CREDIT}>Credit</MenuItem>
-                                        <MenuItem value={PAYMENT_TYPE.DEBIT}>Debit</MenuItem>
-                                        <MenuItem value={PAYMENT_TYPE.CASH}>Cash</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{formik.touched.payment && formik.errors.payment}</FormHelperText>
-                                </FormControl>
+                                <InputLabel>Payment Type</InputLabel>
+                                <Select fullWidth name="payment" value={formik.values.payment} onChange={formik.handleChange}>
+                                    <MenuItem value={PAYMENT_TYPE.CREDIT}>Credit</MenuItem>
+                                    <MenuItem value={PAYMENT_TYPE.DEBIT}>Debit</MenuItem>
+                                    <MenuItem value={PAYMENT_TYPE.CASH}>Cash</MenuItem>
+                                </Select>
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControl fullWidth error={formik.touched.deduction && Boolean(formik.errors.deduction)}>
-                                    <InputLabel id="deduct-budget-label">Deduct from Budget</InputLabel>
-                                    <Select
-                                        labelId="deduct-budget-label"
-                                        id="deduction"
-                                        name="deduction"
-                                        value={formik.values.deduction}
-                                        onChange={formik.handleChange}
-                                    >
-                                        <MenuItem value={DEDUCT_BUDGET.NONE}>None</MenuItem>
-                                    </Select>
-                                    <FormHelperText>{formik.touched.deduction && formik.errors.deduction}</FormHelperText>
-                                </FormControl>
+                                <InputLabel id="deduct-budget-label">Deduct from Budget</InputLabel>
+                                <Select
+                                    fullWidth
+                                    labelId="deduct-budget-label"
+                                    id="deduction"
+                                    name="deduction"
+                                    value={formik.values.deduction}
+                                    onChange={formik.handleChange}
+                                >
+                                    <MenuItem value={DEDUCT_BUDGET.NONE}>None</MenuItem>
+                                </Select>
                             </Grid>
                         </Grid>
                     </CardContent>

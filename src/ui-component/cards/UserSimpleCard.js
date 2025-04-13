@@ -33,7 +33,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
         <Card
             sx={{
                 p: 2,
-                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : 'grey.50',
+                bgcolor: theme.palette.mode === ThemeMode.DARK ? 'background.default' : '#E3F2FD',
                 border: '1px solid',
                 borderColor: 'divider'
             }}
@@ -49,7 +49,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <Grid container alignItems="center" spacing={1}>
                         <Grid item sm zeroMinWidth>
                             <Typography variant="body2">Day 4</Typography>
@@ -63,7 +63,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                             <LinearProgress variant="determinate" value={80} color="primary" aria-label='"traffic progress"' />
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>

@@ -24,7 +24,11 @@ const SubCard = React.forwardRef(
             <Card ref={ref} sx={{ border: '1px solid', borderColor: 'divider', ':hover': { boxShadow: defaultShadow }, ...sx }} {...others}>
                 {/* card header and action */}
                 {!darkTitle && title && (
-                    <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h5">{title}</Typography>} action={secondary} />
+                    <CardHeader
+                        sx={{ p: 2.5, backgroundColor: '#b4dbf7' }}
+                        title={<Typography variant="h5">{title}</Typography>}
+                        action={secondary}
+                    />
                 )}
                 {darkTitle && title && (
                     <CardHeader sx={{ p: 2.5 }} title={<Typography variant="h4">{title}</Typography>} action={secondary} />
@@ -35,7 +39,7 @@ const SubCard = React.forwardRef(
 
                 {/* card content */}
                 {content && (
-                    <CardContent sx={{ p: 2.5, ...contentSX }} className={contentClass || ''}>
+                    <CardContent sx={{ p: 2.5, ...contentSX, backgroundColor: '#f4f9fc' }} className={contentClass || ''}>
                         {children}
                     </CardContent>
                 )}

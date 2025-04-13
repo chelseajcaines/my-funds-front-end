@@ -74,7 +74,7 @@ export const JWTProvider = ({ children }) => {
                 }
             });
         } catch (err) {
-            throw new Error(err.response?.data?.message || 'Login failed');
+            throw new Error(err.response?.data?.message || 'Invalid email or password.');
         }
     };
 

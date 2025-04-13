@@ -179,10 +179,10 @@ export default function Expenses() {
                     <TableContainer>
                         <Table sx={{ minWidth: 350 }} aria-label="simple table">
                             <TableHead>
-                                <TableRow>
+                                <TableRow sx={{ backgroundColor: '#E3F2FD' }}>
                                     <TableCell sx={{ pl: 3 }}>Category</TableCell>
                                     <TableCell align="center">Location</TableCell>
-                                    <TableCell align="center">Amount</TableCell>
+                                    <TableCell align="center">Amount ($)</TableCell>
                                     <TableCell align="center">Date</TableCell>
                                     <TableCell align="center">Payment Type</TableCell>
                                     <TableCell align="center">Budget Deduction</TableCell>
