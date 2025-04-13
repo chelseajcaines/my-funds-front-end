@@ -11,6 +11,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import SimpleModal from 'views/forms/SimpleModal';
 import EditMenu from './EditMenu';
+import { fontSize } from '@mui/system';
 
 // ===============================|| UI CARDS ||=============================== //
 

@@ -91,7 +91,11 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
             <MainCard
                 sx={{
                     position: 'absolute',
-                    width: { xs: 280, lg: 650 },
+                    width: {
+                        xs: 280,
+                        sm: 500,
+                        lg: 650
+                    },
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)'

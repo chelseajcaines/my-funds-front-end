@@ -175,7 +175,7 @@ export default function Expenses() {
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
-                <MainCard title="Expenses" content={false} secondary={<ExpensesModal onSubmit={handleExpenseSubmit} />}>
+                <MainCard title="Expenses" secondary={<ExpensesModal onSubmit={handleExpenseSubmit} />}>
                     <TableContainer>
                         <Table sx={{ minWidth: 350 }} aria-label="simple table">
                             <TableHead>
@@ -185,7 +185,7 @@ export default function Expenses() {
                                     <TableCell align="center">Amount ($)</TableCell>
                                     <TableCell align="center">Date</TableCell>
                                     <TableCell align="center">Payment Type</TableCell>
-                                    <TableCell align="center">Budget Deduction</TableCell>
+                                    {/* <TableCell align="center">Budget Deduction</TableCell> */}
                                     <TableCell align="center" sx={{ pr: 3 }}>
                                         Action
                                     </TableCell>
@@ -203,7 +203,7 @@ export default function Expenses() {
                                         <TableCell align="center">
                                             <Chip chipcolor={expense.statuscolor} label={expense.payment} size="small" />
                                         </TableCell>
-                                        <TableCell align="center">{expense.deduction}</TableCell>
+                                        {/* <TableCell align="center">{expense.deduction}</TableCell> */}
                                         <TableCell align="center" sx={{ pr: 3 }}>
                                             <Stack direction="row" justifyContent="center" alignItems="center">
                                                 <IconButton
@@ -229,6 +229,7 @@ export default function Expenses() {
                             ))}
                         </Table>
                     </TableContainer>
+
                     {/* <CardActions sx={{ justifyContent: 'flex-end' }}>
                         <Button variant="text" size="small">
                             View all Expenses

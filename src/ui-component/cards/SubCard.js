@@ -26,7 +26,11 @@ const SubCard = React.forwardRef(
                 {!darkTitle && title && (
                     <CardHeader
                         sx={{ p: 2.5, backgroundColor: '#b4dbf7' }}
-                        title={<Typography variant="h5">{title}</Typography>}
+                        title={
+                            <Typography variant="h3" color="#2259a5">
+                                {title}
+                            </Typography>
+                        }
                         action={secondary}
                     />
                 )}

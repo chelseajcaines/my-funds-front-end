@@ -99,7 +99,11 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
             <MainCard
                 sx={{
                     position: 'absolute',
-                    width: { xs: 280, lg: 650 },
+                    width: {
+                        xs: 280,
+                        sm: 500,
+                        lg: 650
+                    },
                     maxHeight: '80vh', // Limits the modal height to 80% of the viewport height
                     overflowY: 'auto', // Enables scrolling if content overflows
                     top: '50%',
@@ -209,7 +213,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     <MenuItem value={PAYMENT_TYPE.CASH}>Cash</MenuItem>
                                 </Select>
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <InputLabel>Deduct from Budget</InputLabel>
                                 <Select
                                     fullWidth
@@ -223,7 +227,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 >
                                     <MenuItem value={DEDUCT_BUDGET.NONE}>None</MenuItem>
                                 </Select>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </CardContent>
                     <Divider />
