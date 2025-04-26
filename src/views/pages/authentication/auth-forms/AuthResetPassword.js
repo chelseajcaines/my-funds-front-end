@@ -4,6 +4,8 @@ import axios from 'axios'; // Make sure to import axios
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
+import { openSnackbar } from 'store/slices/snackbar';
+import { useDispatch } from 'store';
 import {
     Box,
     Button,
@@ -39,6 +41,7 @@ const AuthResetPassword = ({ ...others }) => {
     const [strength, setStrength] = React.useState(0);
     const [level, setLevel] = React.useState();
     const location = useLocation(); // Get location to extract token
+    const dispatch = useDispatch();
     const navigate = useNavigate(); // Use navigate to redirect after successful reset
 
     const handleClickShowPassword = () => {
@@ -78,6 +81,8 @@ const AuthResetPassword = ({ ...others }) => {
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
+                    console.log('Token:', token);
+                    console.log('New Password:', values.password);
                     // Send a POST request to reset the password
                     const response = await axios.post('http://localhost:5001/api/auth/reset-password', {
                         token: token, // Include the reset token
@@ -88,8 +93,20 @@ const AuthResetPassword = ({ ...others }) => {
                     if (response.data) {
                         setStatus({ success: true });
                         setSubmitting(false);
-                        // Navigate to login page or show a success message
-                        navigate('/login', { replace: true });
+                        dispatch(
+                            openSnackbar({
+                                open: true,
+                                message: 'Password has been successfully reset!',
+                                variant: 'alert',
+                                alert: {
+                                    color: 'success'
+                                },
+                                close: false
+                            })
+                        );
+                        setTimeout(() => {
+                            navigate('/login', { replace: true });
+                        }, 1500);
                     }
                 } catch (err) {
                     console.error(err);
