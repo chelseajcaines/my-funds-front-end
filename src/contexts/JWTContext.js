@@ -42,7 +42,7 @@ export const JWTProvider = ({ children }) => {
         const init = async () => {
             try {
                 console.log('Starting session validation...');
-                const response = await axios.get('http://localhost:5002/api/user/validate', { withCredentials: true });
+                const response = await axios.get('http://localhost:5001/api/user/validate', { withCredentials: true });
                 console.log('Response from /api/user/validate:', response.data);
                 const { user } = response.data;
                 dispatch({
