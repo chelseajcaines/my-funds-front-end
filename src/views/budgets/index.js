@@ -22,7 +22,7 @@ const Budgets = () => {
     useEffect(() => {
         const fetchBudgets = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/budget', {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/budget`, {
                     withCredentials: true // Ensures JWT token is sent with the request
                 });
 
@@ -39,7 +39,7 @@ const Budgets = () => {
     const handleBudgetSubmit = async (name, amount, time, date) => {
         try {
             const response = await axios.post(
-                'http://localhost:5001/api/budget',
+                `${process.env.REACT_APP_API_URL}/api/budget`,
                 { name, amount, time, date },
                 { withCredentials: true } // Ensures cookies are sent with the request
             );
@@ -60,12 +60,12 @@ const Budgets = () => {
         console.log('Deleting budget with id:', id); // Log the budget ID being deleted
 
         try {
-            await axios.delete(`http://localhost:5001/api/budget/${id}`, {
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/budget/${id}`, {
                 withCredentials: true
             });
 
             // Re-fetch budgets after successful deletion
-            const response = await axios.get('http://localhost:5001/api/budget', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/budget`, {
                 withCredentials: true
             });
 
@@ -85,7 +85,7 @@ const Budgets = () => {
             const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
 
             const response = await axios.put(
-                `http://localhost:5001/api/budget/${id}`,
+                `${process.env.REACT_APP_API_URL}/api/budget/${id}`,
                 {
                     name,
                     amount,
@@ -98,7 +98,7 @@ const Budgets = () => {
             console.log('Budget updated:', response.data);
 
             // Option 1: Refresh the list
-            const fetchUpdatedBudget = await axios.get('http://localhost:5001/api/budget', {
+            const fetchUpdatedBudget = await axios.get(`${process.env.REACT_APP_API_URL}/api/budget`, {
                 withCredentials: true
             });
 

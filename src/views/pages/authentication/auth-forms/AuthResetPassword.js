@@ -82,7 +82,7 @@ const AuthResetPassword = ({ ...others }) => {
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
                     // Send a POST request to reset the password
-                    const response = await axios.post('http://localhost:5001/api/auth/reset-password', {
+                    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/reset-password`, {
                         token: token, // Include the reset token
                         newPassword: values.password // Send the new password
                     });

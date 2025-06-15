@@ -40,7 +40,7 @@ export default function Expenses() {
     useEffect(() => {
         const fetchExpense = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/expense', {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/expense`, {
                     withCredentials: true // Ensures JWT token is sent with the request
                 });
 
@@ -74,7 +74,7 @@ export default function Expenses() {
 
         try {
             const response = await axios.post(
-                'http://localhost:5001/api/expense',
+                `${process.env.REACT_APP_API_URL}/api/expense`,
                 {
                     category,
                     location,
@@ -113,11 +113,11 @@ export default function Expenses() {
         console.log('Deleting expense with id:', id); // Log the budget ID being deleted
 
         try {
-            await axios.delete(`http://localhost:5001/api/expense/${id}`, {
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/expense/${id}`, {
                 withCredentials: true
             });
 
-            const response = await axios.get('http://localhost:5001/api/expense', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/expense`, {
                 withCredentials: true
             });
 
@@ -140,7 +140,7 @@ export default function Expenses() {
             const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
 
             const response = await axios.put(
-                `http://localhost:5001/api/expense/${id}`,
+                `${process.env.REACT_APP_API_URL}/api/expense/${id}`,
                 {
                     category,
                     location,
@@ -155,7 +155,7 @@ export default function Expenses() {
             console.log('Expense updated:', response.data);
 
             // Option 1: Refresh the list
-            const fetchUpdatedExpenses = await axios.get('http://localhost:5001/api/expense', {
+            const fetchUpdatedExpenses = await axios.get(`${process.env.REACT_APP_API_URL}/api/expense`, {
                 withCredentials: true
             });
 

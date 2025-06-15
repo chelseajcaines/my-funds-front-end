@@ -42,8 +42,7 @@ export const JWTProvider = ({ children }) => {
         const init = async () => {
             try {
                 console.log('Starting session validation...');
-                const response = await axios.get('http://localhost:5001/api/user/validate', { withCredentials: true });
-                console.log('Response from /api/user/validate:', response.data);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/user/validate`, { withCredentials: true });
                 const { user } = response.data;
                 dispatch({
                     type: LOGIN,
@@ -53,7 +52,6 @@ export const JWTProvider = ({ children }) => {
                     }
                 });
             } catch (err) {
-                console.error('Error validating session:', err);
                 dispatch({ type: LOGOUT });
             }
         };
@@ -63,7 +61,11 @@ export const JWTProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const response = await axios.post('http://localhost:5001/api/user/login', { email, password }, { withCredentials: true });
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_URL}/api/user/login`,
+                { email, password },
+                { withCredentials: true }
+            );
             const { serviceToken, user } = response.data;
             setSession(serviceToken);
             dispatch({
@@ -80,7 +82,7 @@ export const JWTProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await axios.post('http://localhost:5001/api/user/logout', {}, { withCredentials: true });
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/logout`, {}, { withCredentials: true });
         } catch (error) {
             console.error('Error logging out:', error);
         }
@@ -90,7 +92,7 @@ export const JWTProvider = ({ children }) => {
 
     const register = async (email, password, firstName, lastName) => {
         const id = chance.bb_pin();
-        const response = await axios.post('http://localhost:5001/api/user', {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/user`, {
             name: firstName + ' ' + lastName, // Combine firstName and lastName for the name field
             email,
             password
@@ -103,7 +105,7 @@ export const JWTProvider = ({ children }) => {
         console.log(email); // Log the email for debugging
 
         try {
-            const response = await axios.post('http://localhost:5001/api/auth/forgot-password', { email });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, { email });
             console.log(response.data); // Log the response to see if it's successful
             return response.data; // Return the data to handle it in your component
         } catch (error) {
