@@ -19,6 +19,7 @@
         "@mui/x-date-pickers": "^7.22.1",
         "@reduxjs/toolkit": "^1.9.5",
         "@tabler/icons-react": "^2.32.0",
+        "apexcharts": "^4.7.0",
         "axios": "1.4.0",
         "chance": "^1.1.11",
         "csstype": "^3.1.2",
