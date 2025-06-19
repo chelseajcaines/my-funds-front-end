@@ -124,7 +124,15 @@ const Budgets = () => {
                                     />
                                 }
                             >
-                                <UserSimpleCard amount={budget.amount} time={budget.time} date={budget.date} />
+                                <UserSimpleCard
+                                    amount={Number(budget.amount).toLocaleString('en-US', {
+                                        style: 'decimal',
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    })}
+                                    time={budget.time}
+                                    date={budget.date}
+                                />
                             </SubCard>
                         </Grid>
                     ))}
