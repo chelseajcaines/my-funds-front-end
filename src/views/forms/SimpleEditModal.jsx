@@ -59,10 +59,18 @@ const TIME_SPANS = {
 const validationSchema = yup.object({
     name: yup.string().required('Name is required.'),
     amount: yup
-        .number()
-        .typeError('Amount must be a number.')
-        .positive('Amount must be a positive number.')
-        .required('Max Amount is required.'),
+        .string()
+        .required('Max Amount is required.')
+        .test('is-valid-number', 'Amount must be a number.', (value) => {
+            if (!value) return false;
+            const parsed = parseFloat(value.replace(/,/g, ''));
+            return !isNaN(parsed);
+        })
+        .test('is-positive', 'Amount must be a positive number.', (value) => {
+            if (!value) return false;
+            const parsed = parseFloat(value.replace(/,/g, ''));
+            return parsed > 0;
+        }),
     time: yup
         .string()
         .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
@@ -76,13 +84,20 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, budgets }, r
     const formik = useFormik({
         initialValues: {
             name: budgets?.name || '',
-            amount: budgets?.amount || '',
+            amount: budgets?.amount
+                ? Number(budgets.amount).toLocaleString('en-US', {
+                      style: 'decimal',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                  })
+                : '',
             time: budgets?.time || TIME_SPANS.WEEKLY, // Set to a default valid value
             date: budgets?.date || ''
         },
         validationSchema,
         onSubmit: (values) => {
-            onSubmit(values.name, values.amount, values.time, values.date);
+            const cleanedAmount = parseFloat(values.amount.replace(/,/g, ''));
+            onSubmit(values.name, cleanedAmount, values.time, values.date);
         }
     });
 
@@ -136,8 +151,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, budgets }, r
 
                                         let numberValue = parseFloat(rawValue) / 100; // Convert to cents
                                         let formattedValue = numberValue.toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'USD',
+                                            style: 'decimal',
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         });
