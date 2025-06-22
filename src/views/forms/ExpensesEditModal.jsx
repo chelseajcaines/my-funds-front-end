@@ -64,10 +64,18 @@ const validationSchema = yup.object({
     category: yup.string().required('Category is required.'),
     location: yup.string().required('Location is required.'),
     amount: yup
-        .number()
-        .typeError('Amount must be a number.')
-        .positive('Amount must be a positive number.')
-        .required('Purchase Amount is required.'),
+        .string()
+        .required('Max Amount is required.')
+        .test('is-valid-number', 'Amount must be a number.', (value) => {
+            if (!value) return false;
+            const parsed = parseFloat(value.replace(/,/g, ''));
+            return !isNaN(parsed);
+        })
+        .test('is-positive', 'Amount must be a positive number.', (value) => {
+            if (!value) return false;
+            const parsed = parseFloat(value.replace(/,/g, ''));
+            return parsed > 0;
+        }),
     date: yup.date().typeError('Date is required.').required('Date is required.'),
     payment: yup
         .string()
@@ -86,18 +94,25 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
         initialValues: {
             category: expense?.category || '',
             location: expense?.location || '',
-            amount: expense?.amount || '',
+            amount: expense?.amount
+                ? Number(expense.amount).toLocaleString('en-US', {
+                      style: 'decimal',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                  })
+                : '',
             date: expense?.date || null,
             payment: expense?.payment || PAYMENT_TYPE.DEBIT,
             deduction: expense?.deduction || DEDUCT_BUDGET.NONE
         },
         validationSchema,
         onSubmit: (values) => {
+            const cleanedAmount = parseFloat(values.amount.replace(/,/g, ''));
             onSubmit({
                 id: expense?.id,
                 category: values.category,
                 location: values.location,
-                amount: values.amount,
+                amouont: cleanedAmount,
                 date: values.date,
                 payment: values.payment,
                 deduction: values.deduction
@@ -169,8 +184,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
 
                                         let numberValue = parseFloat(rawValue) / 100; // Convert to cents
                                         let formattedValue = numberValue.toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'USD',
+                                            style: 'decimal',
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         });
