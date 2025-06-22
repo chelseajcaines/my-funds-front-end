@@ -112,7 +112,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
                 id: expense?.id,
                 category: values.category,
                 location: values.location,
-                amouont: cleanedAmount,
+                amount: cleanedAmount,
                 date: values.date,
                 payment: values.payment,
                 deduction: values.deduction
@@ -180,16 +180,16 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
                                     value={formik.values.amount}
                                     onChange={(event) => {
                                         let rawValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
-                                        if (!rawValue) rawValue = '0'; // Ensure at least "0"
+                                        if (!rawValue) rawValue = '0'; // Ensure fallback value
 
-                                        let numberValue = parseFloat(rawValue) / 100; // Convert to cents
+                                        let numberValue = parseFloat(rawValue) / 100; // Convert to float
                                         let formattedValue = numberValue.toLocaleString('en-US', {
                                             style: 'decimal',
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         });
 
-                                        formik.setFieldValue('amount', formattedValue.replace('$', '')); // Remove dollar sign from value
+                                        formik.setFieldValue('amount', formattedValue);
                                     }}
                                     error={formik.touched.amount && Boolean(formik.errors.amount)}
                                     helperText={formik.touched.amount && formik.errors.amount}
