@@ -196,7 +196,13 @@ export default function Expenses() {
                                     <TableRow hover>
                                         <TableCell sx={{ pl: 3 }}>{expense.category}</TableCell>
                                         <TableCell align="center">{expense.location}</TableCell>
-                                        <TableCell align="center">{expense.amount}</TableCell>
+                                        <TableCell align="center">
+                                            {Number(expense.amount).toLocaleString('en-US', {
+                                                style: 'decimal',
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })}
+                                        </TableCell>
                                         <TableCell align="center">
                                             {expense.date ? format(new Date(expense.date), 'MMM. dd/yy') : ''}
                                         </TableCell>

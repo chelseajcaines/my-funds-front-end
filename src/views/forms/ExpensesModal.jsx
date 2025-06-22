@@ -64,10 +64,18 @@ const validationSchema = yup.object({
     category: yup.string().required('Category is required.'),
     location: yup.string().required('Location is required.'),
     amount: yup
-        .number()
-        .typeError('Amount must be a number.')
-        .positive('Amount must be a positive number.')
-        .required('Purchase Amount is required.'),
+        .string()
+        .required('Max Amount is required.')
+        .test('is-valid-number', 'Amount must be a number.', (value) => {
+            if (!value) return false;
+            const parsed = parseFloat(value.replace(/,/g, ''));
+            return !isNaN(parsed);
+        })
+        .test('is-positive', 'Amount must be a positive number.', (value) => {
+            if (!value) return false;
+            const parsed = parseFloat(value.replace(/,/g, ''));
+            return parsed > 0;
+        }),
     date: yup.date().typeError('Date is required.').required('Date is required.'),
     payment: yup
         .string()
@@ -90,7 +98,8 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
         },
         validationSchema,
         onSubmit: (values) => {
-            onSubmit(values.category, values.location, values.amount, values.date, values.payment, values.deduct);
+            const cleanedAmount = parseFloat(values.amount.replace(/,/g, ''));
+            onSubmit(values.category, values.location, cleanedAmount, values.date, values.payment, values.deduct);
         }
     });
 
@@ -153,18 +162,17 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     name="amount"
                                     value={formik.values.amount}
                                     onChange={(event) => {
-                                        let rawValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
-                                        if (!rawValue) rawValue = '0'; // Ensure at least "0"
+                                        let rawValue = event.target.value.replace(/\D/g, ''); // Strip all non-digits
+                                        if (!rawValue) rawValue = '0'; // Prevent empty value
 
-                                        let numberValue = parseFloat(rawValue) / 100; // Convert to cents
-                                        let formattedValue = numberValue.toLocaleString('en-US', {
-                                            style: 'currency',
-                                            currency: 'USD',
+                                        const numberValue = parseFloat(rawValue) / 100;
+                                        const formattedValue = numberValue.toLocaleString('en-US', {
+                                            style: 'decimal',
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         });
 
-                                        formik.setFieldValue('amount', formattedValue.replace('$', '')); // Remove dollar sign from value
+                                        formik.setFieldValue('amount', formattedValue);
                                     }}
                                     error={formik.touched.amount && Boolean(formik.errors.amount)}
                                     helperText={formik.touched.amount && formik.errors.amount}
