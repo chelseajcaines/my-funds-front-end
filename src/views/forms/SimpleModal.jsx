@@ -186,7 +186,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                         onChange={(newValue) => {
                                             if (newValue) {
                                                 // Format for DB storage (YYYY-MM-DD)
-                                                const formattedDate = format(newValue, 'yyyy-MM-dd');
+                                                const formattedDate = format(new Date(expense.date + 'T00:00:00'), 'MMM. dd/yy');
                                                 formik.setFieldValue('date', formattedDate);
                                             } else {
                                                 formik.setFieldValue('date', '');
