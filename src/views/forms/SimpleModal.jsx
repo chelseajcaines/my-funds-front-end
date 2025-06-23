@@ -181,18 +181,16 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 <InputLabel>Start Date</InputLabel>
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
-                                        // value={formik.values.date}
-                                        value={formik.values.date ? new Date(formik.values.date + 'T00:00:00') : null} // Convert string to Date for the DatePicker
+                                        value={formik.values.date ? new Date(formik.values.date + 'T00:00:00') : null}
                                         onChange={(newValue) => {
                                             if (newValue) {
-                                                // Format for DB storage (YYYY-MM-DD)
-                                                const formattedDate = format(new Date(expense.date + 'T00:00:00'), 'MMM. dd/yy');
+                                                // Format to a local date string for DB storage (YYYY-MM-DD)
+                                                const formattedDate = format(newValue, 'yyyy-MM-dd');
                                                 formik.setFieldValue('date', formattedDate);
                                             } else {
                                                 formik.setFieldValue('date', '');
                                             }
                                         }}
-                                        // onChange={(newValue) => formik.setFieldValue('date', newValue)}
                                         slotProps={{
                                             textField: {
                                                 fullWidth: true,
