@@ -182,7 +182,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
                                         // value={formik.values.date}
-                                        value={formik.values.date ? new Date(formik.values.date) : null} // Convert string to Date for the DatePicker
+                                        value={formik.values.date ? new Date(formik.values.date + 'T00:00:00') : null} // Convert string to Date for the DatePicker
                                         onChange={(newValue) => {
                                             if (newValue) {
                                                 // Format for DB storage (YYYY-MM-DD)
