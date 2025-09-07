@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 
 const AuthFooter = () => (
     <Stack direction="row" justifyContent="space-between">
-        <Box display="flex">
+        <Box display="flex" flexWrap="wrap">
             <Typography variant="subtitle2" paddingRight="3px">
                 Developed by Chelsea Caines |
             </Typography>
