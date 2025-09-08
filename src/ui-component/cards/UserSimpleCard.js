@@ -42,7 +42,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography fontSize={{ md: '2rem' }} fontWeight="600">
+                            <Typography fontSize={{ xs: '1.5', md: '2rem' }} fontWeight="600">
                                 ${amount}
                             </Typography>
                         </Grid>
