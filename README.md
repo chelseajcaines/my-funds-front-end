@@ -142,4 +142,11 @@ When a player clicks the Click Me button, they are able to view some information
 <hr/>
 
 Below is an image sample of Dark Theme.
- 
+
+<img src="https://github.com/chelseajcaines/balloon-pop-game/blob/main/src/assets/imgNineteen.PNG?raw=true"/>
+<br/>
+<hr/>
+
+Thank-you so much for reading! I hope you enjoy the game!
+
+<hr/>
