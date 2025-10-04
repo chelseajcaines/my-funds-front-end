@@ -4,14 +4,14 @@ import { lazy } from 'react';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-import { Navigate } from 'react-router-dom';
+//import { Navigate } from 'react-router-dom';
 
 // sample page routing
 // const Overview = Loadable(lazy(() => import('views/overview')));
 const Budgets = Loadable(lazy(() => import('views/budgets')));
-const Income = Loadable(lazy(() => import('views/income')));
+//const Income = Loadable(lazy(() => import('views/income')));
 const Expenses = Loadable(lazy(() => import('views/expenses')));
-const Savings = Loadable(lazy(() => import('views/savings')));
+//const Savings = Loadable(lazy(() => import('views/savings')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 

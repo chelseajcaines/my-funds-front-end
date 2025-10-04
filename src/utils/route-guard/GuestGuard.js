@@ -18,9 +18,12 @@ const GuestGuard = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isLoggedIn) {
-            navigate(DASHBOARD_PATH, { replace: true });
+        if (isLoggedIn && location.pathname.includes('reset-password')) {
+            navigate('/error', { replace: true });
         }
+        // if (isLoggedIn) {
+        //     navigate(DASHBOARD_PATH, { replace: true });
+        // }
     }, [isLoggedIn, navigate]);
 
     return children;
