@@ -16,13 +16,7 @@ const Logo = () => {
         <img
             src={theme.palette.mode === 'dark' ? logoDark : logo}
             alt="moniejar"
-            style={{
-                maxWidth: '200px',
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                margin: '0 auto'
-            }}
+            style="max-width: 200px; width: 100%; height: auto; display: block; margin: 0 auto;"
         />
         // <svg width="92" height="32" viewBox="0 0 92 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         //     <path
