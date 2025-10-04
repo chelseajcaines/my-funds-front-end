@@ -60,7 +60,30 @@ const AuthResetPassword = ({ ...others }) => {
 
     useEffect(() => {
         changePassword('123456');
-    }, []);
+        const verifyToken = async () => {
+            if (!token) {
+                alert('Invalid reset link.');
+                navigate('/error'); // Or redirect wherever you want
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/forgot-password/verify-token?token=${token}`);
+                const data = await response.json();
+
+                if (!data.valid) {
+                    alert('This reset link has expired or is invalid.');
+                    navigate('/error'); // Or show an inline error instead of redirect
+                }
+            } catch (error) {
+                console.error('Error verifying token:', error);
+                alert('Something went wrong. Please request a new reset link.');
+                navigate('/error');
+            }
+        };
+
+        verifyToken();
+    }, [token, navigate]);
 
     // Extract token from URL query params
     const queryParams = new URLSearchParams(location.search);
