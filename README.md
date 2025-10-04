@@ -27,3 +27,35 @@ The first project I built was also a personal finance tracking application, whic
 <span><img src="https://img.favpng.com/24/2/12/js-icon-logo-icon-react-icon-png-favpng-V4GKq1D3n3V713pYyrHeAERdm.jpg" alt="react" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://icon.icepanel.io/Technology/svg/Material-UI.svg" alt="MUI" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://1000logos.net/wp-content/uploads/2020/09/JavaScript-Logo-640x400.png" alt="javascript" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://cdn.freebiesupply.com/logos/large/2x/nodejs-icon-logo-png-transparent.png" alt="node" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://gimgs2.nohat.cc/thumb/f/640/sql-logo-illustration-microsoft-azure-sql-database-microsoft-sql-server-database-blue-text-logo-png--compngwingzoupl.jpg" alt="sql" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/768px-Amazon_Web_Services_Logo.svg.png?20170912170050" alt="aws" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://cloud-icons.onemodel.app/aws/Architecture-Service-Icons_01312023/Arch_Front-End-Web-Mobile/64/Arch_AWS-Amplify_64.svg" alt="amplify" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://cdn.worldvectorlogo.com/logos/aws-elastic-beanstalk-1.svg" alt="elasticbeanstalk" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://www.clipartmax.com/png/middle/464-4644561_by-saralex-aws-ec2-logo-png.png" alt="ec2" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/1/aws-rds-5qblz3nvfjmipvbykjpba.png/aws-rds-o6rtmustsgv3emnpozj4.png?_a=DATAg1AAZAA0" alt="rds" height="40" width="40" style="max-width: 100%;"/></span><span><img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/1/aws-route53-p3t47q0lx2lq1srdr8hx.png/aws-route53-fk4qtcwyolq0zlrfn93s8i.png?_a=DATAg1AAZAA0" alt="route53" height="40" width="40" style="max-width: 100%;"/></span>
 
 <hr/>
+
+### How to use
+
+The home page is where the user can login or create an account if they dont already have one.
+
+<img width="362" height="585" alt="login" src="https://github.com/user-attachments/assets/a0074021-5c71-4443-943f-53d6439c2c17" /><img width="332" height="485" alt="signup" src="https://github.com/user-attachments/assets/3476a693-37ec-43c2-a3d7-5a32e42173cd" />
+<br/>
+<hr/>
+
+If the user forgot their password or would like to change it, they can do so by clicking 'Forgot Passowrd' on the home page and will then be emailed a link to reset their password.
+
+<img width="322" height="585" alt="forgotpassword" src="https://github.com/user-attachments/assets/11e0d0d4-f023-4d65-8a40-4c4ca831c089" /><img width="322" height="360" alt="emaillink" src="https://github.com/user-attachments/assets/37338780-3bb1-46aa-b244-24100207a476" /><img width="322" height="631" alt="resetpassword" src="https://github.com/user-attachments/assets/e2bd769b-659a-470e-a9e2-bfa181a74e60" />
+<br/>
+<hr/>
+
+Once the user is logged in, they can now enter their budgets and expenses.
+
+#### Budgets
+
+<img width="1131" height="752" alt="image" src="https://github.com/user-attachments/assets/983b5b22-2314-4ecd-b61d-1c868c71f188" /><img width="645" height="757" alt="image" src="https://github.com/user-attachments/assets/7c3a64af-3230-4fdf-8c9f-be4f811f9976" /><img width="1125" height="747" alt="image" src="https://github.com/user-attachments/assets/b125f9ba-c08c-4f46-8c08-fab2e4e4719e" />
+
+<br/>
+
+#### Expenses
+
+<img width="1125" height="736" alt="image" src="https://github.com/user-attachments/assets/f913def4-9735-4c1d-aad7-4516a8e44fab" /><img width="648" height="760" alt="image" src="https://github.com/user-attachments/assets/6edeb593-c2bd-4498-a5cb-c9ab2fea18ba" /><img width="1128" height="765" alt="image" src="https://github.com/user-attachments/assets/63942e52-a463-4794-8ba1-24f02100f572" />
+
+
+
+
+
+
