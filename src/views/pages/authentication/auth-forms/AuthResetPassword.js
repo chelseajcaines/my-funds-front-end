@@ -60,69 +60,50 @@ const AuthResetPassword = ({ ...others }) => {
         setLevel(strengthColor(temp));
     };
 
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token');
+
     useEffect(() => {
+        changePassword('123456');
         changePassword('123456');
         const verifyToken = async () => {
             if (!token) {
                 alert('Invalid reset link.');
-<<<<<<< HEAD
-<<<<<<< HEAD
-                navigate('/error'); // Or redirect wherever you want
-=======
-                navigate('/error', { replace: true });
->>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
-=======
-                navigate('/error'); // Or redirect wherever you want
->>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
+                navigate('/login', { replace: true });
                 return;
             }
 
             try {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
-                const response = await fetch(`/api/forgot-password/verify-token?token=${token}`);
-                const data = await response.json();
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/forgot-password/verify-token?token=${token}`);
+                const data = response.data;
 
-                if (!data.valid) {
+                if (data.valid) {
+                    setIsValidToken(true);
+                } else {
                     alert('This reset link has expired or is invalid.');
-                    navigate('/error'); // Or show an inline error instead of redirect
-<<<<<<< HEAD
-=======
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/verify-reset-token/${token}`);
-
-                const data = await response.json();
-
-                if (!data.valid) {
-                    alert('This reset link has expired or is invalid.');
-                    navigate('/error', { replace: true });
-                    return;
->>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
-=======
->>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
+                    navigate('/login', { replace: true });
                 }
             } catch (error) {
                 console.error('Error verifying token:', error);
                 alert('Something went wrong. Please request a new reset link.');
-<<<<<<< HEAD
-<<<<<<< HEAD
-                navigate('/error');
-=======
-                navigate('/error', { replace: true });
->>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
-=======
-                navigate('/error');
->>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
+                navigate('/login', { replace: true });
+            } finally {
+                setCheckingToken(false);
             }
         };
 
         verifyToken();
     }, [token, navigate]);
 
-    // Extract token from URL query params
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token'); // Make sure to handle if token is null
+    // Show a simple loading message while checking the token
+    if (checkingToken) {
+        return <Typography variant="h6">Verifying reset link...</Typography>;
+    }
+
+    // If token is invalid, don’t render the form
+    if (!isValidToken) {
+        return null;
+    }
 
     return (
         <Formik
