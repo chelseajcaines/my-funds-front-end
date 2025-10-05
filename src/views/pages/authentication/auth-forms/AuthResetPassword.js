@@ -40,6 +40,8 @@ const AuthResetPassword = ({ ...others }) => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [strength, setStrength] = React.useState(0);
     const [level, setLevel] = React.useState();
+    const [isValidToken, setIsValidToken] = React.useState(false);
+    const [checkingToken, setCheckingToken] = React.useState(true); // new loading state
     const location = useLocation(); // Get location to extract token
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Use navigate to redirect after successful reset
@@ -58,48 +60,55 @@ const AuthResetPassword = ({ ...others }) => {
         setLevel(strengthColor(temp));
     };
 
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
-
     useEffect(() => {
+        changePassword('123456');
         const verifyToken = async () => {
             if (!token) {
                 alert('Invalid reset link.');
-                navigate('/login', { replace: true });
+<<<<<<< HEAD
+                navigate('/error'); // Or redirect wherever you want
+=======
+                navigate('/error', { replace: true });
+>>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
                 return;
             }
 
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/forgot-password/verify-token?token=${token}`);
-                const data = response.data;
+<<<<<<< HEAD
+                const response = await fetch(`/api/forgot-password/verify-token?token=${token}`);
+                const data = await response.json();
 
-                if (data.valid) {
-                    setIsValidToken(true);
-                } else {
+                if (!data.valid) {
                     alert('This reset link has expired or is invalid.');
-                    navigate('/login', { replace: true });
+                    navigate('/error'); // Or show an inline error instead of redirect
+=======
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/verify-reset-token/${token}`);
+
+                const data = await response.json();
+
+                if (!data.valid) {
+                    alert('This reset link has expired or is invalid.');
+                    navigate('/error', { replace: true });
+                    return;
+>>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
                 }
             } catch (error) {
                 console.error('Error verifying token:', error);
                 alert('Something went wrong. Please request a new reset link.');
-                navigate('/login', { replace: true });
-            } finally {
-                setCheckingToken(false);
+<<<<<<< HEAD
+                navigate('/error');
+=======
+                navigate('/error', { replace: true });
+>>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
             }
         };
 
         verifyToken();
     }, [token, navigate]);
 
-    // Show a simple loading message while checking the token
-    if (checkingToken) {
-        return <Typography variant="h6">Verifying reset link...</Typography>;
-    }
-
-    // If token is invalid, don’t render the form
-    if (!isValidToken) {
-        return null;
-    }
+    // Extract token from URL query params
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token'); // Make sure to handle if token is null
 
     return (
         <Formik
