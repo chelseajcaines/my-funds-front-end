@@ -66,21 +66,29 @@ const AuthResetPassword = ({ ...others }) => {
             if (!token) {
                 alert('Invalid reset link.');
 <<<<<<< HEAD
+<<<<<<< HEAD
                 navigate('/error'); // Or redirect wherever you want
 =======
                 navigate('/error', { replace: true });
 >>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
+=======
+                navigate('/error'); // Or redirect wherever you want
+>>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
                 return;
             }
 
             try {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
                 const response = await fetch(`/api/forgot-password/verify-token?token=${token}`);
                 const data = await response.json();
 
                 if (!data.valid) {
                     alert('This reset link has expired or is invalid.');
                     navigate('/error'); // Or show an inline error instead of redirect
+<<<<<<< HEAD
 =======
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/verify-reset-token/${token}`);
 
@@ -91,15 +99,21 @@ const AuthResetPassword = ({ ...others }) => {
                     navigate('/error', { replace: true });
                     return;
 >>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
+=======
+>>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
                 }
             } catch (error) {
                 console.error('Error verifying token:', error);
                 alert('Something went wrong. Please request a new reset link.');
 <<<<<<< HEAD
+<<<<<<< HEAD
                 navigate('/error');
 =======
                 navigate('/error', { replace: true });
 >>>>>>> parent of e1c730e (Revert "Update AuthResetPassword.js")
+=======
+                navigate('/error');
+>>>>>>> parent of e7213e9 (Update AuthResetPassword.js)
             }
         };
 
