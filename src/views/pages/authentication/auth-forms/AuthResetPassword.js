@@ -40,8 +40,6 @@ const AuthResetPassword = ({ ...others }) => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [strength, setStrength] = React.useState(0);
     const [level, setLevel] = React.useState();
-    const [isValidToken, setIsValidToken] = React.useState(false);
-    const [checkingToken, setCheckingToken] = React.useState(true); // new loading state
     const location = useLocation(); // Get location to extract token
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Use navigate to redirect after successful reset
@@ -67,24 +65,26 @@ const AuthResetPassword = ({ ...others }) => {
         const verifyToken = async () => {
             if (!token) {
                 alert('Invalid reset link.');
-                navigate('/error', { replace: true });
+                navigate('/login', { replace: true });
                 return;
             }
 
             try {
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/verify-reset-token/${token}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/forgot-password/verify-token?token=${token}`);
+                const data = response.data;
 
-                const data = await response.json();
-
-                if (!data.valid) {
+                if (data.valid) {
+                    setIsValidToken(true);
+                } else {
                     alert('This reset link has expired or is invalid.');
-                    navigate('/error', { replace: true });
-                    return;
+                    navigate('/login', { replace: true });
                 }
             } catch (error) {
                 console.error('Error verifying token:', error);
                 alert('Something went wrong. Please request a new reset link.');
-                navigate('/error', { replace: true });
+                navigate('/login', { replace: true });
+            } finally {
+                setCheckingToken(false);
             }
         };
 
