@@ -40,8 +40,6 @@ const AuthResetPassword = ({ ...others }) => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [strength, setStrength] = React.useState(0);
     const [level, setLevel] = React.useState();
-    const [isValidToken, setIsValidToken] = React.useState(false);
-    const [checkingToken, setCheckingToken] = React.useState(true); // new loading state
     const location = useLocation(); // Get location to extract token
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Use navigate to redirect after successful reset
@@ -65,45 +63,7 @@ const AuthResetPassword = ({ ...others }) => {
 
     useEffect(() => {
         changePassword('123456');
-        changePassword('123456');
-        const verifyToken = async () => {
-            if (!token) {
-                alert('Invalid reset link.');
-                navigate('/login', { replace: true });
-                return;
-            }
-
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/forgot-password/verify-token?token=${token}`);
-                const data = response.data;
-
-                if (data.valid) {
-                    setIsValidToken(true);
-                } else {
-                    alert('This reset link has expired or is invalid.');
-                    navigate('/login', { replace: true });
-                }
-            } catch (error) {
-                console.error('Error verifying token:', error);
-                alert('Something went wrong. Please request a new reset link.');
-                navigate('/login', { replace: true });
-            } finally {
-                setCheckingToken(false);
-            }
-        };
-
-        verifyToken();
-    }, [token, navigate]);
-
-    // Show a simple loading message while checking the token
-    if (checkingToken) {
-        return <Typography variant="h6">Verifying reset link...</Typography>;
-    }
-
-    // If token is invalid, don’t render the form
-    if (!isValidToken) {
-        return null;
-    }
+    }, []);
 
     return (
         <Formik
