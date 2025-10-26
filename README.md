@@ -44,18 +44,47 @@ If the user forgot their password or would like to change it, they can do so by 
 
 Once the user is logged in, they can now enter their budgets and expenses.
 
-#### Budgets
+<hr/>
 
-<img width="1131" height="752" alt="image" src="https://github.com/user-attachments/assets/983b5b22-2314-4ecd-b61d-1c868c71f188" /><img width="645" height="757" alt="image" src="https://github.com/user-attachments/assets/7c3a64af-3230-4fdf-8c9f-be4f811f9976" /><img width="1125" height="747" alt="image" src="https://github.com/user-attachments/assets/b125f9ba-c08c-4f46-8c08-fab2e4e4719e" />
+Simply click the plus button to pull up a model to enter your budget information.
+
+<img width="800" height="522" alt="image" src="https://github.com/user-attachments/assets/983b5b22-2314-4ecd-b61d-1c868c71f188" />
+
+<hr/>
+
+Once information is entered, click submit to save.
+
+<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/7c3a64af-3230-4fdf-8c9f-be4f811f9976" />
+
+<hr/>
+
+Budget is then displayed and can be edited or deleted by the clicking the three dot menu.
+
+<img width="800" height="522" alt="image" src="https://github.com/user-attachments/assets/b125f9ba-c08c-4f46-8c08-fab2e4e4719e" />
 
 <br/>
+<hr/>
 
-#### Expenses
+For expenses, it's just the same process.
 
-<img width="1125" height="736" alt="image" src="https://github.com/user-attachments/assets/f913def4-9735-4c1d-aad7-4516a8e44fab" /><img width="648" height="760" alt="image" src="https://github.com/user-attachments/assets/6edeb593-c2bd-4498-a5cb-c9ab2fea18ba" /><img width="1128" height="765" alt="image" src="https://github.com/user-attachments/assets/63942e52-a463-4794-8ba1-24f02100f572" />
+Simply click the plus button to pull up a model to enter your expense information.
 
+<img width="800" height="522" alt="image" src="https://github.com/user-attachments/assets/f913def4-9735-4c1d-aad7-4516a8e44fab" />
 
+<hr/>
 
+Once information is entered, click submit to save.
 
+<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/6edeb593-c2bd-4498-a5cb-c9ab2fea18ba" />
 
+<hr/>
 
+Expense is then displayed and can be edited or deleted by the clicking the pencil or trash can.
+
+<img width="800" height="522" alt="image" src="https://github.com/user-attachments/assets/63942e52-a463-4794-8ba1-24f02100f572" />
+
+<hr/>
+
+Thank-you so much for reading! Hope you enjoy the app!
+
+<hr/>
