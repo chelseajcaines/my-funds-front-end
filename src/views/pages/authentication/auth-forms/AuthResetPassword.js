@@ -44,6 +44,10 @@ const AuthResetPassword = ({ ...others }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Use navigate to redirect after successful reset
 
+    const [isVerifying, setIsVerifying] = useState(true);
+    const [tokenValid, setTokenValid] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -62,8 +66,45 @@ const AuthResetPassword = ({ ...others }) => {
     const token = queryParams.get('token');
 
     useEffect(() => {
+        const verifyToken = async () => {
+            try {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/auth/verify-reset-token?token=${token}`);
+                if (res.data.message === 'Token is valid') {
+                    setTokenValid(true);
+                } else {
+                    setErrorMessage('Invalid or expired token.');
+                }
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Invalid or expired token.');
+            } finally {
+                setIsVerifying(false);
+            }
+        };
+
+        if (token) {
+            verifyToken();
+        } else {
+            setErrorMessage('Missing reset token.');
+            setIsVerifying(false);
+        }
+
         changePassword('123456');
-    }, []);
+    }, [token]);
+
+    // If still verifying
+    if (isVerifying) {
+        return <Typography variant="h6">Verifying reset link...</Typography>;
+    }
+
+    // If token invalid or expired
+    if (!tokenValid) {
+        return (
+            <Typography variant="h6" color="error" align="center">
+                {errorMessage || 'Invalid or expired reset link.'}
+            </Typography>
+        );
+    }
 
     return (
         <Formik
