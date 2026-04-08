@@ -241,6 +241,8 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                         sm: 500,
                         lg: 650
                     },
+                    maxHeight: '80vh', // Limits the modal height to 80% of the viewport height
+                    overflowY: 'auto', // Enables scrolling if content overflows
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)'
