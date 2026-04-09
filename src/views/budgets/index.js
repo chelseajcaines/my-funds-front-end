@@ -36,11 +36,11 @@ const Budgets = () => {
         fetchBudgets();
     }, []); // Empty dependency array means this runs only once when the component mounts
 
-    const handleBudgetSubmit = async (name, amount, time, month, day, year) => {
+    const handleBudgetSubmit = async (name, amount, time, date) => {
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}/api/budget`,
-                { name, amount, time, month, day, year },
+                { name, amount, time, date },
                 { withCredentials: true } // Ensures cookies are sent with the request
             );
 
@@ -78,7 +78,7 @@ const Budgets = () => {
 
     const handleBudgetUpdate = async (updatedBudget) => {
         console.log('Updated Budget:', updatedBudget);
-        const { id, name, amount, time, month, day, year } = updatedBudget;
+        const { id, name, amount, time, date } = updatedBudget;
         console.log('Updating budget with Id:', id);
 
         try {
@@ -90,10 +90,7 @@ const Budgets = () => {
                     name,
                     amount,
                     time,
-                    month,
-                    day,
-                    year
-                    // date: formattedDate
+                    date: formattedDate
                 },
                 { withCredentials: true }
             );
@@ -134,10 +131,7 @@ const Budgets = () => {
                                         maximumFractionDigits: 2
                                     })}
                                     time={budget.time}
-                                    month={budget.month}
-                                    day={budget.day}
-                                    year={budget.year}
-                                    // date={budget.date}
+                                    date={budget.date}
                                 />
                             </SubCard>
                         </Grid>

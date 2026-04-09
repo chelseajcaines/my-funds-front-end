@@ -342,8 +342,8 @@ export default function SimpleModal({ onSubmit }) {
                 <Body
                     modalStyle={modalStyle}
                     handleClose={handleClose}
-                    onSubmit={(name, amount, time, month, day, year) => {
-                        onSubmit(name, amount, time, month, day, year);
+                    onSubmit={(name, amount, time, date) => {
+                        onSubmit(name, amount, time, date);
                         handleClose();
                     }}
                 />
