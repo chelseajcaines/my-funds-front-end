@@ -56,63 +56,26 @@ const TIME_SPANS = {
     YEARLY: 'Yearly'
 };
 
-const MONTH_SPANS = {
-    JANUARY: 'January',
-    FEBRUARY: 'February',
-    MARCH: 'March',
-    APRIL: 'April',
-    MAY: 'May',
-    JUNE: 'June',
-    JULY: 'July',
-    AUGUST: 'August',
-    SEPTEMBER: 'September',
-    OCTOBER: 'October',
-    NOVEMBER: 'November',
-    DECEMBER: 'December'
-};
+const months = [
+    { value: 1, label: 'January' },
+    { value: 2, label: 'February' },
+    { value: 3, label: 'March' },
+    { value: 4, label: 'April' },
+    { value: 5, label: 'May' },
+    { value: 6, label: 'June' },
+    { value: 7, label: 'July' },
+    { value: 8, label: 'August' },
+    { value: 9, label: 'September' },
+    { value: 10, label: 'October' },
+    { value: 11, label: 'November' },
+    { value: 12, label: 'December' }
+];
 
-const DAY_SPANS = {
-    ONE: '1',
-    TWO: '2',
-    THREE: '3',
-    FOUR: '4',
-    FIVE: '5',
-    SIX: '6',
-    SEVEN: '7',
-    EIGHT: '8',
-    NINE: '9',
-    TEN: '10',
-    ELEVEN: '11',
-    TWELVE: '12',
-    THIRTEEN: '13',
-    FOURTEEN: '14',
-    FIFTEEN: '15',
-    SIXTEEN: '16',
-    SEVENTEEN: '17',
-    EIGHTEEN: '18',
-    NINETEEN: '19',
-    TWENTY: '20',
-    TWENTYONE: '21',
-    TWENTYTWO: '22',
-    TWENTYTHREE: '23',
-    TWENTYFOUR: '24',
-    TWENTYFIVE: '25',
-    TWENTYSIX: '26',
-    TWENTYSEVEN: '27',
-    TWENTYEIGHT: '28',
-    TWENTYNINE: '29',
-    THIRTY: '30',
-    THIRTYONE: '31'
-};
+const years = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i);
 
-const YEAR_SPANS = {
-    TWENTYTWENTY: '2020',
-    TWENTYTWENTYONE: '2021',
-    TWENTYTWENTYTWO: '2022',
-    TWENTYTWENTYTHREE: '2023',
-    TWENTYTWENTYFOUR: '2024',
-    TWENTYTWENTYFIVE: '2025',
-    TWENTYTWENTYSIX: '2026'
+const getDaysInMonth = (month, year) => {
+    if (!month || !year) return 31;
+    return new Date(year, month, 0).getDate();
 };
 
 const validationSchema = yup.object({
@@ -133,81 +96,10 @@ const validationSchema = yup.object({
     time: yup
         .string()
         .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
-        .required('Time Span selection is required.'),
-    month: yup
-        .string()
-        .oneOf(
-            [
-                MONTH_SPANS.JANUARY,
-                MONTH_SPANS.FEBRUARY,
-                MONTH_SPANS.MARCH,
-                MONTH_SPANS.APRIL,
-                MONTH_SPANS.MAY,
-                MONTH_SPANS.JUNE,
-                MONTH_SPANS.JULY,
-                MONTH_SPANS.AUGUST,
-                MONTH_SPANS.SEPTEMBER,
-                MONTH_SPANS.OCTOBER,
-                MONTH_SPANS.NOVEMBER,
-                MONTH_SPANS.DECEMBER
-            ],
-            'Invalid selection for Month Span.'
-        )
-        .required('Month Span selection is required.'),
-    day: yup
-        .string()
-        .oneOf(
-            [
-                DAY_SPANS.ONE,
-                DAY_SPANS.TWO,
-                DAY_SPANS.THREE,
-                DAY_SPANS.FOUR,
-                DAY_SPANS.FIVE,
-                DAY_SPANS.SIX,
-                DAY_SPANS.SEVEN,
-                DAY_SPANS.EIGHT,
-                DAY_SPANS.NINE,
-                DAY_SPANS.TEN,
-                DAY_SPANS.ELEVEN,
-                DAY_SPANS.TWELVE,
-                DAY_SPANS.THIRTEEN,
-                DAY_SPANS.FOURTEEN,
-                DAY_SPANS.FIFTEEN,
-                DAY_SPANS.SIXTEEN,
-                DAY_SPANS.SEVENTEEN,
-                DAY_SPANS.EIGHTEEN,
-                DAY_SPANS.NINETEEN,
-                DAY_SPANS.TWENTY,
-                DAY_SPANS.TWENTYONE,
-                DAY_SPANS.TWENTYTWO,
-                DAY_SPANS.TWENTYTHREE,
-                DAY_SPANS.TWENTYFOUR,
-                DAY_SPANS.TWENTYFIVE,
-                DAY_SPANS.TWENTYSIX,
-                DAY_SPANS.TWENTYSEVEN,
-                DAY_SPANS.TWENTYEIGHT,
-                DAY_SPANS.TWENTYNINE,
-                DAY_SPANS.THIRTY,
-                DAY_SPANS.THIRTYONE
-            ],
-            'Invalid selection for Day Span.'
-        )
-        .required('Day Span selection is required.'),
-    year: yup
-        .string()
-        .oneOf(
-            [
-                YEAR_SPANS.TWENTYTWENTY,
-                YEAR_SPANS.TWENTYTWENTYONE,
-                YEAR_SPANS.TWENTYTWENTYTWO,
-                YEAR_SPANS.TWENTYTWENTYTHREE,
-                YEAR_SPANS.TWENTYTWENTYFOUR,
-                YEAR_SPANS.TWENTYTWENTYFIVE,
-                YEAR_SPANS.TWENTYTWENTYSIX
-            ],
-            'Invalid selection for Year Span.'
-        )
-        .required('Year Span selection is required.')
+        .required('Time selection is required.'),
+    month: yup.number().required('Month is required.'),
+    day: yup.number().required('Day is required.'),
+    year: yup.number().required('Year is required.')
     // date: yup.date().typeError('Date is required.').required('Start Date is required.')
 });
 
@@ -227,9 +119,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
         validationSchema,
         onSubmit: (values) => {
             const cleanedAmount = parseFloat(values.amount.replace(/,/g, ''));
-            onSubmit(values.name, cleanedAmount, values.time, values.month, values.day, values.year);
+            const formattedDate = `${values.year}-${String(values.month).padStart(2, '0')}-${String(values.day).padStart(2, '0')}`;
+            onSubmit(values.name, cleanedAmount, values.time, formattedDate);
         }
     });
+
+    const daysInMonth = getDaysInMonth(formik.values.month, formik.values.year);
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
     return (
         <div ref={ref} tabIndex={-1}>
@@ -319,68 +215,52 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                 <InputLabel>Start Date</InputLabel>
                                 <FormControl fullWidth error={formik.touched.month && Boolean(formik.errors.month)}>
                                     <Select
-                                        labelId="month-select"
-                                        id="month"
                                         name="month"
                                         value={formik.values.month}
-                                        onChange={formik.handleChange}
+                                        onChange={(e) => {
+                                            formik.handleChange(e);
+                                            formik.setFieldValue('day', '');
+                                        }}
+                                        displayEmpty
                                     >
-                                        <MenuItem value={MONTH_SPANS.JANUARY}>January</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.FEBRUARY}>February</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.MARCH}>March</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.APRIL}>April</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.MAY}>May</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.JUNE}>June</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.JULY}>July</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.AUGUST}>August</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.SEPTEMBER}>September</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.OCTOBER}>October</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.NOVEMBER}>November</MenuItem>
-                                        <MenuItem value={MONTH_SPANS.DECEMBER}>December</MenuItem>
+                                        <MenuItem value="">Month</MenuItem>
+                                        {months.map((month) => (
+                                            <MenuItem key={month.value} value={month.value}>
+                                                {month.label}
+                                            </MenuItem>
+                                        ))}
                                     </Select>
                                     {formik.touched.month && formik.errors.month && <FormHelperText>{formik.errors.month}</FormHelperText>}
                                 </FormControl>
                                 <FormControl fullWidth error={formik.touched.day && Boolean(formik.errors.day)}>
-                                    <Select
-                                        labelId="day-select"
-                                        id="day"
-                                        name="day"
-                                        value={formik.values.day}
-                                        onChange={formik.handleChange}
-                                    >
-                                        <MenuItem value={DAY_SPANS.ONE}>1</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWO}>2</MenuItem>
-                                        <MenuItem value={DAY_SPANS.THREE}>3</MenuItem>
-                                        <MenuItem value={DAY_SPANS.FOUR}>4</MenuItem>
-                                        <MenuItem value={DAY_SPANS.FIVE}>5</MenuItem>
-                                        <MenuItem value={DAY_SPANS.SIX}>6</MenuItem>
-                                        <MenuItem value={DAY_SPANS.SEVEN}>7</MenuItem>
-                                        <MenuItem value={DAY_SPANS.EIGHT}>8</MenuItem>
-                                        <MenuItem value={DAY_SPANS.NINE}>9</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TEN}>10</MenuItem>
-                                        <MenuItem value={DAY_SPANS.ELEVEN}>11</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWELVE}>12</MenuItem>
-                                        <MenuItem value={DAY_SPANS.THIRTEEN}>13</MenuItem>
-                                        <MenuItem value={DAY_SPANS.FOURTEEN}>14</MenuItem>
-                                        <MenuItem value={DAY_SPANS.FIFTEEN}>15</MenuItem>
-                                        <MenuItem value={DAY_SPANS.SIXTEEN}>16</MenuItem>
-                                        <MenuItem value={DAY_SPANS.SEVENTEEN}>17</MenuItem>
-                                        <MenuItem value={DAY_SPANS.EIGHTEEN}>18</MenuItem>
-                                        <MenuItem value={DAY_SPANS.NINETEEN}>19</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTY}>20</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYONE}>21</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYTWO}>22</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYTHREE}>23</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYFOUR}>24</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYFIVE}>25</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYSIX}>26</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYSEVEN}>27</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYEIGHT}>28</MenuItem>
-                                        <MenuItem value={DAY_SPANS.TWENTYNINE}>29</MenuItem>
-                                        <MenuItem value={DAY_SPANS.THIRTY}>30</MenuItem>
-                                        <MenuItem value={DAY_SPANS.THIRTYONE}>31</MenuItem>
+                                    <Select name="day" value={formik.values.day} onChange={formik.handleChange} displayEmpty>
+                                        <MenuItem value="">Day</MenuItem>
+                                        {days.map((day) => (
+                                            <MenuItem key={day} value={day}>
+                                                {day}
+                                            </MenuItem>
+                                        ))}
                                     </Select>
                                     {formik.touched.day && formik.errors.day && <FormHelperText>{formik.errors.day}</FormHelperText>}
+                                </FormControl>
+                                <FormControl fullWidth error={formik.touched.year && Boolean(formik.errors.year)}>
+                                    <Select
+                                        name="year"
+                                        value={formik.values.year}
+                                        onChange={(e) => {
+                                            formik.handleChange(e);
+                                            formik.setFieldValue('day', '');
+                                        }}
+                                        displayEmpty
+                                    >
+                                        <MenuItem value="">Year</MenuItem>
+                                        {years.map((year) => (
+                                            <MenuItem key={year} value={year}>
+                                                {year}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                    {formik.touched.year && formik.errors.year && <FormHelperText>{formik.errors.year}</FormHelperText>}
                                 </FormControl>
                                 {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DatePicker
@@ -462,8 +342,8 @@ export default function SimpleModal({ onSubmit }) {
                 <Body
                     modalStyle={modalStyle}
                     handleClose={handleClose}
-                    onSubmit={(name, amount, time, date) => {
-                        onSubmit(name, amount, time, date);
+                    onSubmit={(name, amount, time, month, day, year) => {
+                        onSubmit(name, amount, time, month, day, year);
                         handleClose();
                     }}
                 />

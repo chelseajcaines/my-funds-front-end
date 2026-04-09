@@ -36,11 +36,11 @@ const Budgets = () => {
         fetchBudgets();
     }, []); // Empty dependency array means this runs only once when the component mounts
 
-    const handleBudgetSubmit = async (name, amount, time, date) => {
+    const handleBudgetSubmit = async (name, amount, time, month, day, year) => {
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_URL}/api/budget`,
-                { name, amount, time, date },
+                { name, amount, time, month, day, year },
                 { withCredentials: true } // Ensures cookies are sent with the request
             );
 
@@ -78,11 +78,11 @@ const Budgets = () => {
 
     const handleBudgetUpdate = async (updatedBudget) => {
         console.log('Updated Budget:', updatedBudget);
-        const { id, name, amount, time, date } = updatedBudget;
+        const { id, name, amount, time, month, day, year } = updatedBudget;
         console.log('Updating budget with Id:', id);
 
         try {
-            const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
+            // const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
 
             const response = await axios.put(
                 `${process.env.REACT_APP_API_URL}/api/budget/${id}`,
@@ -90,7 +90,10 @@ const Budgets = () => {
                     name,
                     amount,
                     time,
-                    date: formattedDate
+                    month,
+                    day,
+                    year
+                    // date: formattedDate
                 },
                 { withCredentials: true }
             );
@@ -131,7 +134,10 @@ const Budgets = () => {
                                         maximumFractionDigits: 2
                                     })}
                                     time={budget.time}
-                                    date={budget.date}
+                                    month={budget.month}
+                                    day={budget.day}
+                                    year={budget.year}
+                                    // date={budget.date}
                                 />
                             </SubCard>
                         </Grid>
