@@ -90,7 +90,7 @@ const Budgets = () => {
                     name,
                     amount,
                     time,
-                    date: formattedDate
+                    date
                 },
                 { withCredentials: true }
             );

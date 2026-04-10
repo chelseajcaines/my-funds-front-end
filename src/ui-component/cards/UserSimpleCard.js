@@ -24,6 +24,11 @@ const DetailsWrapper = styled(Button)({
     }
 });
 
+const parseLocalDate = (dateString) => {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+};
+
 // ==============================|| USER SIMPLE CARD ||============================== //
 
 const UserSimpleCard = ({ amount, time, date }) => {
@@ -69,7 +74,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Start Date: {date ? format(new Date(date), 'MMM. dd/yy') : ''}</Typography>
+                            <Typography variant="h4">Start Date: {date ? format(parseLocalDate(date), 'MMM. dd/yy') : ''}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
