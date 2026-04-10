@@ -24,9 +24,24 @@ const DetailsWrapper = styled(Button)({
     }
 });
 
-const parseLocalDate = (dateString) => {
-    const [year, month, day] = dateString.split('-').map(Number);
-    return new Date(year, month - 1, day);
+const formatBudgetDate = (dateValue) => {
+    if (!dateValue) return '';
+
+    // Take only the YYYY-MM-DD part, even if backend sends full ISO datetime
+    const dateOnly = String(dateValue).slice(0, 10);
+
+    const parts = dateOnly.split('-');
+    if (parts.length !== 3) return '';
+
+    const [year, month, day] = parts.map(Number);
+
+    if (!year || !month || !day) return '';
+
+    const localDate = new Date(year, month - 1, day);
+
+    if (isNaN(localDate.getTime())) return '';
+
+    return format(localDate, 'MMM. dd/yy');
 };
 
 // ==============================|| USER SIMPLE CARD ||============================== //
@@ -74,7 +89,7 @@ const UserSimpleCard = ({ amount, time, date }) => {
                 <Grid item xs={12} alignItems="center">
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs zeroMinWidth>
-                            <Typography variant="h4">Start Date: {date ? format(parseLocalDate(date), 'MMM. dd/yy') : ''}</Typography>
+                            <Typography variant="h4">Start Date: {formatBudgetDate(date)}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
