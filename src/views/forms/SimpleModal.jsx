@@ -218,8 +218,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                         name="month"
                                         value={formik.values.month}
                                         onChange={(e) => {
-                                            formik.handleChange(e);
-                                            formik.setFieldValue('day', '');
+                                            const newMonth = e.target.value;
+                                            formik.setFieldValue('month', newMonth);
+
+                                            const maxDays = getDaysInMonth(newMonth, formik.values.year);
+                                            if (formik.values.day && formik.values.day > maxDays) {
+                                                formik.setFieldValue('day', '');
+                                            }
                                         }}
                                         displayEmpty
                                     >
@@ -248,8 +253,13 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                         name="year"
                                         value={formik.values.year}
                                         onChange={(e) => {
-                                            formik.handleChange(e);
-                                            formik.setFieldValue('day', '');
+                                            const newYear = e.target.value;
+                                            formik.setFieldValue('year', newYear);
+
+                                            const maxDays = getDaysInMonth(formik.values.month, newYear);
+                                            if (formik.values.day && formik.values.day > maxDays) {
+                                                formik.setFieldValue('day', '');
+                                            }
                                         }}
                                         displayEmpty
                                     >
@@ -262,29 +272,6 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     </Select>
                                     {formik.touched.year && formik.errors.year && <FormHelperText>{formik.errors.year}</FormHelperText>}
                                 </FormControl>
-                                {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        value={formik.values.date ? new Date(formik.values.date + 'T00:00:00') : null}
-                                        onChange={(newValue) => {
-                                            if (newValue) {
-                                                // Format to a local date string for DB storage (YYYY-MM-DD)
-                                                const formattedDate = format(newValue, 'yyyy-MM-dd');
-                                                formik.setFieldValue('date', formattedDate);
-                                            } else {
-                                                formik.setFieldValue('date', '');
-                                            }
-                                        }}
-                                        slotProps={{
-                                            textField: {
-                                                fullWidth: true,
-                                                name: 'date',
-                                                placeholder: 'Select Date',
-                                                error: formik.touched.date && Boolean(formik.errors.date),
-                                                helperText: formik.touched.date && formik.errors.date
-                                            }
-                                        }}
-                                    />
-                                </LocalizationProvider> */}
                             </Grid>
                         </Grid>
                     </CardContent>
