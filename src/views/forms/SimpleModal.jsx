@@ -73,9 +73,16 @@ const months = [
 
 const years = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i);
 
-const getDaysInMonth = (month, year) => {
-    if (!month || !year) return 31;
-    return new Date(year, month, 0).getDate();
+const getDaysInMonth = (month) => {
+    const monthNumber = Number(month);
+
+    if (!monthNumber) return 31;
+    if (monthNumber === 2) return 29;
+
+    const thirtyDayMonths = [4, 6, 9, 11];
+    if (thirtyDayMonths.includes(monthNumber)) return 30;
+
+    return 31;
 };
 
 const validationSchema = yup.object({
@@ -124,7 +131,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
         }
     });
 
-    const daysInMonth = getDaysInMonth(formik.values.month, formik.values.year);
+    const daysInMonth = getDaysInMonth(formik.values.month);
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
     return (
@@ -218,11 +225,11 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                         name="month"
                                         value={formik.values.month}
                                         onChange={(e) => {
-                                            const newMonth = e.target.value;
+                                            const newMonth = Number(e.target.value);
                                             formik.setFieldValue('month', newMonth);
 
-                                            const maxDays = getDaysInMonth(newMonth, formik.values.year);
-                                            if (formik.values.day && formik.values.day > maxDays) {
+                                            const maxDays = getDaysInMonth(newMonth);
+                                            if (formik.values.day && Number(formik.values.day) > maxDays) {
                                                 formik.setFieldValue('day', '');
                                             }
                                         }}
@@ -249,20 +256,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
                                     {formik.touched.day && formik.errors.day && <FormHelperText>{formik.errors.day}</FormHelperText>}
                                 </FormControl>
                                 <FormControl fullWidth error={formik.touched.year && Boolean(formik.errors.year)}>
-                                    <Select
-                                        name="year"
-                                        value={formik.values.year}
-                                        onChange={(e) => {
-                                            const newYear = e.target.value;
-                                            formik.setFieldValue('year', newYear);
-
-                                            const maxDays = getDaysInMonth(formik.values.month, newYear);
-                                            if (formik.values.day && formik.values.day > maxDays) {
-                                                formik.setFieldValue('day', '');
-                                            }
-                                        }}
-                                        displayEmpty
-                                    >
+                                    <Select name="year" value={formik.values.year} onChange={formik.handleChange} displayEmpty>
                                         <MenuItem value="">Year</MenuItem>
                                         {years.map((year) => (
                                             <MenuItem key={year} value={year}>
