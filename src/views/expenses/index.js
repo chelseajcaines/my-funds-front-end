@@ -13,7 +13,7 @@ import ExpensesModal from 'views/forms/ExpensesModal';
 import ExpensesEditModal from 'views/forms/ExpensesEditModal';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 // project imports
 import Chip from 'ui-component/extended/Chip';
@@ -70,7 +70,7 @@ export default function Expenses() {
                 statuscolor = 'warning'; // Default color for undefined payment types
         }
 
-        const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
+        const formattedDate = date ? date.slice(0, 10) : '';
 
         try {
             const response = await axios.post(
@@ -137,7 +137,7 @@ export default function Expenses() {
         const { id, category, location, amount, date, payment, deduction } = updatedExpense;
 
         try {
-            const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
+            const formattedDate = date ? date.slice(0, 10) : '';
 
             const response = await axios.put(
                 `${process.env.REACT_APP_API_URL}/api/expense/${id}`,
@@ -204,7 +204,7 @@ export default function Expenses() {
                                             })}
                                         </TableCell>
                                         <TableCell align="center">
-                                            {expense.date ? format(new Date(expense.date), 'MMM. dd/yy') : ''}
+                                            {expense.date ? format(parseISO(expense.date.slice(0, 10)), 'MMM. dd/yy') : ''}
                                         </TableCell>
                                         <TableCell align="center">
                                             <Chip chipcolor={expense.statuscolor} label={expense.payment} size="small" />
