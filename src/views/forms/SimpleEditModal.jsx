@@ -56,6 +56,37 @@ const TIME_SPANS = {
     YEARLY: 'Yearly'
 };
 
+const months = [
+    { value: 1, label: 'January' },
+    { value: 2, label: 'February' },
+    { value: 3, label: 'March' },
+    { value: 4, label: 'April' },
+    { value: 5, label: 'May' },
+    { value: 6, label: 'June' },
+    { value: 7, label: 'July' },
+    { value: 8, label: 'August' },
+    { value: 9, label: 'September' },
+    { value: 10, label: 'October' },
+    { value: 11, label: 'November' },
+    { value: 12, label: 'December' }
+];
+
+const currentYear = new Date().getFullYear();
+
+const years = Array.from({ length: 21 }, (_, i) => currentYear - 10 + i);
+
+const getDaysInMonth = (month) => {
+    const monthNumber = Number(month);
+
+    if (!monthNumber) return 31;
+    if (monthNumber === 2) return 29;
+
+    const thirtyDayMonths = [4, 6, 9, 11];
+    if (thirtyDayMonths.includes(monthNumber)) return 30;
+
+    return 31;
+};
+
 const validationSchema = yup.object({
     name: yup.string().required('Name is required.'),
     amount: yup
@@ -75,11 +106,22 @@ const validationSchema = yup.object({
         .string()
         .oneOf([TIME_SPANS.WEEKLY, TIME_SPANS.MONTHLY, TIME_SPANS.YEARLY], 'Invalid selection for Time Span.')
         .required('Time Span selection is required.'),
-    date: yup.date().typeError('Date is required.').required('Start Date is required.')
+    month: yup.number().required('Month is required.'),
+    day: yup.number().required('Day is required.'),
+    year: yup.number().required('Year is required.')
+    // date: yup.date().typeError('Date is required.').required('Start Date is required.')
 });
 
 const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, budgets }, ref) => {
     const dispatch = useDispatch();
+
+    const budgetDate = budgets?.date ? String(budgets.date).slice(0, 10).split('-') : [];
+
+    const budgetYear = budgetDate.length === 3 ? Number(budgetDate[0]) : '';
+
+    const budgetMonth = budgetDate.length === 3 ? Number(budgetDate[1]) : '';
+
+    const budgetDay = budgetDate.length === 3 ? Number(budgetDate[2]) : '';
 
     const formik = useFormik({
         initialValues: {
@@ -92,14 +134,23 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, budgets }, r
                   })
                 : '',
             time: budgets?.time || TIME_SPANS.WEEKLY, // Set to a default valid value
-            date: budgets?.date || ''
+            month: budgetMonth,
+            day: budgetDay,
+            year: budgetYear
+            // date: budgets?.date || ''
         },
+        enableReinitialize: true,
+
         validationSchema,
         onSubmit: (values) => {
             const cleanedAmount = parseFloat(values.amount.replace(/,/g, ''));
-            onSubmit(values.name, cleanedAmount, values.time, values.date);
+            const formattedDate = `${values.year}-${String(values.month).padStart(2, '0')}-${String(values.day).padStart(2, '0')}`;
+            onSubmit(values.name, cleanedAmount, values.time, formattedDate);
         }
     });
+
+    const daysInMonth = getDaysInMonth(formik.values.month);
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
     return (
         <div ref={ref} tabIndex={-1}>
@@ -149,14 +200,14 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, budgets }, r
                                         let rawValue = event.target.value.replace(/\D/g, ''); // Remove non-digits
                                         if (!rawValue) rawValue = '0'; // Ensure at least "0"
 
-                                        let numberValue = parseFloat(rawValue) / 100; // Convert to cents
-                                        let formattedValue = numberValue.toLocaleString('en-US', {
+                                        const numberValue = parseFloat(rawValue) / 100;
+                                        const formattedValue = numberValue.toLocaleString('en-US', {
                                             style: 'decimal',
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         });
 
-                                        formik.setFieldValue('amount', formattedValue.replace('$', '')); // Remove dollar sign from value
+                                        formik.setFieldValue('amount', formattedValue);
                                     }}
                                     error={formik.touched.amount && Boolean(formik.errors.amount)}
                                     helperText={formik.touched.amount && formik.errors.amount}
@@ -185,33 +236,79 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, budgets }, r
 
                             <Grid item xs={12}>
                                 <InputLabel>Start Date</InputLabel>
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker
-                                        // value={formik.values.date}
-                                        value={formik.values.date ? new Date(formik.values.date) : null} // Convert string to Date for the DatePicker
-                                        onChange={(newValue) => {
-                                            if (newValue) {
-                                                // Format for DB storage (YYYY-MM-DD)
-                                                console.log(format);
-                                                const formattedDate = format(newValue, 'yyyy-MM-dd');
-                                                console.log('Formatted Date:', formattedDate);
-                                                formik.setFieldValue('date', formattedDate);
-                                            } else {
-                                                formik.setFieldValue('date', '');
-                                            }
-                                        }}
-                                        // onChange={(newValue) => formik.setFieldValue('date', newValue)}
-                                        slotProps={{
-                                            textField: {
-                                                fullWidth: true,
-                                                name: 'date',
-                                                placeholder: 'Select Date',
-                                                error: formik.touched.date && Boolean(formik.errors.date),
-                                                helperText: formik.touched.date && formik.errors.date
-                                            }
-                                        }}
-                                    />
-                                </LocalizationProvider>
+
+                                <Grid container spacing={1}>
+                                    {/* Month */}
+                                    <Grid item xs={4}>
+                                        <FormControl fullWidth error={formik.touched.month && Boolean(formik.errors.month)}>
+                                            <Select
+                                                name="month"
+                                                value={formik.values.month}
+                                                onChange={(e) => {
+                                                    const newMonth = Number(e.target.value);
+                                                    formik.setFieldValue('month', newMonth);
+
+                                                    const maxDays = getDaysInMonth(newMonth);
+
+                                                    if (formik.values.day && Number(formik.values.day) > maxDays) {
+                                                        formik.setFieldValue('day', '');
+                                                    }
+                                                }}
+                                                displayEmpty
+                                            >
+                                                <MenuItem value="">Month</MenuItem>
+
+                                                {months.map((month) => (
+                                                    <MenuItem key={month.value} value={month.value}>
+                                                        {month.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+                                            {formik.touched.month && formik.errors.month && (
+                                                <FormHelperText>{formik.errors.month}</FormHelperText>
+                                            )}
+                                        </FormControl>
+                                    </Grid>
+
+                                    {/* Day */}
+                                    <Grid item xs={4}>
+                                        <FormControl fullWidth error={formik.touched.day && Boolean(formik.errors.day)}>
+                                            <Select name="day" value={formik.values.day} onChange={formik.handleChange} displayEmpty>
+                                                <MenuItem value="">Day</MenuItem>
+
+                                                {days.map((day) => (
+                                                    <MenuItem key={day} value={day}>
+                                                        {day}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+                                            {formik.touched.day && formik.errors.day && (
+                                                <FormHelperText>{formik.errors.day}</FormHelperText>
+                                            )}
+                                        </FormControl>
+                                    </Grid>
+
+                                    {/* Year */}
+                                    <Grid item xs={4}>
+                                        <FormControl fullWidth error={formik.touched.year && Boolean(formik.errors.year)}>
+                                            <Select name="year" value={formik.values.year} onChange={formik.handleChange} displayEmpty>
+                                                <MenuItem value="">Year</MenuItem>
+
+                                                {years.map((year) => (
+                                                    <MenuItem key={year} value={year}>
+                                                        {year}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+                                            {formik.touched.year && formik.errors.year && (
+                                                <FormHelperText>{formik.errors.year}</FormHelperText>
+                                            )}
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </CardContent>

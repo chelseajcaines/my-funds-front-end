@@ -220,52 +220,79 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit }, ref) => {
 
                             <Grid item xs={12}>
                                 <InputLabel>Start Date</InputLabel>
-                                <FormControl fullWidth error={formik.touched.month && Boolean(formik.errors.month)}>
-                                    <Select
-                                        name="month"
-                                        value={formik.values.month}
-                                        onChange={(e) => {
-                                            const newMonth = Number(e.target.value);
-                                            formik.setFieldValue('month', newMonth);
 
-                                            const maxDays = getDaysInMonth(newMonth);
-                                            if (formik.values.day && Number(formik.values.day) > maxDays) {
-                                                formik.setFieldValue('day', '');
-                                            }
-                                        }}
-                                        displayEmpty
-                                    >
-                                        <MenuItem value="">Month</MenuItem>
-                                        {months.map((month) => (
-                                            <MenuItem key={month.value} value={month.value}>
-                                                {month.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                    {formik.touched.month && formik.errors.month && <FormHelperText>{formik.errors.month}</FormHelperText>}
-                                </FormControl>
-                                <FormControl fullWidth error={formik.touched.day && Boolean(formik.errors.day)}>
-                                    <Select name="day" value={formik.values.day} onChange={formik.handleChange} displayEmpty>
-                                        <MenuItem value="">Day</MenuItem>
-                                        {days.map((day) => (
-                                            <MenuItem key={day} value={day}>
-                                                {day}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                    {formik.touched.day && formik.errors.day && <FormHelperText>{formik.errors.day}</FormHelperText>}
-                                </FormControl>
-                                <FormControl fullWidth error={formik.touched.year && Boolean(formik.errors.year)}>
-                                    <Select name="year" value={formik.values.year} onChange={formik.handleChange} displayEmpty>
-                                        <MenuItem value="">Year</MenuItem>
-                                        {years.map((year) => (
-                                            <MenuItem key={year} value={year}>
-                                                {year}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                    {formik.touched.year && formik.errors.year && <FormHelperText>{formik.errors.year}</FormHelperText>}
-                                </FormControl>
+                                <Grid container spacing={1}>
+                                    {/* Month */}
+                                    <Grid item xs={4}>
+                                        <FormControl fullWidth error={formik.touched.month && Boolean(formik.errors.month)}>
+                                            <Select
+                                                name="month"
+                                                value={formik.values.month}
+                                                onChange={(e) => {
+                                                    const newMonth = Number(e.target.value);
+                                                    formik.setFieldValue('month', newMonth);
+
+                                                    const maxDays = getDaysInMonth(newMonth);
+
+                                                    if (formik.values.day && Number(formik.values.day) > maxDays) {
+                                                        formik.setFieldValue('day', '');
+                                                    }
+                                                }}
+                                                displayEmpty
+                                            >
+                                                <MenuItem value="">Month</MenuItem>
+
+                                                {months.map((month) => (
+                                                    <MenuItem key={month.value} value={month.value}>
+                                                        {month.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+                                            {formik.touched.month && formik.errors.month && (
+                                                <FormHelperText>{formik.errors.month}</FormHelperText>
+                                            )}
+                                        </FormControl>
+                                    </Grid>
+
+                                    {/* Day */}
+                                    <Grid item xs={4}>
+                                        <FormControl fullWidth error={formik.touched.day && Boolean(formik.errors.day)}>
+                                            <Select name="day" value={formik.values.day} onChange={formik.handleChange} displayEmpty>
+                                                <MenuItem value="">Day</MenuItem>
+
+                                                {days.map((day) => (
+                                                    <MenuItem key={day} value={day}>
+                                                        {day}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+                                            {formik.touched.day && formik.errors.day && (
+                                                <FormHelperText>{formik.errors.day}</FormHelperText>
+                                            )}
+                                        </FormControl>
+                                    </Grid>
+
+                                    {/* Year */}
+                                    <Grid item xs={4}>
+                                        <FormControl fullWidth error={formik.touched.year && Boolean(formik.errors.year)}>
+                                            <Select name="year" value={formik.values.year} onChange={formik.handleChange} displayEmpty>
+                                                <MenuItem value="">Year</MenuItem>
+
+                                                {years.map((year) => (
+                                                    <MenuItem key={year} value={year}>
+                                                        {year}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+                                            {formik.touched.year && formik.errors.year && (
+                                                <FormHelperText>{formik.errors.year}</FormHelperText>
+                                            )}
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </CardContent>
