@@ -78,12 +78,12 @@ const Budgets = () => {
 
     const handleBudgetUpdate = async (updatedBudget) => {
         console.log('Updated Budget:', updatedBudget);
+
         const { id, name, amount, time, date } = updatedBudget;
+
         console.log('Updating budget with Id:', id);
 
         try {
-            // const formattedDate = date ? format(new Date(date), 'yyyy-MM-dd') : '';
-
             const response = await axios.put(
                 `${process.env.REACT_APP_API_URL}/api/budget/${id}`,
                 {
@@ -97,12 +97,8 @@ const Budgets = () => {
 
             console.log('Budget updated:', response.data);
 
-            // Option 1: Refresh the list
-            const fetchUpdatedBudget = await axios.get(`${process.env.REACT_APP_API_URL}/api/budget`, {
-                withCredentials: true
-            });
-
-            setBudgets(fetchUpdatedBudget.data.data);
+            // Replace the updated budget in its existing position
+            setBudgets((prevBudgets) => prevBudgets.map((budget) => (budget.id === id ? { ...budget, ...response.data.data } : budget)));
         } catch (error) {
             console.error('Error updating budget:', error.response?.data || error.message);
         }

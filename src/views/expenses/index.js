@@ -154,17 +154,8 @@ export default function Expenses() {
 
             console.log('Expense updated:', response.data);
 
-            // Option 1: Refresh the list
-            const fetchUpdatedExpenses = await axios.get(`${process.env.REACT_APP_API_URL}/api/expense`, {
-                withCredentials: true
-            });
-
-            setExpense(fetchUpdatedExpenses.data.data);
-
-            // Option 2 (alternative): Update only the changed item in local state
-            // setExpense((prev) =>
-            //     prev.map((exp) => (exp.id === id ? { ...exp, ...response.data.data } : exp))
-            // );
+            // Replace the updated expense in its existing position
+            setExpense((prevExpense) => prevExpense.map((exp) => (exp.id === id ? { ...exp, ...response.data.data } : exp)));
 
             setEditModalOpen(false);
         } catch (error) {

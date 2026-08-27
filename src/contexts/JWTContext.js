@@ -292,7 +292,7 @@ export const JWTProvider = ({ children }) => {
                                 fontSize: '16px'
                             }}
                         >
-                            Log In
+                            Ok
                         </button>
                     </div>
                 </div>

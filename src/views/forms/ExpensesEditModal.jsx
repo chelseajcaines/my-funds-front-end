@@ -124,7 +124,7 @@ const validationSchema = yup.object({
 const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, ref) => {
     const dispatch = useDispatch();
 
-    const expenseDate = expenses?.date ? String(expenses.date).slice(0, 10).split('-') : [];
+    const expenseDate = expense?.date ? String(expense.date).slice(0, 10).split('-') : [];
 
     const expenseYear = expenseDate.length === 3 ? Number(expenseDate[0]) : '';
 
@@ -161,7 +161,7 @@ const Body = React.forwardRef(({ modalStyle, handleClose, onSubmit, expense }, r
                 category: values.category,
                 location: values.location,
                 amount: cleanedAmount,
-                formattedDate,
+                date: formattedDate,
                 payment: values.payment,
                 deduction: values.deduction
             });
