@@ -171,7 +171,13 @@ export const JWTProvider = ({ children }) => {
                 }
             });
         } catch (err) {
-            throw new Error(err.response?.data?.message || 'Invalid email or password.');
+            const message = err.response?.data?.message || err.response?.data?.error || 'Invalid email or password.';
+
+            const loginError = new Error(message);
+
+            loginError.status = err.response?.status;
+
+            throw loginError;
         }
     };
 

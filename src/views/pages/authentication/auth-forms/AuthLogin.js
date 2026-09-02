@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -43,12 +44,40 @@ const JWTLogin = ({ loginProp, ...others }) => {
     const [checked, setChecked] = React.useState(true);
 
     const [showPassword, setShowPassword] = React.useState(false);
+
+    const [unverifiedEmail, setUnverifiedEmail] = React.useState('');
+    const [resendMessage, setResendMessage] = React.useState('');
+    const [resending, setResending] = React.useState(false);
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
+    };
+
+    const handleResendVerification = async () => {
+        if (!unverifiedEmail) {
+            return;
+        }
+
+        try {
+            setResending(true);
+            setResendMessage('');
+
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/resend-verification`, {
+                email: unverifiedEmail
+            });
+
+            setResendMessage(response.data.message || 'Verification email sent.');
+        } catch (error) {
+            console.error('Error resending verification email:', error);
+
+            setResendMessage(error.response?.data?.message || 'Unable to resend verification email.');
+        } finally {
+            setResending(false);
+        }
     };
 
     return (
@@ -64,6 +93,8 @@ const JWTLogin = ({ loginProp, ...others }) => {
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
+                    setUnverifiedEmail('');
+                    setResendMessage('');
                     await login(values.email, values.password);
 
                     if (scriptedRef.current) {
@@ -73,7 +104,20 @@ const JWTLogin = ({ loginProp, ...others }) => {
                 } catch (err) {
                     console.error(err);
                     if (scriptedRef.current) {
-                        setErrors({ submit: err.message }); // Show the error in Formik form
+                        if (err.status === 403) {
+                            setUnverifiedEmail(values.email);
+
+                            setErrors({
+                                submit: err.message || 'Please verify your email before logging in.'
+                            });
+                        } else {
+                            setUnverifiedEmail('');
+
+                            setErrors({
+                                submit: err.message
+                            });
+                        }
+
                         setStatus({ success: false });
                         setSubmitting(false);
                     }
@@ -162,6 +206,25 @@ const JWTLogin = ({ loginProp, ...others }) => {
                             <FormHelperText error>{errors.submit}</FormHelperText>
                         </Box>
                     )}
+
+                    {unverifiedEmail && (
+                        <Box sx={{ mt: 2 }}>
+                            <Typography variant="body2" textAlign="center" sx={{ mb: 1 }}>
+                                Didn&apos;t receive the verification email?
+                            </Typography>
+
+                            <Button fullWidth variant="outlined" color="secondary" onClick={handleResendVerification} disabled={resending}>
+                                {resending ? 'Sending...' : 'Resend Verification Email'}
+                            </Button>
+
+                            {resendMessage && (
+                                <Typography variant="body2" textAlign="center" sx={{ mt: 1 }} color="success.main">
+                                    {resendMessage}
+                                </Typography>
+                            )}
+                        </Box>
+                    )}
+
                     <Box sx={{ mt: 2 }}>
                         <AnimateButton>
                             <Button color="secondary" disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
