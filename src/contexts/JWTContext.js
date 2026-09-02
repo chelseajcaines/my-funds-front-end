@@ -193,7 +193,7 @@ export const JWTProvider = ({ children }) => {
     };
 
     const register = async (email, password, firstName, lastName) => {
-        const id = chance.bb_pin();
+        // const id = chance.bb_pin();
 
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/user`, {
             name: firstName + ' ' + lastName, // Combine firstName and lastName for the name field
@@ -201,8 +201,7 @@ export const JWTProvider = ({ children }) => {
             password
         });
 
-        let users = response.data;
-        console.log(users);
+        return response.data;
     };
 
     const resetPassword = async (email) => {

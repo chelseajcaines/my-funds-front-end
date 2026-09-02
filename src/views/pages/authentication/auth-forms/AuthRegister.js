@@ -103,7 +103,7 @@ const JWTRegister = ({ ...others }) => {
                             dispatch(
                                 openSnackbar({
                                     open: true,
-                                    message: 'Your registration has been successfully completed.',
+                                    message: 'Account created! Please check your email to verify your account before logging in.',
                                     variant: 'alert',
                                     alert: {
                                         color: 'success'
@@ -114,7 +114,7 @@ const JWTRegister = ({ ...others }) => {
 
                             setTimeout(() => {
                                 navigate('/login', { replace: true });
-                            }, 1500);
+                            }, 3000);
                         }
                     } catch (err) {
                         console.error(err);
